@@ -10,6 +10,6 @@ This working repository is dedicated to the development of an R package capable 
 
 ## Repository structure
 
-* Input data are stored in the data directory.
-* Scripts that preform the alignment are stored in the scripts directory.
+* Input data are stored in the "data" directory.
+* Scripts that preform the alignment are stored in the "scripts" directory.
 * The "results" directory contains the outputs of the scripts.
