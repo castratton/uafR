@@ -1,0 +1,265 @@
+---
+title: "GCMS alignment pipeline in a single function (demo) -- `GCMS_Alignment`"
+author: "Konilo Zio, data pipeline by Phililpp Hansen, Yvonne Thompson, and Chase Stratton"
+date: "`r format(Sys.time(), '%d/%m/%Y %H:%M:%S')`"
+output: 
+  html_document:
+    number_sections: yes
+    toc: true
+    toc_float: true
+    code_folding: show
+---
+
+<!--
+This R chunk is used to set up some options.
+-->
+
+```{r setup, include = FALSE}
+if(! "params" %in% ls())
+  params <- list(root.dir = NULL)
+
+suppressPackageStartupMessages(library(knitr))
+
+opts_chunk$set(echo = TRUE, 
+               warning = TRUE, 
+               message = TRUE, 
+               cache = FALSE,
+               fig.align = "center", 
+               root.dir = params$root.dir)
+
+opts_knit$set(progress = TRUE, 
+              verbose = TRUE)
+```
+
+
+
+# Introduction
+
+The contents of this file are **PROPRIETARY, DO NOT DISTRIBUTE**.
+
+Specifying paths relatively to the root of the project:
+```{r project_organization}
+projectName <- "GCMS_Alignment"
+projectDir <- ""
+if (Sys.info()["user"] == "KoNiL") {
+  projectDir <- file.path("C:/Users/KoNiL/Desktop/Plant-AMF_meta-analysis/GCMS_alignment_project", projectName)
+} # add the path of the folder where you cloned the repo on your computer
+projectDir <- path.expand(projectDir)
+stopifnot(dir.exists(projectDir))
+dataDir <- file.path(projectDir, "data")
+stopifnot(dir.exists(dataDir))
+scriptsDir <- file.path(projectDir, "scripts")
+stopifnot(dir.exists(scriptsDir))
+resultsDir <- file.path(projectDir, "results")
+if (!dir.exists(resultsDir)) {
+  dir.create(file.path(projectDir, "results"))
+}
+```
+
+Required packages:
+```{r required_packages}
+instPkgs <- installed.packages()[, "Package"]
+
+for (pkg in c("data.table", "GCalignR", "expss", "dplyr", "tidyr")) {
+  if (!pkg %in% instPkgs) {
+    install.packages(pkg)
+  }
+  suppressPackageStartupMessages(library(pkg, character.only = TRUE))
+}
+```
+
+Useful info (see the appendix):
+```{r time_0}
+t0 <- proc.time()
+```
+
+
+
+# Loading the initial data
+
+Loading a demo output CSV exported from MassHunter.
+```{r}
+unknowns_all = read.csv(file.path(dataDir, "demo-aggregated_all.csv"))
+```
+
+
+
+# Creating the local alignment function
+
+The chunk below creates a local function that contains the entire GC alignement pipeline, from the GC input data (as a data frame) to the aligned compounds (as a data frame also). It is a copy from "20220715-alignment-optimized-uafR.R" with the difference that 
+
+- `unknowns_all` is becomes an argument called `data` inside the function below;
+- and `plot(aligned_peaks)` is commented out because is triggers an error on my machine and I did not have time to look into it.
+
+This a bare bones function, for now, but eventually arguments will be added to allow users easily to adapt the pipeline to their needs (e.g. type of input, verbose, chemical classes).
+```{r}
+AlignGC <- function(data) {
+
+  out = data %>%
+    group_split(File.Name) ##Must be changed to 'Sample.Name' if that is the preferred identifier !!
+  
+  # This is no longer necessary for the alignment to occur, but users may still want to have it as an option
+  # for (i in 1:length(out)){
+  #   write.csv(out[[i]],paste0("C:/Users/cstratton/Desktop/2019_The_Land_Institute/GCMS_Analyzed/Kernza_Intercropping/CSV_data/Alignment_Split/",unique(out[[i]]$File.Name),".csv"))
+  # } ## User must manually create a new folder where the individual .csv files for each sample will be saved
+  
+  # Importing dataset into R. Creating a list of file names, then reading the relevant columns into GC_input
+  # fileList = list.files(path="C:/Users/cstratton/Desktop/2019_The_Land_Institute/GCMS_Analyzed/Kernza_Intercropping/CSV_data/Alignment_Split/", pattern=".csv", full.names = TRUE)
+  # GC_input = lapply(fileList, fread, select = c("Component.RT", "Component.Area"))
+  
+  # GC_input is without list item labels, the next step imports labels from the file names
+  # This code can probably be optimized
+  
+  # fileNames = list.files(path="C:/Users/cstratton/Desktop/2019_The_Land_Institute/GCMS_Analyzed/Kernza_Intercropping/CSV_data/Alignment_Split/", 
+  #                        pattern = NULL, all.files = TRUE, 
+  #                        full.names = FALSE, recursive = FALSE,
+  #                        ignore.case = FALSE, include.dirs = FALSE, 
+  #                        no.. = FALSE)
+  # 
+  # fileNames = substr(fileNames,1,nchar(fileNames)-4)
+  # fileNames = data.frame(fileNames)
+  # fileNames = fileNames[-c(1:2),]
+  # fileNames = gsub('\\.','_', fileNames)
+  # fileNames = gsub('-','_', fileNames)
+  
+  fileNames = as.character(unique(data$File.Name))
+  
+  # fileNames = substr(fileNames,1,nchar(fileNames)-4)
+  # fileNames = data.frame(fileNames)
+  # fileNames = fileNames[-c(1:2),]
+  fileNames = gsub('\\.','_', fileNames)
+  fileNames = gsub('-','_', fileNames)
+  
+  #Rename list items of GCalignment input file
+  # names(GC_input) <- fileNames
+  names(out) <- fileNames
+  
+  #Rename list items of GCalignment input file
+  # names(GC_input) <- fileNames
+  # names(out) <- fileNames
+  # GC_input=GC_input[-127]
+  check_input(out)
+  
+  
+  ##Run GCMS alignment
+  
+  #Determine appropriate value for min_diff_peak2peak
+  tmp = peak_interspace(data = out, 
+                        rt_col_name = "Component.RT", 
+                        quantile_range = c(0, 0.95),
+                        by_sample = F)  #Could potentially extract a value for each sample individually
+  shift = tmp$Summary[4]                     #{
+  peak2mean = tmp$Summary[6]-tmp$Summary[4]  #{ <- Current setup is working well enough on our data
+  peak2peak_min = tmp$Summary[2]             #{
+  
+  #Run alignment <-- LOTS OF ROOM FOR OPTIMIZATION (data science "experiment" - 
+  # test a regular series of values here to find best fit values across data sets)
+  aligned_peaks<- align_chromatograms(out, 
+                                      rt_col_name = "Component.RT", 
+                                      max_linear_shift = shift, 
+                                      # max_diff_peak2mean = peak2mean, 
+                                      min_diff_peak2peak = peak2peak_min)
+  
+  #Check output
+  gc_heatmap(aligned_peaks)
+  # plot(aligned_peaks)
+  print(aligned_peaks)
+  View(aligned_peaks$aligned)
+  #Write output to .csv
+  # write.csv(aligned_peaks$aligned, 
+  #           "C:/Users/cstratton/Desktop/2019_The_Land_Institute/GCMS_Analyzed/Alfalfa_Intercropping/20220531-alfalfa-aligned.csv")
+  
+  options(scipen = 999)
+  #Adding compound names and probabilities
+  # Cmpd_lookup = lapply(fileList, fread) %>% rbindlist()
+  #Cmpd_lookup <- Cmpd_lookup %>%
+  # unite("Compound; Prob", Compound:Probability, sep = "; ")
+  # Cmpd_lookup = Cmpd_lookup[,c(2,3,4)]
+  # cmp_tmp = as.data.frame(Cmpd_lookup[,c("Component.RT","Component.Area","Compound.Name","Match.Factor")])
+  cmp_tmp = as.data.frame(data[,c("Component.RT","Component.Area","Compound.Name","Match.Factor")])
+  #For Excel method: .csv file
+  # write.csv(Cmpd_lookup, "C:/Users/cstratton/Desktop/2019_The_Land_Institute/GCMS_Analyzed/Alfalfa_Intercropping/GCAligned/20220531-alfalfa-CMP-list.csv")
+  #write.csv(Cmpd_lookup, "C:/Intercropping/Output/RTCmpds.csv")
+  
+  Orig=aligned_peaks$aligned$Component.Area
+  # vlookup(Orig[1,3],cmp_tmp, result_column = 2, lookup_column = 1)
+  orig_new = Orig[,-1]
+  
+  ret_time = nrow(orig_new)
+  sample = ncol(orig_new)
+  
+  cmp_matrix = data.frame(matrix(ncol = sample, 
+                                 nrow = ret_time))
+  probs_matrix = data.frame(matrix(ncol = sample, 
+                                   nrow = ret_time))
+  
+  for (i in 1:ret_time){
+    for (j in 1:sample){
+      cmp_matrix[i,j] = as.character(vlookup(orig_new[i,j], 
+                                             cmp_tmp, 
+                                             result_column = 3, 
+                                             lookup_column = 2))
+      probs_matrix[i,j] = vlookup(orig_new[i,j], 
+                                  cmp_tmp, 
+                                  result_column = 4, 
+                                  lookup_column = 2)
+    }
+  }
+  
+  # cbind(t(cmp_matrix[1,]),t(probs_matrix[1,]))
+  best_cmps = vector()
+  
+  for (i in 1:nrow(probs_matrix)){
+    rt_set = as.data.frame(cbind(t(probs_matrix[i,]),t(cmp_matrix[i,])))
+    row.names(rt_set) = NULL
+    colnames(rt_set) = c("Probs","Compounds")
+    ordered_set = rt_set[order(rt_set$Probs),]
+    ordered_set = ordered_set[complete.cases(ordered_set),]
+    max_tmp = tail(ordered_set, n = 1)
+    best_cmps[i] = as.character(max_tmp[[2]])
+  }
+  cmps_correct = unlist(best_cmps)
+  
+  aligned_with_CMPS = cbind(cmps_correct, Orig)
+}
+```
+
+
+
+# Aligning
+
+The pipeline can now be run using a single line of code.
+```{r}
+aligned_with_CMPS <- AlignGC(data = unknowns_all)
+```
+
+Displaying an excerpt of the resulting data frame.
+```{r}
+aligned_with_CMPS[1:5, 1:5]
+```
+
+
+
+# Exporting the results
+
+Finally, the results are exported as a CSV file in the "results" sub-directory of the repo.
+```{r}
+write.csv(aligned_with_CMPS, 
+          file.path(resultsDir, "demo_aligned_with_CMPS.csv"))
+```
+
+
+
+# Appendix
+
+The time it took for the Rmd to run and produce this HTML is specified below (in min):
+```{r info}
+t1 <- proc.time()
+ElapsedTime <- t1 - t0
+round(ElapsedTime[3] / 60, )
+```
+
+It was ran in the following system:
+```{r}
+print(sessionInfo(), locale = FALSE)
+```
