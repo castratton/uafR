@@ -88,7 +88,7 @@ unknowns_all = read.csv(file.path(dataDir, "demo-aggregated_all.csv"))
 
 The chunk below creates a local function that contains the entire GC alignement pipeline, from the GC input data (as a data frame) to the aligned compounds (as a data frame also). It is a copy from "20220715-alignment-optimized-uafR.R" with the difference that 
 
-- `unknowns_all` has became an argument called `data` inside the function below;
+- `unknowns_all` has become an argument called `data` inside the function below;
 - and `plot(aligned_peaks)` is commented out because is triggers an error on my machine and I did not have time to look into it.
 
 This a bare bones function, for now, but eventually arguments will be added to allow users easily to adapt the pipeline to their needs (e.g. type of input, verbose, chemical classes).
