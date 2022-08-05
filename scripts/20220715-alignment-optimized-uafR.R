@@ -9,53 +9,29 @@ library(GCalignR)
 library(expss)
 library(dplyr)
 library(tidyr)
+library(webchem)
+library(ChemmineR)
+library(fmcsR)
 
 ##Loading the raw Unknowns analysis output
-unknowns_all = read.csv("C:/Users/cstratton/Desktop/2019_The_Land_Institute/GCMS_Analyzed/Morrison_Demo/CSV_data/Aggregated_All/") #This path and filename need to be updated to your input file
+unknowns_all = read.csv("") #This path and filename need to be updated to your input file
 
 out = unknowns_all %>%
   group_split(File.Name) ##Must be changed to 'Sample.Name' if that is the preferred identifier !!
 
-# This is no longer necessary for the alignment to occur, but users may still want to have it as an option
+# This is no longer necessary for the alignment to occur, but users may still want to have it as an option (uaf2csv)
 # for (i in 1:length(out)){
 #   write.csv(out[[i]],paste0("C:/Users/cstratton/Desktop/2019_The_Land_Institute/GCMS_Analyzed/Kernza_Intercropping/CSV_data/Alignment_Split/",unique(out[[i]]$File.Name),".csv"))
 # } ## User must manually create a new folder where the individual .csv files for each sample will be saved
 
-# Importing dataset into R. Creating a list of file names, then reading the relevant columns into GC_input
-# fileList = list.files(path="C:/Users/cstratton/Desktop/2019_The_Land_Institute/GCMS_Analyzed/Kernza_Intercropping/CSV_data/Alignment_Split/", pattern=".csv", full.names = TRUE)
-# GC_input = lapply(fileList, fread, select = c("Component.RT", "Component.Area"))
-
-# GC_input is without list item labels, the next step imports labels from the file names
-# This code can probably be optimized
-
-# fileNames = list.files(path="C:/Users/cstratton/Desktop/2019_The_Land_Institute/GCMS_Analyzed/Kernza_Intercropping/CSV_data/Alignment_Split/", 
-#                        pattern = NULL, all.files = TRUE, 
-#                        full.names = FALSE, recursive = FALSE,
-#                        ignore.case = FALSE, include.dirs = FALSE, 
-#                        no.. = FALSE)
-# 
-# fileNames = substr(fileNames,1,nchar(fileNames)-4)
-# fileNames = data.frame(fileNames)
-# fileNames = fileNames[-c(1:2),]
-# fileNames = gsub('\\.','_', fileNames)
-# fileNames = gsub('-','_', fileNames)
-
 fileNames = as.character(unique(unknowns_all$File.Name))
-
-# fileNames = substr(fileNames,1,nchar(fileNames)-4)
-# fileNames = data.frame(fileNames)
-# fileNames = fileNames[-c(1:2),]
 fileNames = gsub('\\.','_', fileNames)
 fileNames = gsub('-','_', fileNames)
-
+fileNames = gsub('\\+','plus', fileNames)
 #Rename list items of GCalignment input file
-# names(GC_input) <- fileNames
 names(out) <- fileNames
 
-#Rename list items of GCalignment input file
-# names(GC_input) <- fileNames
-# names(out) <- fileNames
-# GC_input=GC_input[-127]
+# CHecking input for alignment
 check_input(out)
 
 
@@ -100,29 +76,8 @@ cmp_tmp = as.data.frame(unknowns_all[,c("Component.RT","Component.Area","Compoun
 #write.csv(Cmpd_lookup, "C:/Intercropping/Output/RTCmpds.csv")
 
 Orig=aligned_peaks$aligned$Component.Area
-# vlookup(Orig[1,3],cmp_tmp, result_column = 2, lookup_column = 1)
-orig_new = Orig[,-1]
-
-ret_time = nrow(orig_new)
-sample = ncol(orig_new)
-
-cmp_matrix = data.frame(matrix(ncol = sample, 
-                               nrow = ret_time))
-probs_matrix = data.frame(matrix(ncol = sample, 
-                                 nrow = ret_time))
-
-for (i in 1:ret_time){
-  for (j in 1:sample){
-    cmp_matrix[i,j] = as.character(vlookup(orig_new[i,j], 
-                                           cmp_tmp, 
-                                           result_column = 3, 
-                                           lookup_column = 2))
-    probs_matrix[i,j] = vlookup(orig_new[i,j], 
-                                cmp_tmp, 
-                                result_column = 4, 
-                                lookup_column = 2)
-  }
-}
+cmp_matrix = aligned_peaks$aligned$Compound.Name[,-1]
+probs_matrix = aligned_peaks$aligned$Match.Factor[,-1]
 
 # cbind(t(cmp_matrix[1,]),t(probs_matrix[1,]))
 best_cmps = vector()
@@ -152,5 +107,104 @@ write.csv(aligned_with_CMPS,"C:/Users/cstratton/Desktop/2019_The_Land_Institute/
 ##-Quantify relative quantities (relative to internal standard <-- Rob feedback required)
 ##-Summarize based on key sub-structures (e.g alkaloids, terpenoids, aromatics, etc.) <-- could develop "dictionaries" for specific fields
 ##--Would be an optional argument in a function. Users would have options to select (e.g. "plant", "medical", "others...")
+
+#Communicating with PubChem to bring in SDF files for every identified/published compound in every sample
+## Download/URL restrictions!!!! --> length of URL and time it takes to download data limits
+SDF_list = list()
+
+for(i in 1:length(out)){
+  cids_tmp = get_cid(out[[i]][[5]])
+  cid_set = toString(cids_tmp[[2]])
+  cid_set = gsub(" ","",cid_set)
+  cid_set = gsub("NA","180",cid_set)
+  url_tmp = paste0('https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/',cid_set,'/SDF')
+  SDF_set = read.SDFset(url_tmp)
+  SDF_list[i] = SDF_set
+}
+names(SDF_list) = fileNames
+
+# What the compound dictionary inputs look like [dictionate()]
+contaminants = c("Perfluorotributylamine","Methanol",
+                 "Acetone","Benzene",
+                 "Toluene","M-Xylene",
+                 "O-Xylene","P-Xylene",
+                 "Trichloroethane","dimethoxy(dimethyl)silane")
+
+GLVs = c("(Z)-3-hexenal", "(E)-2-hexenal", #Green Leafy Volatiles
+         "(Z)-3-hexen-1-ol", "(Z)-3-hexen-1-yl acetate")
+
+acAs = c("Vinblastine",  #Anti-Cancer Alkaloids - "Vincrisine",
+         "Vinorelbine","Vindesine",
+         "Taxol","Rohitukine",
+         "Homoharringtonine","Ellipticine",
+         "Acronycine","Camptothecin",
+         "Thalicarpine")
+
+Alkaloids = c("Trimethylamine","Dimethylamine")
+
+# Acquiring SDFs for compound dictionaries [dictionate()]
+## Contaminants
+contaminant_cids = get_cid(contaminants)
+contaminant_cid_set = toString(contaminant_cids[[2]])
+contaminant_cid_set = gsub(" ","",contaminant_cid_set)
+url_contaminants = paste0('https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/',contaminant_cid_set,'/SDF')
+contaminant_SDF_set = read.SDFset(url_contaminants)
+
+## Green Leafy Volatiles
+GLV_cids = get_cid(GLVs)
+GLV_cid_set = toString(GLV_cids[[2]])
+GLV_cid_set = gsub(" ","",GLV_cid_set)
+url_GLVs = paste0('https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/',GLV_cid_set,'/SDF')
+GLV_SDF_set = read.SDFset(url_GLVs)
+
+## Anti-Cancer alkaloids
+acA_cids = get_cid(acAs)
+acA_cid_set = toString(acA_cids[[2]])
+acA_cid_set = gsub(" ","",acA_cid_set)
+url_acAs = paste0('https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/',acA_cid_set,'/SDF')
+acA_SDF_set = read.SDFset(url_acAs)
+
+# Alkaloids
+Alkaloid_cids = get_cid(Alkaloids)
+Alkaloid_cid_set = toString(Alkaloid_cids[[2]])
+Alkaloid_cid_set = gsub(" ","",Alkaloid_cid_set)
+url_Alkaloids = paste0('https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/',Alkaloid_cid_set,'/SDF')
+Alkaloid_SDF_set = read.SDFset(url_Alkaloids)
+
+# Adding new columns to the split datasets to fill with results from dictionary matching.
+out2 = Map(function(x,y){
+  x$Contaminant = y 
+  x$GLV = y 
+  x$acA = y 
+  x$Alkaloid = y 
+  x}, 
+  out, 
+  "Empty")
+
+# Looping through every compound and testing against the dictionaries. Will be converted to a function 
+# that allows users to define their own dictionaries and Tanimoto thresholds.
+for(i in 1:length(SDF_list)){
+  current_set = SDF_list[[i]] 
+  for(j in 1:length(current_set)){
+    batch_test_set = fmcsBatch(current_set[[j]],contaminant_SDF_set) 
+    batch_test_set_GLV = fmcsBatch(current_set[[j]],GLV_SDF_set) 
+    batch_test_set_acA = fmcsBatch(current_set[[j]],acA_SDF_set) 
+    batch_test_set_Alkaloid = fmcsBatch(current_set[[j]],Alkaloid_SDF_set) 
+    if (max(as.vector(batch_test_set[,4])) > 0.999){
+      out2[[i]][j,ncol(out[[i]])+1] = "Contaminant"} 
+    else {
+      out2[[i]][j,ncol(out[[i]])+1] = "Okay"} 
+    if (max(as.vector(batch_test_set_GLV[,4])) > 0.85){
+      out2[[i]][j,10] = "GLV"} 
+    else {
+      out2[[i]][j,10] = "No"} 
+    if (max(as.vector(batch_test_set_acA[,4])) > 0.75){
+      out2[[i]][j,11] = "acA"} 
+    else {out2[[i]][j,11] = "No"} 
+    if (max(as.vector(batch_test_set_Alkaloid[,4])) > 0.97){
+      out2[[i]][j,12] = "Alkaloid"} 
+    else {out2[[i]][j,12] = "No"}
+  }
+  }
 
 #*** PROPRIETARY - DO NOT DISTRIBUTE **
