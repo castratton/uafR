@@ -110,18 +110,60 @@ write.csv(aligned_with_CMPS,"C:/Users/cstratton/Desktop/2019_The_Land_Institute/
 
 #Communicating with PubChem to bring in SDF files for every identified/published compound in every sample
 ## Download/URL restrictions!!!! --> length of URL and time it takes to download data limits
-SDF_list = list()
 
-for(i in 1:length(out)){
-  cids_tmp = get_cid(out[[i]][[5]])
-  cid_set = toString(cids_tmp[[2]])
-  cid_set = gsub(" ","",cid_set)
-  cid_set = gsub("NA","180",cid_set)
-  url_tmp = paste0('https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/',cid_set,'/SDF')
-  SDF_set = read.SDFset(url_tmp)
-  SDF_list[i] = SDF_set
+dictionate = function(compounds){
+  compound_cids = get_cid(compounds)
+  compounds_SDF = SDFset()
+  if(any(is.na(compound_cids$cid)) == T){
+    print("Unmatched Compounds Detected!! Replacing Compounds that have an 'NA' with Acetone.")  #compound_cids, n = length(compound_cids$cid))
+    compound_cid_set = toString(compound_cids[[2]])
+    compound_cid_set = gsub("NA", "180", compound_cid_set)
+    compound_cid_set = gsub("[c\\\"() ]","",compound_cid_set)
+    compound_cid_set = gsub("\n", "", compound_cid_set)
+    if(length(compound_cids$cid) > 135){
+      compound_cid_list = split(compound_cids, ceiling(seq_along(compound_cids[[2]])/135))
+      for(i in 1:length(compound_cid_list)){
+        compound_cid_set = toString(compound_cid_list[[i]][2])
+        compound_cid_set = gsub("NA", "180", compound_cid_set)
+        compound_cid_set = gsub("[c\\\"() ]","",compound_cid_set)
+        compound_cid_set = gsub("\n", "", compound_cid_set)
+        url_compounds = paste0('https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/',compound_cid_set,'/SDF')
+        compounds_SDF_tmp = read.SDFset(url_compounds)
+        compounds_SDF = append(compounds_SDF, compounds_SDF_tmp)
+      }
+    } else {
+      compound_cid_set = toString(compound_cids[[2]])
+      compound_cid_set = gsub("NA", "180", compound_cid_set)
+      compound_cid_set = gsub("[c\\\"() ]","",compound_cid_set)
+      compound_cid_set = gsub("\n", "", compound_cid_set)
+      url_compounds = paste0('https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/',compound_cid_set,'/SDF')
+      compounds_SDF = read.SDFset(url_compounds)
+    }
+    # warning("Unmatched Compounds Detected!! Remove or Replace Compounds that have an 'NA' as their CID!")
+  } else {
+    compound_cids = compound_cids
+    if(length(compound_cids$cid) > 135){
+      compound_cid_list = split(compound_cids, ceiling(seq_along(compound_cids[[2]])/135))
+      for(i in 1:length(compound_cid_list)){
+        compound_cid_set = toString(compound_cid_list[[i]][2])
+        compound_cid_set = gsub("NA", "180", compound_cid_set)
+        compound_cid_set = gsub("[c\\\"() ]","",compound_cid_set)
+        compound_cid_set = gsub("\n", "", compound_cid_set)
+        url_compounds = paste0('https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/',compound_cid_set,'/SDF')
+        compounds_SDF_tmp = read.SDFset(url_compounds)
+        compounds_SDF = append(compounds_SDF, compounds_SDF_tmp)
+      }
+    } else {
+      compound_cid_set = toString(compound_cids[[2]])
+      compound_cid_set = gsub("NA", "180", compound_cid_set)
+      compound_cid_set = gsub("[c\\\"() ]","",compound_cid_set)
+      compound_cid_set = gsub("\n", "", compound_cid_set)
+      url_compounds = paste0('https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/',compound_cid_set,'/SDF')
+      compounds_SDF = read.SDFset(url_compounds)
+    }
+  }
+  return(compounds_SDF)
 }
-names(SDF_list) = fileNames
 
 # What the compound dictionary inputs look like [dictionate()]
 contaminants = c("Perfluorotributylamine","Methanol",
@@ -142,69 +184,59 @@ acAs = c("Vinblastine",  #Anti-Cancer Alkaloids - "Vincrisine",
 
 Alkaloids = c("Trimethylamine","Dimethylamine")
 
-# Acquiring SDFs for compound dictionaries [dictionate()]
-## Contaminants
-contaminant_cids = get_cid(contaminants)
-contaminant_cid_set = toString(contaminant_cids[[2]])
-contaminant_cid_set = gsub(" ","",contaminant_cid_set)
-url_contaminants = paste0('https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/',contaminant_cid_set,'/SDF')
-contaminant_SDF_set = read.SDFset(url_contaminants)
-
-## Green Leafy Volatiles
-GLV_cids = get_cid(GLVs)
-GLV_cid_set = toString(GLV_cids[[2]])
-GLV_cid_set = gsub(" ","",GLV_cid_set)
-url_GLVs = paste0('https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/',GLV_cid_set,'/SDF')
-GLV_SDF_set = read.SDFset(url_GLVs)
-
-## Anti-Cancer alkaloids
-acA_cids = get_cid(acAs)
-acA_cid_set = toString(acA_cids[[2]])
-acA_cid_set = gsub(" ","",acA_cid_set)
-url_acAs = paste0('https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/',acA_cid_set,'/SDF')
-acA_SDF_set = read.SDFset(url_acAs)
-
-# Alkaloids
-Alkaloid_cids = get_cid(Alkaloids)
-Alkaloid_cid_set = toString(Alkaloid_cids[[2]])
-Alkaloid_cid_set = gsub(" ","",Alkaloid_cid_set)
-url_Alkaloids = paste0('https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/',Alkaloid_cid_set,'/SDF')
-Alkaloid_SDF_set = read.SDFset(url_Alkaloids)
-
-# Adding new columns to the split datasets to fill with results from dictionary matching.
-out2 = Map(function(x,y){
-  x$Contaminant = y 
-  x$GLV = y 
-  x$acA = y 
-  x$Alkaloid = y 
-  x}, 
-  out, 
-  "Empty")
-
 # Looping through every compound and testing against the dictionaries. Will be converted to a function 
 # that allows users to define their own dictionaries and Tanimoto thresholds.
-for(i in 1:length(SDF_list)){
-  current_set = SDF_list[[i]] 
-  for(j in 1:length(current_set)){
-    batch_test_set = fmcsBatch(current_set[[j]],contaminant_SDF_set) 
-    batch_test_set_GLV = fmcsBatch(current_set[[j]],GLV_SDF_set) 
-    batch_test_set_acA = fmcsBatch(current_set[[j]],acA_SDF_set) 
-    batch_test_set_Alkaloid = fmcsBatch(current_set[[j]],Alkaloid_SDF_set) 
-    if (max(as.vector(batch_test_set[,4])) > 0.999){
-      out2[[i]][j,ncol(out[[i]])+1] = "Contaminant"} 
-    else {
-      out2[[i]][j,ncol(out[[i]])+1] = "Okay"} 
-    if (max(as.vector(batch_test_set_GLV[,4])) > 0.85){
-      out2[[i]][j,10] = "GLV"} 
-    else {
-      out2[[i]][j,10] = "No"} 
-    if (max(as.vector(batch_test_set_acA[,4])) > 0.75){
-      out2[[i]][j,11] = "acA"} 
-    else {out2[[i]][j,11] = "No"} 
-    if (max(as.vector(batch_test_set_Alkaloid[,4])) > 0.97){
-      out2[[i]][j,12] = "Alkaloid"} 
-    else {out2[[i]][j,12] = "No"}
+
+TanimotoR = function(SDF_input, comparison_set, target_value){
+  output = c()
+  for(j in 1:length(SDF_input)){
+    batch_test_set = fmcsBatch(SDF_input[[j]],comparison_set)
+    # print(batch_test_set)
+    if (max(as.vector(batch_test_set[,4])) > target_value)
+    {
+      output[j] = "Match"
+    }else
+    {
+      output[j] = "No Match"
+    }
   }
+  return(output)
+}
+
+########################################################################################################
+
+standardify = function(u, v, w, x, y, z){
+  standardised = (u/v*w)/x/y/z
+}
+
+standardifyIt = function(data_in, int_standard, IS_molecules, IS_ng, collect_time, sample_amt){
+  data_in_standard = data_in[data_in$cmps_correct != int_standard, c("cmps_correct","mean_RT")]
+  for(i in 7:ncol(data_in)){
+    Input = data_in[,i][data_in$cmps_correct != int_standard]
+    IS = sum(data_in[,i][data_in$cmps_correct == int_standard])
+    if(IS > 0){
+      tmp = standardify(u = Input, 
+                        v = IS, 
+                        w = IS_molecules, 
+                        x = IS_ng, 
+                        y = collect_time, 
+                        z = sample_amt)
+      data_in_standard = data.frame(data_in_standard, 
+                                    tmp)
+    } else {
+      IS = sum(data_in[,i-1][data_in$cmps_correct == int_standard])
+      tmp = standardify(u = Input, 
+                        v = IS, 
+                        w = IS_molecules, 
+                        x = IS_ng, 
+                        y = collect_time, 
+                        z = sample_amt)
+      data_in_standard = data.frame(data_in_standard, 
+                                    tmp)
+    }
   }
+  colnames(data_in_standard) = colnames(data_in[,-c(1:4)])
+  return(data_in_standard)
+}
 
 #*** PROPRIETARY - DO NOT DISTRIBUTE **
