@@ -8,7 +8,7 @@
 #'
 #'@param input A vector containing a list of chemical names.
 #'
-
+compounds = "4-Hydroxybenzaldoxime, 2TMS derivative"
 dictionate = function(compounds){
  compound_cids = get_cid(compounds)
  compounds_SDF = SDFset()
