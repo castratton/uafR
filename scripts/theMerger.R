@@ -170,13 +170,13 @@ theMerger = function(input_list){
  
  RT_range = (RT_end-RT_start)/num_unique_CMPs
  
- all_df = data.frame(matrix(ncol = 37, 
+ all_df = data.frame(matrix(ncol = ncol(area_dat[,-1])+3, 
                             nrow = 0), 
                      stringsAsFactors = FALSE)
  colnames(all_df) = c("RT", 
                       "Mass", 
                       "Chemical", 
-                      colnames(df_RT_range[,-c(1:8)]))
+                      colnames(area_dat[,-1]))
  
  merger_rows = first_merger
  
