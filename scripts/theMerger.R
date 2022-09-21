@@ -17,9 +17,10 @@
 #'
 
 theMerger = function(input_list){
- probs_matrix = input_list$aligned$Match.Factor[,-1]
- cmp_matrix = input_list$aligned$Compound.Name[,-1]
- RT_matrix = input_list$aligned$Component.RT[,-1]
+ probs_matrix = input_list$MatchFactor
+ cmp_matrix = input_list$Compounds
+ RT_matrix = input_list$RT
+ mz_matrix = input_list$MZ
  
  best_cmps = vector()
  probs_cmps = vector()
@@ -66,10 +67,9 @@ theMerger = function(input_list){
                     as.numeric(min(RT_row)))
  }
  aligned_with_CMPS = as.data.frame(cbind(filler_df, 
-                                         input_list$aligned$Component.Area[,-1]))
+                                         input_list$Area))
  unique_CMPs = unique(aligned_with_CMPS$Compound)
  num_unique_CMPs = length(unique(aligned_with_CMPS$Compound))
- length(unique_CMPs)
  CMP_counts = c()
  CMP_mass = c()
  CMP_name_SDF = c()
@@ -110,7 +110,7 @@ theMerger = function(input_list){
                    CMP_name_tmp, 
                    ';', 
                    current_CMP)
-  print(all_tmp)
+  print(paste0(cmp, ':', all_tmp))
   all_dat = c(all_dat, 
               all_tmp)
  }
@@ -123,9 +123,12 @@ theMerger = function(input_list){
                       "Mass", 
                       "Chemical1", 
                       "Chemical2")
- 
+ area_aggregate = aligned_with_CMPS[,-c(1,3)]
+ area_aggregate[is.na(area_aggregate)] = 0
+ cols_num = c(2:ncol(area_aggregate))
+ area_aggregate[cols_num] = sapply(area_aggregate[cols_num], as.numeric)
  area_dat = aggregate(. ~ Compound, 
-                      data = aligned_with_CMPS[,-c(1,3)], 
+                      data = aligned_aggregate, 
                       FUN = sum)
  RT_dat = aggregate(RT ~ Compound, 
                     data = aligned_with_CMPS[,c(2,3)], 
