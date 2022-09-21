@@ -74,6 +74,8 @@ theMerger = function(input_list){
  CMP_mass = c()
  CMP_name_SDF = c()
  all_dat = c()
+ 
+ # cmp = 4351
  for (cmp in 1:num_unique_CMPs){
   current_CMP = unique_CMPs[cmp]
   CMP_count = nrow(aligned_with_CMPS[aligned_with_CMPS$Compound == current_CMP,])
@@ -128,7 +130,7 @@ theMerger = function(input_list){
  cols_num = c(2:ncol(area_aggregate))
  area_aggregate[cols_num] = sapply(area_aggregate[cols_num], as.numeric)
  area_dat = aggregate(. ~ Compound, 
-                      data = aligned_aggregate, 
+                      data = area_aggregate, 
                       FUN = sum)
  RT_dat = aggregate(RT ~ Compound, 
                     data = aligned_with_CMPS[,c(2,3)], 
@@ -145,6 +147,7 @@ theMerger = function(input_list){
  count_column = rep("NA", 
                     nrow(area_dat))
  
+ # chems = 1867
  for (chems in 1:nrow(area_dat)){
   match_chem1 = as.character(dat_df$Chemical1[chems])
   match_chem2 = as.character(dat_df$Chemical2[chems])
