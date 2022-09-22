@@ -37,7 +37,7 @@ spreadOut = function(input){
  compound_area = unique(input$Component.Area)
  compound_RT = unique(input$Component.RT)
  compound_match = unique(input$Match.Factor)
- 
+ print("Spreading out your data, one data at a time.")
  for (j in 1:nrow(gcms_spread_area)){
   area_tmp = paste0(input$Component.Area[j])
   compound_tmp = paste0(input$Compound.Name[j])
@@ -45,7 +45,7 @@ spreadOut = function(input){
   mz_tmp = paste0(input$Base.Peak.MZ[j])
   prob_tmp = paste0(input$Match.Factor[j])
   RT_tmp = paste0(input$Component.RT[j])
-  print("Spreading out your data, one data at a time.")
+  
   gcms_spread_area[rownames(gcms_spread_area) == paste0(RT_tmp, mz_tmp), colnames(gcms_spread_area) == paste0(sample_tmp)] = area_tmp
   gcms_spread_compound[rownames(gcms_spread_compound) == paste0(RT_tmp, mz_tmp), colnames(gcms_spread_compound) == paste0(sample_tmp)] = compound_tmp
   gcms_spread_sample[rownames(gcms_spread_sample) == paste0(RT_tmp, mz_tmp), colnames(gcms_spread_sample) == paste0(sample_tmp)] = sample_tmp

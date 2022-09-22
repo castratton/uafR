@@ -169,7 +169,6 @@ categorate = function(compounds){
     if(is.null(group_count_groups)){
       group_count_groups = "None"
     }
-    print("Chemicals dissected, will now match 3D structures.")
     SDF_info_row = as.data.frame(t(rbind.data.frame(as.vector(Chemical), 
                                                     as.vector(MW), as.vector(MF), 
                                                     as.vector(ring_counts),
