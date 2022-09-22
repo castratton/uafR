@@ -76,6 +76,7 @@ theMerger = function(input_list){
  all_dat = c()
  
  # cmp = 4351
+ print("Acquiring exact mass data for chemicals published on PubChem.")
  for (cmp in 1:num_unique_CMPs){
   current_CMP = unique_CMPs[cmp]
   CMP_count = nrow(aligned_with_CMPS[aligned_with_CMPS$Compound == current_CMP,])
@@ -116,7 +117,7 @@ theMerger = function(input_list){
   all_dat = c(all_dat, 
               all_tmp)
  }
- 
+ print("Performing the first/easiest merge (identical chemical names).")
  dat_list = strsplit(all_dat, 
                      ";")
  dat_df = do.call(rbind.data.frame, 
@@ -185,7 +186,7 @@ theMerger = function(input_list){
                       colnames(area_dat[,-1]))
  
  merger_rows = first_merger
- 
+ print("Revving up the heavier merge that runs on science.")
  for (RT_step1 in 1:nrow(first_merger)){
   RT_1 = merger_rows$RT[RT_step1]
   RT_2 = RT_1 + RT_range
@@ -264,7 +265,7 @@ theMerger = function(input_list){
  }
  all_df_final = all_df[!is.na(all_df$RT),]
  unduped_dat = all_df_final[,-c(1:3)]
- 
+ print("Final tidying of merged data. Almost ready.")
  for (col_final in 1:ncol(unduped_dat)){
   unduped_dat[,col_final][duplicated(unduped_dat[,col_final]) & unduped_dat[,col_final] != 0] = 0
  }

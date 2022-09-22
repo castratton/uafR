@@ -45,7 +45,7 @@ spreadOut = function(input){
   mz_tmp = paste0(input$Base.Peak.MZ[j])
   prob_tmp = paste0(input$Match.Factor[j])
   RT_tmp = paste0(input$Component.RT[j])
-  
+  print("Spreading out your data, one data at a time.")
   gcms_spread_area[rownames(gcms_spread_area) == paste0(RT_tmp, mz_tmp), colnames(gcms_spread_area) == paste0(sample_tmp)] = area_tmp
   gcms_spread_compound[rownames(gcms_spread_compound) == paste0(RT_tmp, mz_tmp), colnames(gcms_spread_compound) == paste0(sample_tmp)] = compound_tmp
   gcms_spread_sample[rownames(gcms_spread_sample) == paste0(RT_tmp, mz_tmp), colnames(gcms_spread_sample) == paste0(sample_tmp)] = sample_tmp
@@ -53,6 +53,7 @@ spreadOut = function(input){
   gcms_spread_prob[rownames(gcms_spread_prob) == paste0(RT_tmp, mz_tmp), colnames(gcms_spread_prob) == paste0(sample_tmp)] = prob_tmp
   gcms_spread_RT[rownames(gcms_spread_RT) == paste0(RT_tmp, mz_tmp), colnames(gcms_spread_RT) == paste0(sample_tmp)] = RT_tmp
  }
+ print("Lose rownames (data ID codes).")
  row.names(gcms_spread_area) = NULL
  row.names(gcms_spread_RT) = NULL
  row.names(gcms_spread_prob) = NULL

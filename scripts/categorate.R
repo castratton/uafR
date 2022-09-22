@@ -17,6 +17,7 @@ categorate = function(compounds){
   compound_cids = compound_cids[!is.na(compound_cids$cid),]
   
   compound_SDFs = suppressWarnings(dictionate(make.unique(compounds)))
+  print("3-D chemical structure data acquired from PubChem.")
   CMP_info_df = data.frame(matrix(ncol = 7, nrow = 0))
   
   Chem_data_source = c("reactives_df", "LOTUS_df",
@@ -35,6 +36,7 @@ categorate = function(compounds){
   functional_df = data.frame(matrix(ncol = 7, nrow = 0))
   colnames(functional_df) = functional_identities
   
+  print("Scouring the internet for information on these chemicals.")
   for (i in 1:length(compound_cids$cid)){
     current_cid = toString(compound_cids$cid[i])
     current_cid = gsub("[c\\\"() ]","",current_cid)
@@ -142,6 +144,7 @@ categorate = function(compounds){
     CMP_info_df = rbind(CMP_info_df, CMP_info_row)
     row.names(CMP_info_df) = NULL
   }
+  print("Done with the internet, moving on to chemical structures.")
   
   SDF_info_df = data.frame(matrix(ncol = 9, nrow = 0))
   SDF_columns = c("Chemical", "MW", "MF", "Rings", 
@@ -149,7 +152,8 @@ categorate = function(compounds){
                   "AtomCounts", "NCharges")
   
   colnames(SDF_info_df) = SDF_columns
-  SDF = 11
+  cid(compound_SDFs) <- makeUnique(cid(compound_SDFs))
+  # SDF = 322
   for(SDF in 1:length(compound_SDFs)){
     
     Ncharges = tryCatch(sapply(bonds(compound_SDFs[SDF], type="charge"),length), error = function(error) {return("None")})
@@ -165,6 +169,7 @@ categorate = function(compounds){
     if(is.null(group_count_groups)){
       group_count_groups = "None"
     }
+    print("Chemicals dissected, will now match 3D structures.")
     SDF_info_row = as.data.frame(t(rbind.data.frame(as.vector(Chemical), 
                                                     as.vector(MW), as.vector(MF), 
                                                     as.vector(ring_counts),
@@ -173,7 +178,7 @@ categorate = function(compounds){
                                                     atom_count_atoms,
                                                     as.vector(atom_counts), 
                                                     as.vector(Ncharges))))
-    batch_test_set = fmcsBatch(compound_SDFs[SDF], functional_SDFs)
+    batch_test_set = tryCatch(fmcsBatch(compound_SDFs[SDF], functional_SDFs, au = 0, bu = 0), error = function(error) {return(batch_test_set = rbind(rep(0, 5), rep(0, 5)))})
     
     if (max(as.vector(batch_test_set[,5])) > 0.95)
     {
