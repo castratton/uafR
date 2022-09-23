@@ -37,7 +37,7 @@ spreadOut = function(input){
  compound_area = unique(input$Component.Area)
  compound_RT = unique(input$Component.RT)
  compound_match = unique(input$Match.Factor)
- print("Spreading out your data, one data at a time.")
+ print("Spreading out your data, one datum at a time.")
  for (j in 1:nrow(gcms_spread_area)){
   area_tmp = paste0(input$Component.Area[j])
   compound_tmp = paste0(input$Compound.Name[j])
