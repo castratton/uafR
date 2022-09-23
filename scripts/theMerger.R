@@ -75,11 +75,29 @@ theMerger = function(input_list){
  CMP_name_SDF = c()
  all_dat = c()
  
- # cmp = 4351
+ print("Removing any compounds that only occur in 1 sample.")
+ for (single in 1:num_unique_CMPs){
+   current_CMP = unique_CMPs[single]
+   CMP_count = nrow(aligned_with_CMPS[aligned_with_CMPS$Compound == current_CMP,])
+   CMP_counts = c(CMP_counts, 
+                  CMP_count)
+ }
+ CMP_count_df = data.frame(cbind(unique_CMPs, CMP_counts))
+ single_matches = paste0(CMP_count_df$unique_CMPs[CMP_count_df$CMP_counts == 1])
+ aligned_no_solos = aligned_with_CMPS[!aligned_with_CMPS$Compound %in% single_matches,]
+ 
+ unique_CMPs = unique(aligned_no_solos$Compound)
+ num_unique_CMPs = length(unique(aligned_no_solos$Compound))
+ CMP_counts = c()
+ CMP_mass = c()
+ CMP_name_SDF = c()
+ all_dat = c()
+ 
+ # cmp = 41
  print("Acquiring exact mass data for chemicals published on PubChem.")
  for (cmp in 1:num_unique_CMPs){
   current_CMP = unique_CMPs[cmp]
-  CMP_count = nrow(aligned_with_CMPS[aligned_with_CMPS$Compound == current_CMP,])
+  CMP_count = nrow(aligned_no_solos[aligned_no_solos$Compound == current_CMP,])
   CMP_counts = c(CMP_counts, 
                  CMP_count)
   current_cid = get_cid(current_CMP)
@@ -126,7 +144,7 @@ theMerger = function(input_list){
                       "Mass", 
                       "Chemical1", 
                       "Chemical2")
- area_aggregate = aligned_with_CMPS[,-c(1,3)]
+ area_aggregate = aligned_no_solos[,-c(1,3)]
  area_aggregate[is.na(area_aggregate)] = 0
  cols_num = c(2:ncol(area_aggregate))
  area_aggregate[cols_num] = sapply(area_aggregate[cols_num], as.numeric)
@@ -134,10 +152,10 @@ theMerger = function(input_list){
                       data = area_aggregate, 
                       FUN = sum)
  RT_dat = aggregate(RT ~ Compound, 
-                    data = aligned_with_CMPS[,c(2,3)], 
+                    data = aligned_no_solos[,c(2,3)], 
                     FUN = min)
  prob_dat = aggregate(Probability ~ Compound, 
-                      data = aligned_with_CMPS[,c(2,1)], 
+                      data = aligned_no_solos[,c(2,1)], 
                       FUN = max)
  RT = as.numeric(RT_dat[,-1])
  prob = as.numeric(prob_dat[,-1])
@@ -162,7 +180,7 @@ theMerger = function(input_list){
    count_matched = as.numeric(paste0(dat_df$Count[chems]))
    mass_column[area_dat$Compound %in% match_chems] = mass_matched
    count_column[area_dat$Compound %in% match_chems] = count_matched
-  } else {print("No Match!")}
+  } else {}
  }
  
  first_merger = data.frame(cbind(RT, 
@@ -172,14 +190,15 @@ theMerger = function(input_list){
                                  area_dat))
  first_merger = first_merger[order(first_merger$RT),]
  
- RT_start = min(as.numeric(aligned_with_CMPS$RT))
- RT_end = max(as.numeric(aligned_with_CMPS$RT))
+ RT_start = min(as.numeric(aligned_no_solos$RT))
+ RT_end = max(as.numeric(aligned_no_solos$RT))
  
  RT_range = (RT_end-RT_start)/num_unique_CMPs
  
  all_df = data.frame(matrix(ncol = ncol(area_dat[,-1])+3, 
                             nrow = 0), 
                      stringsAsFactors = FALSE)
+ # all_df[is.na(all_df)] = 0
  colnames(all_df) = c("RT", 
                       "Mass", 
                       "Chemical", 
@@ -235,7 +254,12 @@ theMerger = function(input_list){
                                   df_RT_range), 
                             stringsAsFactors = FALSE)
    area_summed = as.numeric(paste0(colSums(df_RT_range[,-c(1:8)])))
-   best_CMP = as.character(paste0(df_RT_range$Compound[df_RT_range$combo_score == max(df_RT_range$combo_score)]))
+   # if(IS %in% df_RT_range$Compound){
+   #   best_CMP = as.character(paste0(IS))
+   #   # if(paste0(all_df$Chemical[nrow(all_df)], "test") == paste0(best_CMP, "test")) next
+   # } else {
+     best_CMP = as.character(paste0(df_RT_range$Compound[df_RT_range$combo_score == max(df_RT_range$combo_score)]))
+   # }
    if(paste0(all_df$Chemical[nrow(all_df)], "test") == paste0(best_CMP, "test")) next
    best_RT = as.numeric(paste0(min(df_RT_range$RT)))
    best_mass = as.numeric(paste0(df_RT_range$mass_column[df_RT_range$combo_score == max(df_RT_range$combo_score)]))
