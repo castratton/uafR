@@ -16,11 +16,31 @@
 #'equivalent.
 #'
 
-theMerger = function(input_list){
+theMerger = function(input_list, IS){
  probs_matrix = input_list$MatchFactor
  cmp_matrix = input_list$Compounds
  RT_matrix = input_list$RT
  mz_matrix = input_list$MZ
+ 
+ CMPs_long = c()
+ 
+ for (z in 1:nrow(cmp_matrix)){
+   CMPs_tmp = cmp_matrix[z,][!is.na(cmp_matrix[z,])]
+   CMPs_long = c(CMPs_long, CMPs_tmp)
+ }
+ 
+ IntStandard = CMPs_long == IS
+ CMPs_Standard = cmp_matrix[IntStandard,]
+ probs_Standard = input_list$MatchFactor[IntStandard,]
+ RT_Standard = input_list$RT[IntStandard,]
+ mz_Standard = input_list$MZ[IntStandard,]
+ area_Standard = input_list$Area[IntStandard,]
+ 
+ area_matrix = input_list$Area[!IntStandard,]
+ probs_matrix = input_list$MatchFactor[!IntStandard,]
+ cmp_matrix = input_list$Compounds[!IntStandard,]
+ RT_matrix = input_list$RT[!IntStandard,]
+ mz_matrix = input_list$MZ[!IntStandard,]
  
  best_cmps = vector()
  probs_cmps = vector()
@@ -67,7 +87,7 @@ theMerger = function(input_list){
                     as.numeric(min(RT_row)))
  }
  aligned_with_CMPS = as.data.frame(cbind(filler_df, 
-                                         input_list$Area))
+                                         area_matrix))
  unique_CMPs = unique(aligned_with_CMPS$Compound)
  num_unique_CMPs = length(unique(aligned_with_CMPS$Compound))
  CMP_counts = c()
@@ -93,7 +113,6 @@ theMerger = function(input_list){
  CMP_name_SDF = c()
  all_dat = c()
  
- # cmp = 41
  print("Acquiring exact mass data for chemicals published on PubChem.")
  for (cmp in 1:num_unique_CMPs){
   current_CMP = unique_CMPs[cmp]
@@ -131,7 +150,14 @@ theMerger = function(input_list){
                    CMP_name_tmp, 
                    ';', 
                    current_CMP)
-  print(paste0(cmp, ':', all_tmp))
+  all_print = paste0(CMP_count, 
+                   '; ', 
+                   mass_tmp, 
+                   '; ', 
+                   CMP_name_tmp, 
+                   '; ',
+                   current_CMP)
+  print(paste0(cmp, ' / ', num_unique_CMPs, ':', all_print))
   all_dat = c(all_dat, 
               all_tmp)
  }
@@ -166,7 +192,6 @@ theMerger = function(input_list){
  count_column = rep("NA", 
                     nrow(area_dat))
  
- # chems = 1867
  for (chems in 1:nrow(area_dat)){
   match_chem1 = as.character(dat_df$Chemical1[chems])
   match_chem2 = as.character(dat_df$Chemical2[chems])
@@ -254,16 +279,12 @@ theMerger = function(input_list){
                                   df_RT_range), 
                             stringsAsFactors = FALSE)
    area_summed = as.numeric(paste0(colSums(df_RT_range[,-c(1:8)])))
-   # if(IS %in% df_RT_range$Compound){
-   #   best_CMP = as.character(paste0(IS))
-   #   # if(paste0(all_df$Chemical[nrow(all_df)], "test") == paste0(best_CMP, "test")) next
-   # } else {
-     best_CMP = as.character(paste0(df_RT_range$Compound[df_RT_range$combo_score == max(df_RT_range$combo_score)]))
-   # }
+   
+   best_CMP = as.character(paste0(df_RT_range$Compound[df_RT_range$combo_score == max(df_RT_range$combo_score)]))
+   
    if(paste0(all_df$Chemical[nrow(all_df)], "test") == paste0(best_CMP, "test")) next
    best_RT = as.numeric(paste0(min(df_RT_range$RT)))
    best_mass = as.numeric(paste0(df_RT_range$mass_column[df_RT_range$combo_score == max(df_RT_range$combo_score)]))
-   
    all_tmp = cbind(best_RT, 
                    best_mass, 
                    best_CMP, 
@@ -306,8 +327,53 @@ theMerger = function(input_list){
   test_sum = sum(test_row)
   empty_rows = c(empty_rows, test_sum)
  }
- all_df_last_merge = data.frame(cbind(empty_rows, 
+ 
+ print("Bringing back the IS.")
+ 
+ IS_cid = get_cid(IS)
+ IS_cid = toString(IS_cid[[1,2]])
+ IS_cid = gsub("NA", 
+                    "180", 
+                    IS_cid)
+ IS_cid = gsub("[c\\\"() ]",
+                    "",
+                    IS_cid)
+ IS_cid = gsub("\n", 
+                    "", 
+                    IS_cid)
+ IS_mass_url = paste0('https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/',
+                   IS_cid,
+                   '/SDF')
+ IS_mass_info = tryCatch(read.SDFset(IS_mass_url), 
+                      error = function(error) {return("None")})
+ IS_mass_tmp = IS_mass_info@SDF[[1]]@datablock[names(IS_mass_info@SDF[[1]]@datablock) == "PUBCHEM_EXACT_MASS"]
+ IS_name_tmp = IS_mass_info@SDF[[1]]@datablock[names(IS_mass_info@SDF[[1]]@datablock) == "PUBCHEM_IUPAC_CAS_NAME"]
+ 
+ STD_area = c()
+ STD_RT =c()
+ 
+ area_Standard[is.na(area_Standard)] = 0
+ RT_Standard[is.na(RT_Standard)] = 0
+ for(c in 1:ncol(area_Standard)){
+   STD_area_tmp = sum(as.numeric(paste0(area_Standard[,c])))
+   STD_RT_tmp = sum(as.numeric(paste0(RT_Standard[,c])))
+   
+   STD_area = c(STD_area, STD_area_tmp)
+   STD_RT = c(STD_RT, STD_RT_tmp)
+ }
+ 
+ STD_row = cbind(min(STD_RT[STD_RT != 0]), IS_mass_tmp, IS, rbind(STD_area))
+ rownames(STD_row) = NULL
+ colnames(STD_row) = c("RT", 
+                       "Mass", 
+                       "Chemical", 
+                       colnames(df_RT_range[,-c(1:8)]))
+ all_df_last_merge = data.frame(cbind(as.integer(empty_rows), 
                                       all_df_last_merge))
- all_df_true_final = all_df_last_merge[all_df_last_merge$empty_rows != 0,-1]
- return(all_df_true_final)
+ colnames(all_df_last_merge) = c("Empties", colnames(all_df_last_merge[,-1]))
+ all_df_true_final = all_df_last_merge[all_df_last_merge$Empties != 0,]
+ all_df_true_final = all_df_true_final[,-1]
+ all_df_final_list = list(STD_row, all_df_true_final)
+ names(all_df_final_list) = c("IS", "Area")
+ return(all_df_final_list)
 }

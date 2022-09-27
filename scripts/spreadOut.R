@@ -7,51 +7,53 @@
 #'
 
 spreadOut = function(input){
- gcms_spread_area = data.frame(matrix(ncol = length(unique(input$Sample.Name)), nrow = length(input$Component.RT)))
- gcms_spread_RT = data.frame(matrix(ncol = length(unique(input$Sample.Name)), nrow = length(input$Component.RT)))
- gcms_spread_prob = data.frame(matrix(ncol = length(unique(input$Sample.Name)), nrow = length(input$Component.RT)))
- gcms_spread_mz = data.frame(matrix(ncol = length(unique(input$Sample.Name)), nrow = length(input$Component.RT)))
- gcms_spread_compound = data.frame(matrix(ncol = length(unique(input$Sample.Name)), nrow = length(input$Component.RT)))
- gcms_spread_sample = data.frame(matrix(ncol = length(unique(input$Sample.Name)), nrow = length(input$Component.RT)))
+ gcms_spread_area = data.frame(matrix(ncol = length(unique(input$File.Name)), nrow = length(input$Component.RT)))
+ gcms_spread_RT = data.frame(matrix(ncol = length(unique(input$File.Name)), nrow = length(input$Component.RT)))
+ gcms_spread_prob = data.frame(matrix(ncol = length(unique(input$File.Name)), nrow = length(input$Component.RT)))
+ gcms_spread_mz = data.frame(matrix(ncol = length(unique(input$File.Name)), nrow = length(input$Component.RT)))
+ gcms_spread_compound = data.frame(matrix(ncol = length(unique(input$File.Name)), nrow = length(input$Component.RT)))
+ gcms_spread_sample = data.frame(matrix(ncol = length(unique(input$File.Name)), nrow = length(input$Component.RT)))
  
- row.names(gcms_spread_area) = paste0(input$Component.RT, input$Base.Peak.MZ)
- colnames(gcms_spread_area) = unique(input$Sample.Name)
+ row.names(gcms_spread_area) = paste0(input$Component.RT, input$Component.Area, input$Base.Peak.MZ)
+ colnames(gcms_spread_area) = unique(input$File.Name)
  
- row.names(gcms_spread_RT) = paste0(input$Component.RT, input$Base.Peak.MZ)
- colnames(gcms_spread_RT) = unique(input$Sample.Name)
+ row.names(gcms_spread_RT) = paste0(input$Component.RT, input$Component.Area, input$Base.Peak.MZ)
+ colnames(gcms_spread_RT) = unique(input$File.Name)
  
- row.names(gcms_spread_prob) = paste0(input$Component.RT, input$Base.Peak.MZ)
- colnames(gcms_spread_prob) = unique(input$Sample.Name)
+ row.names(gcms_spread_prob) = paste0(input$Component.RT, input$Component.Area, input$Base.Peak.MZ)
+ colnames(gcms_spread_prob) = unique(input$File.Name)
  
- row.names(gcms_spread_mz) = paste0(input$Component.RT, input$Base.Peak.MZ)
- colnames(gcms_spread_mz) = unique(input$Sample.Name)
+ row.names(gcms_spread_mz) = paste0(input$Component.RT, input$Component.Area, input$Base.Peak.MZ)
+ colnames(gcms_spread_mz) = unique(input$File.Name)
  
- row.names(gcms_spread_compound) = paste0(input$Component.RT, input$Base.Peak.MZ)
- colnames(gcms_spread_compound) = unique(input$Sample.Name)
+ row.names(gcms_spread_compound) = paste0(input$Component.RT, input$Component.Area, input$Base.Peak.MZ)
+ colnames(gcms_spread_compound) = unique(input$File.Name)
  
- row.names(gcms_spread_sample) = paste0(input$Component.RT, input$Base.Peak.MZ)
- colnames(gcms_spread_sample) = unique(input$Sample.Name)
+ row.names(gcms_spread_sample) = paste0(input$Component.RT, input$Component.Area, input$Base.Peak.MZ)
+ colnames(gcms_spread_sample) = unique(input$File.Name)
  
- sample_names = unique(input$Sample.Name)
+ sample_names = unique(input$File.Name)
  compound_names = unique(input$Compound.Name)
  compound_area = unique(input$Component.Area)
  compound_RT = unique(input$Component.RT)
  compound_match = unique(input$Match.Factor)
  print("Spreading out your data, one datum at a time.")
+ 
+ j = 6
  for (j in 1:nrow(gcms_spread_area)){
   area_tmp = paste0(input$Component.Area[j])
   compound_tmp = paste0(input$Compound.Name[j])
-  sample_tmp = paste0(input$Sample.Name[j])
+  sample_tmp = paste0(input$File.Name[j])
   mz_tmp = paste0(input$Base.Peak.MZ[j])
   prob_tmp = paste0(input$Match.Factor[j])
   RT_tmp = paste0(input$Component.RT[j])
   
-  gcms_spread_area[rownames(gcms_spread_area) == paste0(RT_tmp, mz_tmp), colnames(gcms_spread_area) == paste0(sample_tmp)] = area_tmp
-  gcms_spread_compound[rownames(gcms_spread_compound) == paste0(RT_tmp, mz_tmp), colnames(gcms_spread_compound) == paste0(sample_tmp)] = compound_tmp
-  gcms_spread_sample[rownames(gcms_spread_sample) == paste0(RT_tmp, mz_tmp), colnames(gcms_spread_sample) == paste0(sample_tmp)] = sample_tmp
-  gcms_spread_mz[rownames(gcms_spread_mz) == paste0(RT_tmp, mz_tmp), colnames(gcms_spread_mz) == paste0(sample_tmp)] = mz_tmp
-  gcms_spread_prob[rownames(gcms_spread_prob) == paste0(RT_tmp, mz_tmp), colnames(gcms_spread_prob) == paste0(sample_tmp)] = prob_tmp
-  gcms_spread_RT[rownames(gcms_spread_RT) == paste0(RT_tmp, mz_tmp), colnames(gcms_spread_RT) == paste0(sample_tmp)] = RT_tmp
+  gcms_spread_area[rownames(gcms_spread_area) == paste0(RT_tmp, area_tmp, mz_tmp), colnames(gcms_spread_area) == paste0(sample_tmp)] = area_tmp
+  gcms_spread_compound[rownames(gcms_spread_compound) == paste0(RT_tmp, area_tmp, mz_tmp), colnames(gcms_spread_compound) == paste0(sample_tmp)] = compound_tmp
+  gcms_spread_sample[rownames(gcms_spread_sample) == paste0(RT_tmp, area_tmp, mz_tmp), colnames(gcms_spread_sample) == paste0(sample_tmp)] = sample_tmp
+  gcms_spread_mz[rownames(gcms_spread_mz) == paste0(RT_tmp, area_tmp, mz_tmp), colnames(gcms_spread_mz) == paste0(sample_tmp)] = mz_tmp
+  gcms_spread_prob[rownames(gcms_spread_prob) == paste0(RT_tmp, area_tmp, mz_tmp), colnames(gcms_spread_prob) == paste0(sample_tmp)] = prob_tmp
+  gcms_spread_RT[rownames(gcms_spread_RT) == paste0(RT_tmp, area_tmp, mz_tmp), colnames(gcms_spread_RT) == paste0(sample_tmp)] = RT_tmp
  }
  print("Lose rownames (data ID codes).")
  row.names(gcms_spread_area) = NULL

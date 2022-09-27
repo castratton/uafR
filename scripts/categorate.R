@@ -13,6 +13,7 @@
 #'
 
 categorate = function(compounds){
+  print("Collecting chemical structure data from PubChem. Please be patient.")
   compound_cids = get_cid(compounds)
   compound_cids = compound_cids[!is.na(compound_cids$cid),]
   
@@ -153,7 +154,7 @@ categorate = function(compounds){
   
   colnames(SDF_info_df) = SDF_columns
   cid(compound_SDFs) <- makeUnique(cid(compound_SDFs))
-  # SDF = 322
+  
   for(SDF in 1:length(compound_SDFs)){
     
     Ncharges = tryCatch(sapply(bonds(compound_SDFs[SDF], type="charge"),length), error = function(error) {return("None")})
@@ -168,7 +169,7 @@ categorate = function(compounds){
     group_count_groups = tryCatch(rownames(as.matrix(unlist(group_counts))), error = function(error) {return("None")})
     if(is.null(group_count_groups)){
       group_count_groups = "None"
-    }
+    } else {}
     SDF_info_row = as.data.frame(t(rbind.data.frame(as.vector(Chemical), 
                                                     as.vector(MW), as.vector(MF), 
                                                     as.vector(ring_counts),
@@ -177,33 +178,29 @@ categorate = function(compounds){
                                                     atom_count_atoms,
                                                     as.vector(atom_counts), 
                                                     as.vector(Ncharges))))
-    batch_test_set = tryCatch(fmcsBatch(compound_SDFs[SDF], functional_SDFs, au = 0, bu = 0), error = function(error) {return(batch_test_set = rbind(rep(0, 5), rep(0, 5)))})
-    
-    if (max(as.vector(batch_test_set[,5])) > 0.95)
-    {
-      functional_match = names(batch_test_set[,5][batch_test_set[,5] > 0.95])
-      match_SDFs = functional_SDFs[functional_SDFs@ID %in% functional_match]
-      functional_match = as.integer(gsub("CMP", "", functional_match))
-      functional_row = data.frame(t(rep("No", ncol(functional_df))))
-      colnames(functional_row) = functional_identities
-      functional_row$Chemical = Chemical
-      # batch_test_set[,5][names(batch_test_set[,5]) %in% functional_match]
-      functional_row[names(batch_test_set[,5]) %in% functional_match] = "Yes"
-      functional_df = rbind(functional_df, functional_row)
-      row.names(functional_df) = NULL
-    }else
-    {
-      functional_row = data.frame(t(rep("No", ncol(functional_df))))
-      colnames(functional_row) = functional_identities
-      functional_row$Chemical = Chemical
-      functional_df = rbind(functional_df, functional_row)
-      row.names(functional_df) = NULL
-    }
-    
-    
     colnames(SDF_info_row) = SDF_columns
     SDF_info_df = rbind(SDF_info_df, SDF_info_row)
     row.names(SDF_info_df) = NULL
+    
+    batch_test_set = tryCatch(fmcsBatch(compound_SDFs[SDF], functional_SDFs, au = 0, bu = 0), error = function(error) {return(batch_test_set = rbind(rep(0, 5), rep(0, 5)))})
+    
+    functional_row = data.frame(t(rep("No", ncol(functional_df))))
+    colnames(functional_row) = functional_identities
+    row.names(functional_df) = NULL
+    
+    if (max(as.numeric(paste0(batch_test_set[,5]))) > 0.75)
+    {
+      functional_match = names(batch_test_set[,5][batch_test_set[,5] > 0.95])
+      functional_match_ish = names(batch_test_set[,5][0.85 < batch_test_set[,5] & batch_test_set[,5] < 0.95])
+      match_spots = functional_SDFs@ID %in% functional_match
+      match_ish_spots = functional_SDFs@ID %in% functional_match_ish
+      
+      functional_row[match_spots] = "Yes"
+      functional_row[match_ish_spots] = "~"
+      
+    } else {}
+    functional_row$Chemical = Chemical
+    functional_df = rbind(functional_df, functional_row)
   }
   data_list = list(CMP_info_df, SDF_info_df, functional_df)
   names(data_list) = c("Databases", "FMCS", "FunctionalGroups")
