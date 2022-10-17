@@ -16,7 +16,11 @@
 #'equivalent.
 #'
 
+# input_list = unknowns_spread
+# IS = "Tetradecane"
+
 theMerger = function(input_list, IS){
+ area_matrix = input_list$Area  
  probs_matrix = input_list$MatchFactor
  cmp_matrix = input_list$Compounds
  RT_matrix = input_list$RT
@@ -29,18 +33,88 @@ theMerger = function(input_list, IS){
    CMPs_long = c(CMPs_long, CMPs_tmp)
  }
  
- IntStandard = CMPs_long == IS
- CMPs_Standard = cmp_matrix[IntStandard,]
- probs_Standard = input_list$MatchFactor[IntStandard,]
- RT_Standard = input_list$RT[IntStandard,]
- mz_Standard = input_list$MZ[IntStandard,]
- area_Standard = input_list$Area[IntStandard,]
+ print("Prepping data and finding any traces of IS (if used). Please be patient!")
+ IS_cid = get_cid(IS)
+ IS_cid = paste0(IS_cid[[1,2]])
+ # IS_cid = gsub("NA", 
+ #                    "180", 
+ #               IS_cid)
+ # IS_cid = gsub("[c\\\"() ]",
+ #                    "",
+ #               IS_cid)
+ # IS_cid = gsub("\n", 
+ #                    "", 
+ #               IS_cid)
+ # IS_url = paste0('https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/',
+ #                 IS_cid,
+ #                   '/SDF')
  
- area_matrix = input_list$Area[!IntStandard,]
- probs_matrix = input_list$MatchFactor[!IntStandard,]
- cmp_matrix = input_list$Compounds[!IntStandard,]
- RT_matrix = input_list$RT[!IntStandard,]
- mz_matrix = input_list$MZ[!IntStandard,]
+ IS_url = paste0('https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/compound/', IS_cid,'/JSON?heading=GC-MS')
+ 
+ IS_info = tryCatch(jsonlite::fromJSON(IS_url), 
+                      error = function(error) {return("None")})
+ 
+ # IS_info = IS_url %>% httr::GET() %>% httr::content()
+ 
+ # $Record$Section[[1]]$Section[[1]]$Section[[1]]$Information[[1]]$Value$StringWithMarkup[[1]]$String
+ # View(IS_info$Record$Section[[1]]$Section[[1]]$Section[[1]]$Information[[1]]$URL)
+ # categories = pluck(IS_info, "Record", "Section", 1, "Section", 1, "Section", 1, "Information") %>% unlist()
+ # IS_json_dat = tibble(m_z = pluck(IS_info, "Record"))
+ 
+ IS_json_dat2 = data.frame(unlist(IS_info$Record$Section))  #[[1]]$Section[[1]]$Section[[1]]$Information))
+ colnames(IS_json_dat2) = "info"
+ mz_rows = grep("[[:digit:]]+\\.[[:digit:]]\\ [[:digit:]]+\\.[[:digit:]]", IS_json_dat2$info)
+ # paste0(IS_json_dat2[mz_rows,])
+ IS_mz_matches = unique(paste0(unlist(strsplit(paste0(IS_json_dat2[mz_rows,])," "))))
+ IS_mz_matches2 = gsub("\\.0\\>","",IS_mz_matches)
+ 
+ mz_rows = c()
+ for (mz in 1:length(IS_mz_matches2)){
+   mz_rows_tmp = which(mz_matrix == IS_mz_matches2[mz], arr.ind = T)
+   mz_rows_tmp = paste0(mz_rows_tmp[,1])
+   mz_rows = c(mz_rows, mz_rows_tmp)
+ }
+ mz_rows = unique(mz_rows)
+ # mz_matrix[mz_rows,]
+ # mz_matrix[,1] %in% IS_mz_matches2
+ 
+ 
+ # IS_tmp = IS_info@SDF[[1]]@datablock[names(IS_info@SDF[[1]]@datablock) == "PUBCHEM_EXACT_MASS"]
+ # IS_name_tmp = IS_info@SDF[[1]]@datablock[names(IS_info@SDF[[1]]@datablock) == "PUBCHEM_IUPAC_CAS_NAME"]
+ # if (length(IS_name_tmp) <1){
+ #   IS_name_tmp = IS_CMP
+ # } else {}
+ # 
+ # names(IS_tmp) = NULL
+ # names(IS_name_tmp) = NULL
+ # IS_tmp = paste0(IS_count, 
+ #                  ';', 
+ #                 IS_tmp, 
+ #                  ';', 
+ #                 IS_name_tmp, 
+ #                  ';', 
+ #                 IS_CMP)
+ # IS_print = paste0(IS_count, 
+ #                    '; ', 
+ #                   IS_tmp, 
+ #                    '; ', 
+ #                   IS_name_tmp, 
+ #                    '; ',
+ #                   IS_CMP)
+ 
+ 
+ # IntStandard = CMPs_long == IS
+ CMPs_Standard = cmp_matrix[mz_rows,]
+ probs_Standard = input_list$MatchFactor[mz_rows,]
+ RT_Standard = input_list$RT[mz_rows,]
+ mz_Standard = input_list$MZ[mz_rows,]
+ area_Standard = input_list$Area[mz_rows,]
+ 
+ area_matrix = input_list$Area[!rownames(input_list$Area) %in% mz_rows,]
+ probs_matrix = input_list$MatchFactor[!rownames(input_list$MatchFactor) %in% mz_rows,]
+ cmp_matrix = input_list$Compounds[!rownames(input_list$Compounds) %in% mz_rows,]
+ RT_matrix = input_list$RT[!rownames(input_list$RT) %in% mz_rows,]
+ mz_matrix = input_list$MZ[!rownames(input_list$MZ) %in% mz_rows,]
  
  best_cmps = vector()
  probs_cmps = vector()
@@ -349,20 +423,56 @@ theMerger = function(input_list, IS){
  IS_mass_tmp = IS_mass_info@SDF[[1]]@datablock[names(IS_mass_info@SDF[[1]]@datablock) == "PUBCHEM_EXACT_MASS"]
  IS_name_tmp = IS_mass_info@SDF[[1]]@datablock[names(IS_mass_info@SDF[[1]]@datablock) == "PUBCHEM_IUPAC_CAS_NAME"]
  
- STD_area = c()
+ STD_area_1 = c()
+ STD_probs = c()
  STD_RT =c()
  
  area_Standard[is.na(area_Standard)] = 0
+ probs_Standard[is.na(probs_Standard)] = 0
  RT_Standard[is.na(RT_Standard)] = 0
- for(c in 1:ncol(area_Standard)){
-   STD_area_tmp = sum(as.numeric(paste0(area_Standard[,c])))
-   STD_RT_tmp = sum(as.numeric(paste0(RT_Standard[,c])))
+ for(c in 1:ncol(RT_Standard)){
+   area_tmp = as.numeric(paste0(area_Standard[,c]))
+   STD_area_tmp_1 = sum(area_tmp[area_tmp>0])
+   Probs_tmp = as.numeric(paste0(probs_Standard[,c]))
+   STD_probs_tmp = max(Probs_tmp)
+   RT_tmp = as.numeric(paste0(RT_Standard[,c]))
+   STD_RT_tmp = mean(RT_tmp[RT_tmp>0])
    
-   STD_area = c(STD_area, STD_area_tmp)
+   STD_area_1 = c(STD_area_1, STD_area_tmp_1)
+   STD_probs = c(STD_probs, STD_probs_tmp)
    STD_RT = c(STD_RT, STD_RT_tmp)
  }
  
- STD_row = cbind(min(STD_RT[STD_RT != 0]), IS_mass_tmp, IS, rbind(STD_area))
+ best_identified = length(STD_probs[STD_probs > 90])
+ best_RT = mean(STD_RT[STD_probs %in% tail(sort(STD_probs),best_identified)])
+ best_area = mean(STD_area_1[STD_probs %in% tail(sort(STD_probs),best_identified)])
+ 
+ # mz_Standard[RT_Standard <= best_RT - 3 | RT_Standard >= best_RT + 3]
+ 
+ STD_area = c()
+ # col_stepper = ncol(area_Standard)
+ 
+ area_Standard = area_Standard[RT_Standard >= best_RT - 3.5 | RT_Standard <= best_RT + 3.5,]
+ area_Standard = area_Standard[area_Standard >= best_area/10 | area_Standard <= best_area*10,]
+ area_Standard = do.call(cbind.data.frame, area_Standard)
+ 
+ # row.names(area_Standard_tmp) = NULL
+ # colnames(area_Standard_tmp) = NULL
+ 
+ area_Standard[is.na(area_Standard)] = 0
+ 
+ # colSums(data.frame(as.numeric(paste0(area_Standard[area_Standard>0]))))
+ # c2 = 1
+ for(c2 in 1:ncol(area_Standard)){
+   
+   STD_area_tmp = sum(as.numeric(paste0(area_Standard[,c2])))
+   
+   STD_area = c(STD_area, STD_area_tmp)
+ }
+ 
+ # STD_RT[STD_RT != 0]
+ 
+ STD_row = cbind(best_RT, IS_mass_tmp, IS, rbind(STD_area))
  rownames(STD_row) = NULL
  colnames(STD_row) = c("RT", 
                        "Mass", 

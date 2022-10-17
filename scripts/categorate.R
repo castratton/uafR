@@ -182,7 +182,11 @@ categorate = function(compounds){
     SDF_info_df = rbind(SDF_info_df, SDF_info_row)
     row.names(SDF_info_df) = NULL
     
-    batch_test_set = tryCatch(fmcsBatch(compound_SDFs[SDF], functional_SDFs, au = 0, bu = 0), error = function(error) {return(batch_test_set = rbind(rep(0, 5), rep(0, 5)))})
+    batch_test_set = tryCatch(fmcsBatch(compound_SDFs[SDF], 
+                                        functional_SDFs, 
+                                        au = 0, 
+                                        bu = 0), 
+                              error = function(error) {return(batch_test_set = rbind(rep(0, 5), rep(0, 5)))})
     
     functional_row = data.frame(t(rep("No", ncol(functional_df))))
     colnames(functional_row) = functional_identities
