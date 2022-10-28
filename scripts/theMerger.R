@@ -54,6 +54,30 @@ theMerger = function(input_list, IS){
  IS_info = tryCatch(jsonlite::fromJSON(IS_url), 
                       error = function(error) {return("None")})
  
+ #################################################################################################
+ IS_json_dat = data.frame(unlist(IS_info$Record$Section))
+ colnames(IS_json_dat) = "info"
+ mz_rows_1 = grep("[[:digit:]]+\\.[[:digit:]]\\ [[:digit:]]+\\.[[:digit:]]", IS_json_dat$info)
+ ##
+ mz_rows_2 = grep("[[:digit:]]{2,3}\\ [[:digit:]]+\\.[[:digit:]]", IS_json_dat$info)
+ mz_rows_3 = grep("[[:digit:]]{2,3}\\ [[:digit:]]{2,3}", IS_json_dat$info)
+ ##
+ if (length(mz_rows_1) > 0) {
+   mz_rows = mz_rows_1
+ } else {
+   if (length(mz_rows_2) > 0) {
+     mz_rows = mz_rows_2
+   } else {
+     if(length(mz_rows_3) > 0) {
+       mz_rows = mz_rows_3
+     } else {next}
+   }
+ }
+ 
+ IS_mz_matches = unique(paste0(unlist(strsplit(paste0(IS_json_dat[mz_rows,])," "))))
+ IS_mz_matches2 = gsub("\\.0\\>","",IS_mz_matches)
+ 
+ #################################################################################################
  # IS_info = IS_url %>% httr::GET() %>% httr::content()
  
  # $Record$Section[[1]]$Section[[1]]$Section[[1]]$Information[[1]]$Value$StringWithMarkup[[1]]$String
@@ -61,12 +85,12 @@ theMerger = function(input_list, IS){
  # categories = pluck(IS_info, "Record", "Section", 1, "Section", 1, "Section", 1, "Information") %>% unlist()
  # IS_json_dat = tibble(m_z = pluck(IS_info, "Record"))
  
- IS_json_dat2 = data.frame(unlist(IS_info$Record$Section))  #[[1]]$Section[[1]]$Section[[1]]$Information))
- colnames(IS_json_dat2) = "info"
- mz_rows = grep("[[:digit:]]+\\.[[:digit:]]\\ [[:digit:]]+\\.[[:digit:]]", IS_json_dat2$info)
- # paste0(IS_json_dat2[mz_rows,])
- IS_mz_matches = unique(paste0(unlist(strsplit(paste0(IS_json_dat2[mz_rows,])," "))))
- IS_mz_matches2 = gsub("\\.0\\>","",IS_mz_matches)
+ # IS_json_dat2 = data.frame(unlist(IS_info$Record$Section))  #[[1]]$Section[[1]]$Section[[1]]$Information))
+ # colnames(IS_json_dat2) = "info"
+ # mz_rows = grep("[[:digit:]]+\\.[[:digit:]]\\ [[:digit:]]+\\.[[:digit:]]", IS_json_dat2$info)
+ # # paste0(IS_json_dat2[mz_rows,])
+ # IS_mz_matches = unique(paste0(unlist(strsplit(paste0(IS_json_dat2[mz_rows,])," "))))
+ # IS_mz_matches2 = gsub("\\.0\\>","",IS_mz_matches)
  
  mz_rows = c()
  for (mz in 1:length(IS_mz_matches2)){
@@ -215,6 +239,13 @@ theMerger = function(input_list, IS){
    CMP_name_tmp = current_CMP
   } else {}
   
+  step_printer = c(1:num_unique_CMPs)
+  step_cmper = cmp/25
+  
+  if(step_cmper %in% step_printer | cmp == 1){
+    cat(paste0('\n', '[Current/Total]', ' |--Count--|--Exact Mass--|--CMP Name 1--|--CMP Name 2--|', '\n'))
+  } else {}
+  
   names(mass_tmp) = NULL
   names(CMP_name_tmp) = NULL
   all_tmp = paste0(CMP_count, 
@@ -231,7 +262,7 @@ theMerger = function(input_list, IS){
                    CMP_name_tmp, 
                    '; ',
                    current_CMP)
-  print(paste0(cmp, ' / ', num_unique_CMPs, ':', all_print))
+  cat(paste0(cmp, ' / ', num_unique_CMPs, ': ', all_print, '\n'))
   all_dat = c(all_dat, 
               all_tmp)
  }
@@ -453,7 +484,7 @@ theMerger = function(input_list, IS){
  # col_stepper = ncol(area_Standard)
  
  area_Standard = area_Standard[RT_Standard >= best_RT - 3.5 | RT_Standard <= best_RT + 3.5,]
- area_Standard = area_Standard[area_Standard >= best_area/10 | area_Standard <= best_area*10,]
+ # area_Standard = area_Standard[area_Standard >= best_area/10 | area_Standard <= best_area*10,]
  area_Standard = do.call(cbind.data.frame, area_Standard)
  
  # row.names(area_Standard_tmp) = NULL
