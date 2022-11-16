@@ -9,10 +9,13 @@
 #'for exact or non-exact matches, default is exact.
 
 data_in = unknowns_spread
+# chemicals = new_chems
+RT_cutoff = 17
+RT_search_range = 2
 # IS = "Tetradecane"
 chemicals = c("Acetic ester", "Ethyl hexanoate", "Octanal", "Undecane", "Methyl salicylate")
 
-mzExacto <- function(data_in, chemicals){
+mzExacto <- function(data_in, chemicals, RT_cutoff = 0, RT_search_range = 2){
   area_matrix = data_in$Area
   probs_matrix = data_in$MatchFactor
   cmp_matrix = data_in$Compounds
@@ -20,6 +23,39 @@ mzExacto <- function(data_in, chemicals){
   mz_matrix = data_in$MZ
   mass_matrix = data_in$Mass
   rtBYmass_matrix = data_in$rtBYmass
+  
+  input_CMPs_long = c()
+  
+  # this needs to be for the list of chemicals
+  # w = NULL
+  
+  for (w in 1:nrow(cmp_matrix)){
+    input_CMPs_tmp = cmp_matrix[w,][!is.na(cmp_matrix[w,])]
+    input_CMPs_long = c(input_CMPs_long, input_CMPs_tmp)
+  }
+  mz_inputs_tmp = as.data.frame(mz_matrix)
+  # row.names(mz_inputs_tmp) = input_CMPs_long
+  mz_inputs = mz_inputs_tmp[input_CMPs_long %in% chemicals,]
+  input_MZs_long = c()
+  
+  for (x in 1:nrow(mz_inputs)){
+    input_MZs_tmp = mz_inputs[x,][!is.na(mz_inputs[x,])]
+    input_MZs_long = c(input_MZs_long, input_MZs_tmp)
+  }
+  
+  # RTs_tmp = RT_matrix[z,][!is.na(RT_matrix[z,])]
+  # RTs_long = c(RTs_long, RTs_tmp)
+  # 
+  # masses_tmp = mass_matrix[z,][!is.na(mass_matrix[z,])]
+  # masses_long = c(masses_long, masses_tmp)
+  # 
+  # MZs_tmp = mz_matrix[z,][!is.na(mz_matrix[z,])]
+  # MZs_long = c(MZs_long, MZs_tmp)
+  # 
+  # rtBYmass_tmp = rtBYmass_matrix[z,][!is.na(rtBYmass_matrix[z,])]
+  # rtBYmass_long = c(rtBYmass_long, rtBYmass_tmp)
+  # ###############################################################
+  
   
   df_columns = ncol(area_matrix)+3
   df_rows = length(chemicals)
@@ -35,6 +71,8 @@ mzExacto <- function(data_in, chemicals){
   
   cat("Acquiring relevant info from Pubchem [pubchem.ncbi.nlm.nih.gov]. Please be patient!!")
   for (chem in 1:length(chemicals)){
+    
+    alt_trigger = F
     current_CMP = chemicals[chem]
     chem_cid = get_cid(chemicals[chem])
     chem_cid = paste0(chem_cid[[1,2]])
@@ -43,6 +81,16 @@ mzExacto <- function(data_in, chemicals){
     
     chem_info = tryCatch(jsonlite::fromJSON(chem_url), 
                          error = function(error) {return("None")})
+    if (chem_info == "None"){
+      chem_cid = 180
+      
+      chem_url = paste0('https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/compound/', chem_cid,'/JSON?heading=GC-MS')
+      
+      chem_info = tryCatch(jsonlite::fromJSON(chem_url), 
+                           error = function(error) {return("None")})
+      # mz_primary_alt = "1a"
+      alt_trigger = T
+      } else{}
     
     mass_url = paste0('https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/',
                       chem_cid,
@@ -60,6 +108,7 @@ mzExacto <- function(data_in, chemicals){
     mz_rows_1 = grep("[[:digit:]]+\\.[[:digit:]]\\ [[:digit:]]+\\.[[:digit:]]", chem_json_dat$info)
     mz_rows_2 = grep("[[:digit:]]{2,3}\\ [[:digit:]]+\\.[[:digit:]]", chem_json_dat$info)
     mz_rows_3 = grep("[[:digit:]]{2,3}\\ [[:digit:]]{2,3}", chem_json_dat$info)
+    mz_rows_4 = grep("^[[:digit:]]{2,3}$", chem_json_dat$info)
     
     if (length(mz_rows_1) > 0) {
       mz_rows = mz_rows_1
@@ -69,9 +118,17 @@ mzExacto <- function(data_in, chemicals){
       } else {
         if(length(mz_rows_3) > 0) {
           mz_rows = mz_rows_3
-        } else {next}
+        } else {
+          if(length(mz_rows_4) > 0) {
+          mz_rows = mz_rows_4
+        } else {
+          mz_rows = 0
+          alt_trigger = T
+        }
+        }
       }
     }
+    
     
     chem_mz_matches = unique(paste0(unlist(strsplit(paste0(chem_json_dat[mz_rows,])," "))))
     chem_mz_matches2 = gsub("\\.0\\>","",chem_mz_matches)
@@ -83,7 +140,11 @@ mzExacto <- function(data_in, chemicals){
     
     mz_primary = chem_mz_matches2[odds]
     mz_secondary = chem_mz_matches2[evens]
-    chem_mz_matches2 = mz_primary[order(mz_secondary,decreasing = T)]
+    chem_mz_matches2 = mz_primary[order(mz_secondary, decreasing = T)]
+    
+    if(alt_trigger == T){
+      mz_primary = input_MZs_long[input_CMPs_long == input_CMPs_tmp]
+      mass_tmp = "NA"}
     
     mz_print = paste(chem_mz_matches2, collapse = " | ")
     total_chems = length(chemicals)
@@ -113,10 +174,12 @@ mzExacto <- function(data_in, chemicals){
     
     mz_mass_list[[chem]] = list(mass_tmp, mz_primary)
   }
+  if(length(mz_mass_list) < length(chemicals)){mz_mass_list[[length(chemicals)]] = "NA"}
   names(mz_mass_list) = chemicals
   
   mass_each_chem = sapply(mz_mass_list, '[[', 1)
   mz_each_chem = sapply(mz_mass_list, '[[', -1)
+  mass_each_chem[mass_each_chem == "NA"] = 999.999
   
   mass_orderer = as.numeric(paste0(mass_each_chem))
 
@@ -125,15 +188,20 @@ mzExacto <- function(data_in, chemicals){
   chems_ordered = names(masses_ordered)
   
   CMPs_long = c()
+  probs_long = c()
   RTs_long = c()
   masses_long = c()
   MZs_long = c()
   rtBYmass_long = c()
   MZs_published = list()
   
+  # z = NULL
   for (z in 1:nrow(cmp_matrix)){
     CMPs_tmp = cmp_matrix[z,][!is.na(cmp_matrix[z,])]
     CMPs_long = c(CMPs_long, CMPs_tmp)
+    
+    probs_tmp = probs_matrix[z,][!is.na(probs_matrix[z,])]
+    probs_long = c(probs_long, probs_tmp)
     
     RTs_tmp = RT_matrix[z,][!is.na(RT_matrix[z,])]
     RTs_long = c(RTs_long, RTs_tmp)
@@ -153,7 +221,7 @@ mzExacto <- function(data_in, chemicals){
                     "180",
                     chem_cid)
     
-    chem_url = paste0('https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/',
+    chem_SDF_url = paste0('https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/',
                     chem_cid,
                       '/SDF')
     
@@ -168,6 +236,8 @@ mzExacto <- function(data_in, chemicals){
     mz_rows_1 = grep("[[:digit:]]+\\.[[:digit:]]\\ [[:digit:]]+\\.[[:digit:]]", chem_json_dat$info)
     mz_rows_2 = grep("[[:digit:]]{2,3}\\ [[:digit:]]+\\.[[:digit:]]", chem_json_dat$info)
     mz_rows_3 = grep("[[:digit:]]{2,3}\\ [[:digit:]]{2,3}", chem_json_dat$info)
+    mz_rows_4 = grep("^[[:digit:]]{2,3}$", chem_json_dat$info)
+    # chem_json_dat$info[startsWith(chem_json_dat$info, "[0-9]{2,3}")]
     
     if (length(mz_rows_1) > 0) {
       mz_rows = mz_rows_1
@@ -177,10 +247,15 @@ mzExacto <- function(data_in, chemicals){
       } else {
         if(length(mz_rows_3) > 0) {
           mz_rows = mz_rows_3
-        } else {next}
+        } else {
+          if(length(mz_rows_4) >0) {
+            # mz_rows_4 = mz_rows_4[-1]
+            mz_rows = mz_rows_4
+          }else{next}
+        }
       }
     }
-    
+    #######################################################################################
     chem_mz_matches = unique(paste0(unlist(strsplit(paste0(chem_json_dat[mz_rows,])," "))))
     chem_mz_matches2 = gsub("\\.0\\>","",chem_mz_matches)
     chem_mz_matches2 = gsub("\\.[[:digit:]]0\\>","",chem_mz_matches2)
@@ -190,14 +265,20 @@ mzExacto <- function(data_in, chemicals){
     evens = mz_count[mz_count%%2 == 0]
     
     mz_primary = chem_mz_matches2[odds]
-    if(chem_cid == 180){mz_primary = NA}
     mz_secondary = chem_mz_matches2[evens]
     chem_mz_matches2 = mz_primary[order(mz_secondary, decreasing = T)]
     
+    if(alt_trigger == T){
+      # MZs_long[CMPs_long == CMPs_tmp]
+      mz_primary = MZs_long[CMPs_long == CMPs_tmp]
+      chem_mz_matches2 = mz_primary
+    }
+    if(chem_cid == 180){mz_primary = MZs_tmp}
+    #######################################################################################
     mz_print = paste(chem_mz_matches2, collapse = " | ")
     
     step_printer = c(1:num_unique_CMPs)
-    step_cmper = z/7
+    step_cmper = z/10
     
     if(step_cmper %in% step_printer | z == 1){
       cat(paste0('\n', '[Current/Total]', ' |--Chemical Name--|--Top MZ Peaks--|', '\n'))
@@ -210,45 +291,145 @@ mzExacto <- function(data_in, chemicals){
                        mz_print)
     cat(paste0('[', z, '/', nrow(cmp_matrix), ']', '-', all_print, '\n'))
     
-    MZs_published[[z]] = mz_primary
+    MZs_published[[z]] = unique(mz_primary)
   }
+  
+  
   if(length(MZs_published) < length(masses_long)){MZs_published[[length(masses_long)]] = NA}
   names(MZs_published) = paste0(RTs_long, ' | ', masses_long)
+  MZs_probs = MZs_published
+  names(MZs_probs) = paste0(RTs_long, ' | ', probs_long)
   
-  row_find_df = data.frame(cbind(CMPs_long, as.numeric(paste0(masses_long)), MZs_long))
+  all_best_RTs = c()
+  previous_areas = c()
+  
+  row_find_df = data.frame(cbind(CMPs_long, as.numeric(paste0(RTs_long)), as.numeric(paste0(probs_long)), as.numeric(paste0(masses_long)), MZs_long))
   rownames(row_find_df) = NULL
-  colnames(row_find_df) = c("Chemical", "Mass", "MZ")
+  colnames(row_find_df) = c("Chemical", "RT", "Probs", "Mass", "MZ")
   
   probs_found = c()
   RT_found = c()
   area_found = c()
+  previous_RTs = c()
   
   masses_ordered = mass_each_chem[order(mass_orderer)]
   mz_mass_ordered = mz_each_chem[order(mass_orderer)]
   chems_ordered = names(masses_ordered)
-  k = 1
+  # k = NULL
+  # k = 12
+  # RT_cutoff = 17
+  # RT_search_range = 1
+  
+  # for(j in 1:length(chems_ordered)){
+  #   
+  # }
+  RT_search_range = 0
+  k = 2
   for(k in 1:length(chems_ordered)){
     row_codes = c()
-    if(k == 1){
-      all_masses = as.numeric(paste0(masses_long))
-      current_mass = as.numeric(paste0(masses_ordered[k]))
-      
-      MZ_possibles = MZs_published[all_masses <= current_mass]
-    } else {
-      all_masses = as.numeric(paste0(masses_long))
-      previous_mass = as.numeric(paste0(masses_ordered[k-1]))
-      current_mass = as.numeric(paste0(masses_ordered[k]))
-      
-      MZ_possibles = MZs_published[all_masses > previous_mass & all_masses <= current_mass]
-    }
+    if(k > 1){previous_row = final_list[[k-1]]}else{previous_row = NA}
+    # MZs_published[names(MZs_published) %in% names(MZ_possibles)]
+    
+    # best_RTs = lapply(seq_along(RT_df_tmp_apply),
+    #                   function(i) {min(RT_df_tmp_apply[[i]][probs_df_tmp_apply[[i]] >= max(probs_df_tmp_apply[[i]], na.rm = T) - 10])})
+    
+    all_masses = as.numeric(paste0(masses_long))
+    current_mass_tmp = as.numeric(paste0(masses_ordered[k]))
+    current_mass = current_mass_tmp + (current_mass_tmp/2)
+    MZ_possibles_1 = MZs_published[all_masses <= current_mass]
+    MZ_probs_1 = MZs_probs[all_masses <= current_mass]
+    
+    MZ_possibles_split = strsplit(names(MZ_possibles_1), ' | ')
+    MZ_possibles_RTs = sapply(MZ_possibles_split, "[[", 1)
+    MZ_possibles_masses = sapply(MZ_possibles_split, "[[", 3)
+    
+    MZ_probs_split = strsplit(names(MZ_probs_1), ' | ')
+    MZ_possibles_probs = sapply(MZ_probs_split, "[[", 3)
+    # possibles_RTs = RTs_long[all_masses <= current_mass]
+    
+    if(RT_cutoff > 0){MZ_possibles = MZ_possibles_1[as.numeric(paste0(MZ_possibles_RTs )) <= RT_cutoff]}else{MZ_possibles = MZ_possibles_1}
+    
+    # if(k == 1){
+    #   all_masses = as.numeric(paste0(masses_long))
+    #   current_mass_tmp = as.numeric(paste0(masses_ordered[k]))
+    #   current_mass = current_mass_tmp + (current_mass_tmp/2)
+    #   MZ_possibles_1 = MZs_published[all_masses <= current_mass]
+    #   
+    #   MZ_possibles_bad_1 = strsplit(names(MZ_possibles_1), ' | ')
+    #   MZ_possibles_bad_RT = sapply(MZ_possibles_bad_1, "[[", 1)
+    #   MZ_possibles_bad_mass = sapply(MZ_possibles_bad_1, "[[", 3)
+    #   MZ_possibles_min_RT_1 = sapply(MZ_possibles_bad_1, "[[", 1)
+    #   
+    #   # all_mass_current[p] == 58.041864811 & !between(as.numeric(paste0(all_RT_current[p])), as.numeric(paste0(all_RT_current[p])) - RT_ranger, as.numeric(paste0(all_RT_current[p])) + RT_ranger)
+    #   
+    #   if(RT_cutoff > 0){MZ_possibles = MZ_possibles_1[as.numeric(paste0(MZ_possibles_bad_RT)) <= RT_cutoff]}
+    #   MZ_possibles_min_RT_1 = min(as.numeric(paste0(MZ_possibles_min_RT_1)))
+    #   MZ_possibles = MZ_possibles[as.numeric(paste0(MZ_possibles_bad_RT)) <= as.numeric(paste0(MZ_possibles_min_RT_1)) + RT_search_range]
+    #   
+    # } else {
+    #   all_masses = as.numeric(paste0(masses_long))
+    #   previous_mass = as.numeric(paste0(masses_ordered[k-1]))
+    #   if(previous_mass == 999.999){previous_mass = max(as.numeric(paste0(masses_ordered[masses_ordered < 999.99])))}
+    #   # if(previous_mass == 999.999){previous_mass = as.numeric(paste0(masses_ordered[k-3]))}
+    #   # if(previous_mass == 999.999){previous_mass = as.numeric(paste0(masses_ordered[k-4]))}
+    #   # if(previous_mass == 999.999){previous_mass = as.numeric(paste0(masses_ordered[k-5]))}
+    #   # if(previous_mass == 999.999){previous_mass = as.numeric(paste0(masses_ordered[k-6]))}
+    #   # if(previous_mass == 999.999){previous_mass = as.numeric(paste0(masses_ordered[k-7]))}
+    #   # if(previous_mass == 999.999){previous_mass = as.numeric(paste0(masses_ordered[k-8]))}
+    #   # if(previous_mass == 999.999){previous_mass = as.numeric(paste0(masses_ordered[k-9]))}
+    #   current_mass_tmp = as.numeric(paste0(masses_ordered[k]))
+    #   current_mass = current_mass_tmp + (current_mass_tmp/2)
+    #   
+    #   
+    #   MZ_possibles_1 = MZs_published[all_masses <= current_mass]
+    #   
+    #   MZ_possibles_bad_1 = strsplit(names(MZ_possibles_1), ' | ')
+    #   MZ_possibles_bad_RT = sapply(MZ_possibles_bad_1, "[[", 1)
+    #   MZ_possibles_bad_mass = sapply(MZ_possibles_bad_1, "[[", 3)
+    #   MZ_possibles_min_RT_1 = sapply(MZ_possibles_bad_1, "[[", 1)
+    #   RT_nums = as.numeric(paste0(MZ_possibles_bad_RT))
+    #   RT_all_tmp = RTs_long[as.numeric(paste0(RTs_long)) %in% RT_nums]
+    #   probs_all_tmp = probs_long[as.numeric(paste0(RTs_long)) %in% RT_nums]
+    #   best_RTs_1 = RT_all_tmp[as.numeric(paste0(probs_all_tmp)) >= max(as.numeric(paste0(probs_all_tmp))) - 10]
+    #   best_RT = min(as.numeric(paste0(best_RTs_1)))
+    #   # best_RTs = lapply(seq_along(RT_df_tmp_apply),
+    #   #                   function(i) {RT_df_tmp_apply[[i]][probs_df_tmp_apply[[i]] == max(probs_df_tmp_apply[[i]], na.rm = T)]})
+    #   
+    #   if(RT_cutoff > 0){MZ_possibles = MZ_possibles_1[as.numeric(paste0(MZ_possibles_bad_RT)) <= RT_cutoff]}
+    #   MZ_possibles_min_RT_1 = as.numeric(paste0(MZ_possibles_min_RT_1[as.numeric(paste0(MZ_possibles_min_RT_1)) == best_RT]))
+    #   
+    #   if(k == 1){
+    #     MZ_possibles = MZ_possibles[as.numeric(paste0(MZ_possibles_bad_RT)) <= as.numeric(paste0(best_RT)) + RT_search_range]
+    #   }else{
+    #     RT_previous = all_best_RTs[k-1]
+    #     MZ_possibles = MZ_possibles[which(as.numeric(paste0(MZ_possibles_bad_RT)) > RT_previous & as.numeric(paste0(MZ_possibles_bad_RT)) < as.numeric(paste0(best_RT)) + RT_search_range)]
+    #   }
+    # }
+    
+    # RT_mass_list = strsplit(names(MZ_possibles),' | ')
+    # 
+    # 
+    # all_RT_current = sapply(RT_mass_list, "[[", 1)
+    # all_mass_current = sapply(RT_mass_list, "[[", 3)
+    
+    # RT_ranger = sd(as.numeric(paste0(all_RT_current)))/2
+    # bad_mass = as.numeric(paste0(bad_mass_list[[1]][3]))
+    # bad_RT = as.numeric(paste0(bad_mass_list[[1]][1]))
+    
+    
+    # bad_mass_list = strsplit(names(MZ_possibles[p]),' | ')
+    # bad_mass = as.numeric(paste0(bad_mass_list[[1]][3]))
+    # bad_RT = as.numeric(paste0(bad_mass_list[[1]][1]))
+    # RT_cutoff = 15
     # p = 3
+    
     for(p in 1:length(MZ_possibles)){
       tryCatch(length(MZ_possibles[[p]]), error = function(error) {next})
       if(length(MZ_possibles[[p]]) == 0){next}
-      bad_mass_list = strsplit(names(MZ_possibles[p]),' | ')
-      bad_mass = as.numeric(paste0(bad_mass_list[[1]][3]))
+      
       # bad_RT = as.numeric(paste0(bad_mass_list[[1]][1]))
-      if(bad_mass == 58.04186){next}
+      # if(all_mass_current[p] == 58.041864811 & !between(as.numeric(paste0(all_RT_current[p])), as.numeric(paste0(all_RT_current[p])) - RT_ranger, as.numeric(paste0(all_RT_current[p])) + RT_ranger)){next}
+      # if(as.numeric(paste0(all_RT_current[p])) >= as.numeric(paste0(RT_cutoff))){next}
       # if(bad_RT < current_RT - 3 | bad_RT > current_RT + 3){next}
       if(any(mz_mass_ordered[[k]] %in% MZ_possibles[[p]])){
         row_codes_tmp = names(MZ_possibles[MZ_possibles[[p]] %in% mz_mass_ordered[[k]]])
@@ -256,131 +437,91 @@ mzExacto <- function(data_in, chemicals){
       } else {next}
     }
     
-    area_df_tmp = area_matrix[rtBYmass_long %in% row_codes,]
-    chems_df_tmp = cmp_matrix[rtBYmass_long %in% row_codes,]
-    probs_df_tmp = probs_matrix[rtBYmass_long %in% row_codes,]
-    mass_df_tmp = mass_matrix[rtBYmass_long %in% row_codes,]
-    RT_df_tmp = RT_matrix[rtBYmass_long %in% row_codes,]
-
-    # area_found = c()
-    best_probs = c()
-    # area_df_tmp[is.na(area_df_tmp)] = 0
-    probs_df_tmp[is.na(probs_df_tmp)] = 0
-    RT_df_tmp[is.na(RT_df_tmp)] = 0
-    for(c in 1:ncol(RT_df_tmp)){
-      # area_tmp = as.numeric(paste0(area_df_tmp[,c]))
-      # area_tmp = sum(area_tmp[area_tmp > 0])
-      probs_tmp = as.numeric(paste0(probs_df_tmp[,c]))
-      probs_tmp = max(probs_tmp)
-      best_probs = c(best_probs, probs_tmp)
-      RT_tmp = as.numeric(paste0(RT_df_tmp[,c]))
-      RT_tmp = mean(RT_tmp[RT_tmp > 0])
+    row_codes = row_codes[!is.na(row_codes)]
+    if (is.null(row_codes)){
+      row_codes_tmp = MZs_long[CMPs_long == chems_ordered[k]]
+      row_codes = MZs_long == row_codes_tmp
       
-      # area_found = c(area_found, area_tmp)
-      # probs_found = c(probs_found, probs_tmp)
-      RT_found = c(RT_found, RT_tmp)
+      area_df_tmp = area_matrix[row_codes,]
+      chems_df_tmp = cmp_matrix[row_codes,]
+      probs_df_tmp = probs_matrix[row_codes,]
+      mass_df_tmp = mass_matrix[row_codes,]
+      RT_df_tmp = RT_matrix[row_codes,]
+    } else {
+      area_df_tmp = area_matrix[rtBYmass_long %in% row_codes,]
+      chems_df_tmp = cmp_matrix[rtBYmass_long %in% row_codes,]
+      probs_df_tmp = probs_matrix[rtBYmass_long %in% row_codes,]
+      mass_df_tmp = mass_matrix[rtBYmass_long %in% row_codes,]
+      RT_df_tmp = RT_matrix[rtBYmass_long %in% row_codes,]
     }
     
-    # best_identified = max(probs_found)
-    RT_new = c()
-    RT_found2 = RT_df_tmp
-    probs_found2 = probs_df_tmp
-    max_prob = as.numeric(paste0(max(probs_found2[probs_found2>0])))
-    min_prob = as.numeric(paste0(min(probs_found2[probs_found2>0])))
-    probs_diff = max_prob - min_prob
-    # probs_found2[!(probs_found2 %in% best_probs),] = 0
-    # i = 1
-    for(i in 1:length(best_probs)){
-      RT_new_tmp = RT_found2[probs_found2 >= best_probs[i]-probs_diff]
-      RT_new_tmp = as.numeric(paste0(RT_new_tmp))
-      RT_new = c(RT_new, RT_new_tmp)
-    }
-    # logical_RT = unique(RT_found2)
-    
-    # RT_found2 = RT_found2[probs_found2[probs_found2 == best_probs]  & mass_df_tmp != 58.04186]
-    # 
-    # RT_found2 = as.numeric(paste0(RT_found2))
-    
-    # if(length(logical_RT) <= 1){
-    #   RT_foundB = RT_df_tmp
-    #   RT_foundB = RT_foundB[RT_foundB > 0 & mass_df_tmp != 58.04186]
-    #   # mass_foundB = as.numeric(paste0(mass_df_tmp[!is.na(mass_df_tmp)]))
-    #   
-    #   RT_found2 = as.numeric(paste0(RT_foundB))
-    # } else {
-    #   RT_foundA = RT_df_tmp[chems_df_tmp == chems_ordered[k]]
-    #   RT_foundA[is.na(RT_foundA)] = 0
-    #   RT_foundA = RT_foundA[RT_foundA > 0 & mass_df_tmp != 58.04186]
-    #   RT_found2 = as.numeric(paste0(RT_foundA))
-    # }
-    max_RT = as.numeric(paste0(max(RT_new[RT_new>0])))
-    min_RT = as.numeric(paste0(min(RT_new[RT_new>0])))
-    RT_diff = max_RT - min_RT
-    best_RT = median(RT_new[!is.na(RT_new)])
-    
-    area_found = c()
-    
-    # as.data.frame(RT_df_tmp)
-    
-    RT_df_tmp[is.na(RT_df_tmp)] = 0
-    best_RT_all = c()
-    # RT_df_tmp2 = do.call(cbind.data.frame, RT_df_tmp)
-    # RT_df_tmp2 = data.frame(RT_df_tmp2)
-    for(col in 1:ncol(RT_df_tmp)){
-      RT_tentative = as.numeric(paste0(RT_df_tmp[,col]))
-      best_RT_tmp = RT_df_tmp[RT_tentative >= min_RT & RT_tentative <= best_RT, col]
-      best_RT_all = c(best_RT_all, best_RT_tmp)
-    }
-    
-    best_RT = mean(as.numeric(paste0(best_RT_all[best_RT_all != "0"])))
-    
-    RT_array_tmp = RT_matrix
-    rownames(RT_array_tmp) = NULL
-    RT_array_tmp[is.na(RT_array_tmp)] = 0
-    # RT_set = rownames(RT_array_tmp[RT_array_tmp <= best_RT])
-    RT_array_tmp[]
-    
+    if(nrow(area_df_tmp) == 0){next}
+    # mass_df_tmp[is.na(mass_df_tmp)] = 0
     area_df_tmp[is.na(area_df_tmp)] = 0
-    RT_array = RT_df_tmp >= min_RT & RT_df_tmp <= best_RT
+    probs_df_tmp[is.na(probs_df_tmp)] = 0
+    mass_df_tmp[is.na(mass_df_tmp)] = 0
+    RT_df_tmp[is.na(RT_df_tmp)] = 0
     
-    # for(col_2 in 1:ncol(RT_array)){}
-    best_RT_rows = as.numeric(paste0(names(RT_array[,1])))
-    area_df_tmpB = area_matrix
-    rownames(area_df_tmpB) = NULL
-    area_df_tmp2 = area_df_tmpB[rownames(area_df_tmpB) %in% best_RT_rows,]
-    area_df_tmp2[is.na(area_df_tmp2)] = 0
+    # area_df_tmp[mass_df_tmp == "58.041864811"] = 0
+    # chems_df_tmp[mass_df_tmp == "58.041864811"] = "<NA>"
+    # probs_df_tmp[mass_df_tmp == "58.041864811"] = 0
+    # RT_df_tmp[mass_df_tmp == "58.041864811"] = 0
+    # mass_df_tmp[mass_df_tmp == "58.041864811"] = 0
     
-    probs_df_tmpB = probs_matrix
-    rownames(probs_df_tmpB) = NULL
-    probs_df_tmp2 = probs_df_tmpB[rownames(probs_df_tmpB) %in% best_RT_rows,]
-    probs_df_tmp2[is.na(probs_df_tmp2)] = 0
-    # probs_df_tmp2 = probs_df_tmp[best_RT_rows,]
-    # probs_df_tmp2[is.na(probs_df_tmp2)] = 0
+    area_df_tmp_apply2 = lapply(area_df_tmp, as.numeric)
+    probs_df_tmp_apply2 = lapply(probs_df_tmp, as.numeric)
+    mass_df_tmp_apply2 = lapply(mass_df_tmp, as.numeric)
+    RT_df_tmp_apply2 = lapply(RT_df_tmp, as.numeric)
     
-    RT_df_tmpB = RT_matrix
-    rownames(RT_df_tmpB) = NULL
-    RT_df_tmp2 = RT_df_tmpB[rownames(RT_df_tmpB) %in% best_RT_rows,]
-    RT_df_tmp2[is.na(RT_df_tmp2)] = 0
-    # RT_df_tmp2 = RT_df_tmp[best_RT_rows,]
-    # RT_df_tmp2[is.na(RT_df_tmp2)] = 0
+    probs_df_tmp_apply = lapply(seq_along(probs_df_tmp_apply2),function(i) {probs_df_tmp_apply2[[i]][RT_df_tmp_apply2[[i]] > 0]})
+    probs_max_tmp_apply = lapply(seq_along(probs_df_tmp_apply2),function(i) {max(probs_df_tmp_apply2[[i]][RT_df_tmp_apply2[[i]] > 0])})
     
-    for(c in 1:ncol(RT_df_tmp)){
-      area_tmp2 = as.numeric(paste0(area_df_tmp2[,c]))
-      area_tmp2 = sum(area_tmp2[area_tmp2 > 0])
-      probs_tmp2 = as.numeric(paste0(probs_df_tmp2[,c]))
-      probs_tmp2 = max(probs_tmp2)
-      RT_tmp2 = as.numeric(paste0(RT_df_tmp2[,c]))
-      RT_tmp2 = mean(RT_tmp2[RT_tmp2 > 0])
-      
-      area_found = c(area_found, area_tmp2)
-      probs_found = c(probs_found, probs_tmp2)
-      RT_found = c(RT_found, RT_tmp2)
+    mass_df_tmp_apply = lapply(seq_along(mass_df_tmp_apply2),function(i) {mass_df_tmp_apply2[[i]][RT_df_tmp_apply2[[i]] > 0]})
+    RT_df_tmp_apply = lapply(seq_along(RT_df_tmp_apply2),function(i) {RT_df_tmp_apply2[[i]][RT_df_tmp_apply2[[i]] > 0]})
+    
+    best_RTs = lapply(seq_along(RT_df_tmp_apply),
+                      function(i) {min(RT_df_tmp_apply[[i]][probs_df_tmp_apply[[i]] >= probs_max_tmp_apply[[i]] - 20])})
+    previous_RTs = c(previous_RTs, best_RTs)
+    best_RT = mean(as.vector(unlist(best_RTs)), na.rm = T)
+    
+    previous_RT_logical = as.matrix(unlist(lapply(seq_along(mass_df_tmp_apply2),function(i) {as.numeric(paste0(RT_df_tmp_apply2[[i]])) %in% previous_RTs})))
+    if(any(previous_RT_logical)){
+      area_df_tmp_apply = lapply(seq_along(area_df_tmp_apply2),function(i) {area_df_tmp_apply2[RT_df_tmp_apply2[[i]] %in% previous_RTs] = 0})
+    }else{area_df_tmp_apply = area_df_tmp_apply2}     
+    
+    #RT_df_tmp_apply2 %in% previous_RTs)){area_df_tmp_apply2[RT_df_tmp_apply2 %in% previous_RTs] = 0}
+    # area_df_tmp_apply2 = lapply(seq_along(area_df_tmp_apply2),function(i) {area_df_tmp_apply2[[i]][!area_df_tmp_apply2[[i]] %in% previous_areas]})
+    # area_df_tmp_apply = lapply(seq_along(area_df_tmp_apply2),function(i) {area_df_tmp_apply2[[i]][RT_df_tmp_apply2[[i]] > 0 & between(RT_df_tmp_apply2[[i]], as.numeric(paste0(best_RT)), as.numeric(paste0(best_RT)) + RT_search_range)]})
+    # previous_areas = c(previous_areas, as.numeric(paste0(area_df_tmp_apply)))
+    # previous_RTs = c(previous_RTs, as.numeric(paste0(RT_df_tmp_apply)))
+    
+    
+    best_masses = lapply(seq_along(mass_df_tmp_apply),
+                         function(i) {mass_df_tmp_apply[[i]][probs_df_tmp_apply[[i]] == max(probs_df_tmp_apply[[i]], na.rm = T)]})
+    
+    
+    # best_RTs = lapply(seq_along(RT_df_tmp_apply),
+    #                   function(i) {RT_df_tmp_apply[[i]][probs_df_tmp_apply[[i]] >= max(probs_df_tmp_apply[[i]], na.rm = T)-15]})
+    
+    # best_low_RT = lapply(seq_along(best_RTs),function(i) {as.numeric(paste0(area_df_tmp_apply2[[i]][RT_df_tmp_apply2[[i]] == best_RTs[[i]]]))})
+    
+    # best_RT = as.numeric(paste0(best_low_RT)) #min(as.vector(unlist(best_RTs)), na.rm = T)
+    all_best_RTs = c(all_best_RTs, best_RT)
+    
+    
+    area_df_final_apply = lapply(seq_along(area_df_tmp_apply),function(i) {sum(as.numeric(paste0(area_df_tmp_apply2[[i]][RT_df_tmp_apply2[[i]] == best_RTs[[i]]])))})
+    
+    current_mass = as.numeric(paste0(masses_ordered[k]))
+    if(current_mass == 999.999){
+      best_RT = median(as.vector(unlist(best_RTs)), na.rm = T)
+      current_mass = median(as.vector(unlist(best_masses)), na.rm = T)
     }
+    # as.vector(unlist(area_df_tmp_apply))
     
     current_chem_row = cbind(as.numeric(paste0(best_RT)), 
-                             as.numeric(paste0(masses_ordered[k])), 
+                             as.numeric(paste0(current_mass)), 
                              as.character(paste0(chems_ordered[k])), 
-                             rbind(area_found))
+                             rbind(as.vector(unlist(area_df_final_apply))))
     
     rownames(current_chem_row) = NULL
     colnames(current_chem_row) = c("RT",
