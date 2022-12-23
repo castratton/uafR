@@ -6,7 +6,7 @@
 #'@param input uafR output, or csv containing relevant GC/MS data. 
 #'
 
-# input = unknowns_all2
+# input = unknowns_all
 
 spreadOut = function(input){
    getNCI = function(url_path){
@@ -81,6 +81,8 @@ spreadOut = function(input){
       if(is.na(chem_cid[[1,2]])){
          smiles_url = paste0("https://cactus.nci.nih.gov/chemical/structure/",current_CMP,"/smiles")
          inchi_url = paste0("https://cactus.nci.nih.gov/chemical/structure/",current_CMP,"/stdinchikey")
+         smiles_url = gsub("\\ ", "%20", smiles_url)
+         inchi_url = gsub("\\ ", "%20", inchi_url)
          smile_string = getNCI(smiles_url)
          inchi_string = getNCI(inchi_url)
          

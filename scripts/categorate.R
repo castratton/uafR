@@ -12,7 +12,7 @@
 #'(preferred).
 #'
 
-# compounds = paste0(unique(categorate_dat$Area.Chemical)[c(45:50)])
+# compounds = unknowns_merged$Area$Chemical[c(14,16,17)]
 # chemical_library = library_dat
 # input_format = "wide"
 # compounds = c("Acetic ester", "Ethyl hexanoate", "Octanal", "Linalool", "Undecane", "Methyl salicylate")
@@ -90,6 +90,8 @@ categorate = function(compounds, chemical_library, input_format = "wide"){
    if(is.na(chem_cid[[1,2]])){
     smiles_url = paste0("https://cactus.nci.nih.gov/chemical/structure/",CMPs_tmp,"/smiles")
     inchi_url = paste0("https://cactus.nci.nih.gov/chemical/structure/",CMPs_tmp,"/stdinchikey")
+    smiles_url = gsub("\\ ", "%20", smiles_url)
+    inchi_url = gsub("\\ ", "%20", inchi_url)
     smile_string = getNCI(smiles_url)
     inchi_string = getNCI(inchi_url)
     
@@ -220,7 +222,7 @@ categorate = function(compounds, chemical_library, input_format = "wide"){
   if(length(cids_all_input) > 135){
    compound_cid_list = split(cids_all_input, ceiling(seq_along(cids_all_input)/135))
    for(i in 1:length(compound_cid_list)){
-    compound_cid_set = toString(compound_cid_list[[i]][2])
+    compound_cid_set = toString(compound_cid_list[[i]])
     compound_cid_set = gsub("NA", "180", compound_cid_set)
     compound_cid_set = gsub("[c\\\"() ]","",compound_cid_set)
     compound_cid_set = gsub("\n", "", compound_cid_set)
@@ -290,7 +292,7 @@ categorate = function(compounds, chemical_library, input_format = "wide"){
    if(length(cid_dict[[t]]) > 135){
     compound_cid_list = split(cid_dict[[t]], ceiling(seq_along(cid_dict[[t]])/135))
     for(i in 1:length(compound_cid_list)){
-     compound_cid_set = toString(compound_cid_list[[i]][2])
+     compound_cid_set = toString(compound_cid_list[[i]])
      compound_cid_set = gsub("NA", "180", compound_cid_set)
      compound_cid_set = gsub("[c\\\"() ]","",compound_cid_set)
      compound_cid_set = gsub("\n", "", compound_cid_set)
@@ -328,7 +330,7 @@ categorate = function(compounds, chemical_library, input_format = "wide"){
   cid(SDF_input_set) <- makeUnique(cid(SDF_input_set))
   
   # cat(paste0('[', t, '/', length(cid_dict), ']', '-', names(SDF_library_list[[t]]), '\n'))
-  
+  # SDF = 1
   for(SDF in 1:length(SDF_input_set)){
    
    Ncharges = tryCatch(sapply(bonds(SDF_input_set[SDF], type="charge"),length), error = function(error) {return("None")})
@@ -356,9 +358,9 @@ categorate = function(compounds, chemical_library, input_format = "wide"){
    colnames(SDF_info_row) = SDF_columns
    SDF_info_df = rbind(SDF_info_df, SDF_info_row)
    # library_matches = list()
-   
-   
-   
+   functional_row = data.frame(t(rep("No", ncol(functional_df))))
+   # SDF = 1
+   # v = 2
    for(v in 1:length(SDF_library_list)){
     batch_test_set = tryCatch(fmcsBatch(SDF_input_set[SDF], 
                                         SDF_library_list[[v]], 
@@ -366,7 +368,7 @@ categorate = function(compounds, chemical_library, input_format = "wide"){
                                         bu = 0), 
                               error = function(error) {return(batch_test_set = rbind(rep(0, 5), rep(0, 5)))})
     
-    functional_row = data.frame(t(rep("No", ncol(functional_df))))
+    
     colnames(functional_row) = c(names(librarylist), "Chemical")
     row.names(functional_row) = NULL
     row.names(functional_df) = NULL

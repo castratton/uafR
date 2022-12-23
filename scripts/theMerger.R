@@ -387,7 +387,7 @@ theMerger = function(input_list, IS){
    
    best_CMP = as.character(paste0(df_RT_range$Compound[df_RT_range$combo_score == max(df_RT_range$combo_score)]))
    
-   if(paste0(all_df$Chemical[nrow(all_df)], "test") == paste0(best_CMP, "test")) next
+   if(paste0(all_df$Chemical[nrow(all_df)][1], "test") == paste0(best_CMP[1], "test")) next
    best_RT = as.numeric(paste0(min(df_RT_range$RT)))
    best_mass = as.numeric(paste0(df_RT_range$mass_column[df_RT_range$combo_score == max(df_RT_range$combo_score)]))
    all_tmp = cbind(best_RT, 

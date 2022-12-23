@@ -9,7 +9,7 @@
 #'for exact or non-exact matches, default is exact.
 
 # data_in = unknowns_spread
-# chemicals = new_chems
+# chemicals = chemicals_LOTUS
 # RT_cutoff = 17
 # RT_search_range = 2
 # IS = "Tetradecane"
@@ -77,10 +77,10 @@ mzExacto <- function(data_in, chemicals){
   bad_masses = c(58.041864811, 999.99)
   
   RT_mass_lm = lm(input_RT_long[!(input_mass_long %in% bad_masses) & input_probs_long > max(input_probs_long)-25]~input_mass_long[!(input_mass_long %in% bad_masses) & input_probs_long > max(input_probs_long)-25], na.action = na.omit)
-  summary(RT_mass_lm)
+  # summary(RT_mass_lm)
   eqn_coefficients = as.numeric(paste0(RT_mass_lm[[1]]))
   RT_step_set = (max(RT_mass_lm[[5]])-min(RT_mass_lm[[5]]))/length(RT_mass_lm[[5]])
-  
+  cat("Preparing the data. Stay tuned. \n")
   for (w in 1:nrow(cmp_matrix)){
     input_CMPs_tmp = cmp_matrix[w,][!is.na(cmp_matrix[w,])]
     input_CMPs_long = c(input_CMPs_long, input_CMPs_tmp)
@@ -138,6 +138,8 @@ mzExacto <- function(data_in, chemicals){
     if(is.na(chem_cid[[1,2]])){
       smiles_url = paste0("https://cactus.nci.nih.gov/chemical/structure/",current_CMP,"/smiles")
       inchi_url = paste0("https://cactus.nci.nih.gov/chemical/structure/",current_CMP,"/stdinchikey")
+      smiles_url = gsub("\\ ", "%20", smiles_url)
+      inchi_url = gsub("\\ ", "%20", inchi_url)
       smile_string = getNCI(smiles_url)
       inchi_string = getNCI(inchi_url)
       
@@ -361,7 +363,10 @@ mzExacto <- function(data_in, chemicals){
   exact_rows_list = list()
   tentative_rows_list = list()
   
+  
   for(k in 1:length(all_search_list)){
+    print_statement = paste0("Working on ", chems_ordered[k],"\n")
+    cat(print_statement)
     current_chem = chems_ordered[k]
     all_rows_current = c()
     exact_probs = c()
@@ -449,10 +454,11 @@ mzExacto <- function(data_in, chemicals){
   exclude_exacts_tmp = as.vector(unlist(sapply(exact_rows_list, '[[', 1)))
   exclude_exacts = exclude_exacts_tmp[!is.na(exclude_exacts_tmp)]
   
-  # p = 6
+  # p = 27
   
   for(p in seq_along(chems_ordered)){
     exact_trigger = F
+    area_rows_first = RT_rows_first = probs_rows_first = NULL
     if(any(!is.na(exact_rows_list[names(exact_rows_list) == chems_ordered[p]][[1]][[1]]))){
       area_rows_first = area_matrix[rtBYmass_long %in% exact_rows_list[p][[1]][[1]],]
       area_rows_first[is.na(area_rows_first)] = 0
@@ -471,75 +477,85 @@ mzExacto <- function(data_in, chemicals){
       probs_rows_first = rbind(rep(0,ncol(area_matrix)))
       rtBYmass_first = NA
     }
-    
+    if(p > 1){rtBYmass_previous = c(rtBYmass_previous, rtBYmass_tmp)}
     
     area_rows_second = rbind(rep(0,ncol(area_matrix)))
     RT_rows_second = rbind(rep(0,ncol(area_matrix)))
     probs_rows_second = rbind(rep(0,ncol(area_matrix)))
     
-    # r = 1
+    area_rows_second_tmp = rbind(rep(0,ncol(area_matrix)))
+    RT_rows_second_tmp = rbind(rep(0,ncol(area_matrix)))
+    probs_rows_second_tmp = rbind(rep(0,ncol(area_matrix)))
+    # r = 12
+    
     for(r in 1:ncol(area_rows_first)){
       
       if(sum(as.numeric(area_rows_first[,r])) == 0){
         # unique(tentative_rows_list[p][[1]][[4]])
-        best_mz_matches_tmp = rtBYmass_long[RTs_long %in% tentative_rows_list[p][[1]][[2]][!is.na(tentative_rows_list[p][[1]][[2]])]]
+        best_mz_matches_tmp = rtBYmass_long[RTs_long %in% tentative_rows_list[p][[1]][[2]]][!is.na(tentative_rows_list[p][[1]][[2]])]
         best_mz_matches_tmp = best_mz_matches_tmp[!is.na(best_mz_matches_tmp)]
         tentative_counts = tentative_rows_list[p][[1]][[4]]
         tentative_counts[is.na(tentative_counts)] = 0
-        count_test = tentative_counts[RTs_long %in% tentative_rows_list[p][[1]][[2]][!is.na(tentative_rows_list[p][[1]][[2]])]]
+        count_test = tentative_counts[RTs_long %in% tentative_rows_list[p][[1]][[2]]][!is.na(tentative_rows_list[p][[1]][[2]])]
         # cbind(best_mz_matches_tmp, tentative_counts[RTs_long %in% tentative_rows_list[p][[1]][[2]][!is.na(tentative_rows_list[p][[1]][[2]])]])
         # RTs_long %in% tentative_rows_list[p][[1]][[2]][!is.na(tentative_rows_list[1][[1]][[2]])]
         # rtBYmass_long[1:length(tentative_counts)][tentative_counts %in% best_mz_matches_tmp]
-        best_mz_matches_code_tmp = best_mz_matches_tmp[count_test > 0]
+        if(suppressWarnings(max(count_test, na.rm = T) <= 1)){next}
+        best_mz_matches_code_tmp = best_mz_matches_tmp[count_test >= 2]
         best_mz_matches_code = best_mz_matches_code_tmp[!(best_mz_matches_code_tmp %in% exclude_exacts)]
         if(length(best_mz_matches_code) < 1){next}
+        
         rtBYmass_tmp = sapply(tentative_rows_list[p], '[[', 1)
         RT_tmp = sapply(tentative_rows_list[p], '[[', 2)
-        if(suppressWarnings(is.na(RT_tmp[[1]]))){RT_tmp = as.numeric(RTs_long[rtBYmass_long %in% rtBYmass_tmp])}
+        if(suppressWarnings(is.na(RT_tmp[[2]]))){RT_tmp = as.numeric(RTs_long[rtBYmass_long %in% rtBYmass_tmp])}
         probs_tmp = sapply(tentative_rows_list[p], '[[', 3)
-        if(suppressWarnings(is.na(probs_tmp[[1]]))){probs_tmp = as.numeric(probs_long[rtBYmass_long %in% rtBYmass_tmp])}
+        if(suppressWarnings(is.na(probs_tmp[[2]]))){probs_tmp = as.numeric(probs_long[rtBYmass_long %in% rtBYmass_tmp])}
         mass_tmp = sapply(tentative_rows_list[p], '[[', 5)
         max_prob = custom_max(as.numeric(probs_tmp[!is.na(probs_tmp)]))
         median_mass = median(as.numeric(mass_tmp[!is.na(mass_tmp)]))
         best_mass = mean(as.numeric(mass_tmp[rtBYmass_tmp %in% best_mz_matches_code]), na.rm = T)
         
         best_RT = custom_max(as.numeric(RTs_long[rtBYmass_long %in% best_mz_matches_code][!is.na(RTs_long[rtBYmass_long %in% best_mz_matches_code])])) #RT_tmp[probs_tmp == max_prob][!is.na(RT_tmp)]
-        if(exact_trigger == T){best_RT = custom_max(as.numeric(RTs_long[rtBYmass_long %in% exact_rows_list[p][[1]][[1]]]))}
+        # if(exact_trigger == T){best_RT = custom_max(as.numeric(RTs_long[rtBYmass_long %in% exact_rows_list[p][[1]][[1]]]))}
         # if(best_RT == 0 & p > 1){best_RT = NA}
         previous_RTs = c(previous_RTs, best_RT)
         
         mass_RT_test = model_fun_use(median_mass, eqn_coefficients[2], eqn_coefficients[1])
         
-        if(p == 1){RT_range = as.numeric(RT_tmp) < best_RT + eqn_coefficients[2]}else{RT_range = as.numeric(RT_tmp) > best_RT - RT_step_set & as.numeric(RT_tmp) <= best_RT + RT_step_set}
-        if(exact_trigger == T){RT_range = as.numeric(RT_tmp) > best_RT - 0.15 & as.numeric(RT_tmp) <= best_RT + 0.15}
-        if(exact_trigger == T){probs_range = as.numeric(probs_tmp) >= max_prob - 15}
+        if(p == 1){RT_range = as.numeric(RT_tmp) < best_RT + eqn_coefficients[2]}else{RT_range = as.numeric(RT_tmp) > best_RT - 0.15 & as.numeric(RT_tmp) <= best_RT + 0.15} # RT_step_set
+        # if(exact_trigger == T){RT_range = as.numeric(RT_tmp) > best_RT - 0.15 & as.numeric(RT_tmp) <= best_RT + 0.15}
+        # if(exact_trigger == T){probs_range = as.numeric(probs_tmp) >= max_prob - 25}
         rtBYmass_tmp = rtBYmass_tmp[RT_range]
-        if(exact_trigger == T){rtBYmass_tmp = rtBYmass_tmp[RT_range & probs_range]}
+        # if(exact_trigger == T){rtBYmass_tmp = rtBYmass_tmp[RT_range & probs_range]}
         if(p == 1){rtBYmass_tmp = rtBYmass_tmp}else{rtBYmass_tmp = rtBYmass_tmp[!(rtBYmass_tmp %in% rtBYmass_previous)]}
-        rtBYmass_previous = c(rtBYmass_previous, rtBYmass_tmp)
-
-        area_rows_filler = sum(as.numeric(area_matrix[rtBYmass_long %in% rtBYmass_tmp, r][!is.na(area_matrix[rtBYmass_long %in% rtBYmass_tmp, r])]))
-        if(is.na(area_rows_filler)){area_rows_filler = 0}
-        area_rows_second_tmp = rbind(rep(0,ncol(area_matrix)))
-        area_rows_second_tmp[,r] = area_rows_filler
+        # rtBYmass_previous = c(rtBYmass_previous, rtBYmass_tmp)
         
-        RT_rows_filler = custom_min(as.numeric(RT_matrix[rtBYmass_long %in% rtBYmass_tmp, r][!is.na(RT_matrix[rtBYmass_long %in% rtBYmass_tmp, r])]))
-        RT_rows_second_tmp = rbind(rep(0,ncol(area_matrix)))
-        RT_rows_second_tmp[,r] = RT_rows_filler
+        area_rows_filler_tmp = area_matrix[rtBYmass_long %in% rtBYmass_tmp, r]
+        area_rows_filler_tmp[is.na(area_rows_filler_tmp)] = 0
+        area_rows_filler = sum(as.numeric(area_rows_filler_tmp))
+        # if(is.na(area_rows_filler)){area_rows_filler = 0}
         
-        probs_rows_filler = custom_max(as.numeric(probs_matrix[rtBYmass_long %in% rtBYmass_tmp, r][!is.na(probs_matrix[rtBYmass_long %in% rtBYmass_tmp, r])]))
-        probs_rows_second_tmp = rbind(rep(0,ncol(area_matrix)))
-        probs_rows_second_tmp[,r] = probs_rows_filler
+        RT_rows_filler_tmp = RT_matrix[rtBYmass_long %in% rtBYmass_tmp, r]
+        RT_rows_filler_tmp[is.na(RT_rows_filler_tmp)] = 0
+        RT_rows_filler = custom_min(as.numeric(RT_rows_filler_tmp))
         
-      }else{next}
-      
-      area_rows_second = rbind(area_rows_second, area_rows_second_tmp)
-      
-      RT_rows_second = rbind(RT_rows_second, RT_rows_second_tmp)
-      
-      probs_rows_second = rbind(probs_rows_second, probs_rows_second_tmp)
-      
+        probs_rows_filler_tmp = probs_matrix[rtBYmass_long %in% rtBYmass_tmp, r]
+        probs_rows_filler_tmp[is.na(probs_rows_filler_tmp)] = 0
+        probs_rows_filler = custom_max(as.numeric(probs_rows_filler_tmp))
+        
+      }else{
+        area_rows_filler = RT_rows_filler = probs_rows_filler = 0
+        # area_rows_second_tmp[,r] = sum(as.numeric(area_rows_first[,r]))
+        # RT_rows_second_tmp[,r] = min(as.numeric(RT_rows_first[,r]))
+        # probs_rows_second_tmp[,r] = max(as.numeric(probs_rows_first[,r]))
+      }
+      area_rows_second_tmp[,r] = area_rows_filler
+      RT_rows_second_tmp[,r] = RT_rows_filler
+      probs_rows_second_tmp[,r] = probs_rows_filler
     }
+    area_rows_second = rbind(area_rows_second, area_rows_second_tmp)
+    RT_rows_second = rbind(RT_rows_second, RT_rows_second_tmp)
+    probs_rows_second = rbind(probs_rows_second, probs_rows_second_tmp)
     
     colnames(area_rows_first) = NULL
     rownames(area_rows_first) = NULL
