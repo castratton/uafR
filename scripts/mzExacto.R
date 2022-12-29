@@ -66,6 +66,14 @@ mzExacto <- function(data_in, chemicals){
   mass_df = as.data.frame(mass_matrix)
   rtBYmass_df = as.data.frame(rtBYmass_matrix)
   
+  # CMPs_long = c()
+  # probs_long = c()
+  # RTs_long = c()
+  # masses_long = c()
+  # areas_long = c()
+  # MZs_long = c()
+  # rtBYmass_long = c()
+  cat("Preparing the data. Stay tuned. \n")
   input_area_long = as.numeric(paste0(area_df[!is.na(area_df)]))
   input_probs_long = as.numeric(paste0(probs_df[!is.na(probs_df)]))
   input_CMPs_long = paste0(cmp_df[!is.na(cmp_df)])
@@ -80,17 +88,17 @@ mzExacto <- function(data_in, chemicals){
   # summary(RT_mass_lm)
   eqn_coefficients = as.numeric(paste0(RT_mass_lm[[1]]))
   RT_step_set = (max(RT_mass_lm[[5]])-min(RT_mass_lm[[5]]))/length(RT_mass_lm[[5]])
-  cat("Preparing the data. Stay tuned. \n")
+  
   for (w in 1:nrow(cmp_matrix)){
     input_CMPs_tmp = cmp_matrix[w,][!is.na(cmp_matrix[w,])]
     input_CMPs_long = c(input_CMPs_long, input_CMPs_tmp)
-    
+
     input_mass_tmp = mass_matrix[w,][!is.na(mass_matrix[w,])]
     input_mass_long = c(input_mass_long, input_mass_tmp)
-    
+
     input_probs_tmp = probs_matrix[w,][!is.na(probs_matrix[w,])]
     input_probs_long = c(input_probs_long, input_probs_tmp)
-    
+
     input_RT_tmp = RT_matrix[w,][!is.na(RT_matrix[w,])]
     input_RT_long = c(input_RT_long, input_RT_tmp)
   }
@@ -166,12 +174,18 @@ mzExacto <- function(data_in, chemicals){
     
     chem_names_info = tryCatch(jsonlite::fromJSON(chem_names_url),
                                error = function(error) {return("None")})
-    
-    chem_names_json_dat = data.frame(unlist(chem_names_info$Record$Section))
+    if(paste0(chem_names_info) == "None"){chem_names_json_dat = data.frame(current_CMP)}else{chem_names_json_dat = data.frame(unlist(chem_names_info$Record$Section))}
+    # chem_names_json_dat = data.frame(unlist(chem_names_info$Record$Section))
     colnames(chem_names_json_dat) = "info"
     
-    name_finding = "Section.Section.Information.Value.StringWithMarkup.String"
-    all_current_chem_names = data.frame(paste0(chem_names_json_dat$info[adist(rownames(chem_names_json_dat), name_finding) <= 4]))
+    if(paste0(chem_names_info) == "None"){
+      name_finding = ""
+      all_current_chem_names = data.frame(paste0(chem_names_json_dat$info))
+    }else{
+      name_finding = "Section.Section.Information.Value.StringWithMarkup.String"
+      all_current_chem_names = data.frame(paste0(chem_names_json_dat$info[adist(rownames(chem_names_json_dat), name_finding) <= 4]))
+    }
+    
     colnames(all_current_chem_names) = "names"
     
     searchNames_published[[chem]] = unique(all_current_chem_names$names)
@@ -302,6 +316,7 @@ mzExacto <- function(data_in, chemicals){
   areas_long = c()
   MZs_long = c()
   rtBYmass_long = c()
+  
   MZs_published = list()
   names_published = list()
   
@@ -309,22 +324,22 @@ mzExacto <- function(data_in, chemicals){
     alt_trigger = F
     CMPs_tmp = cmp_matrix[z,][!is.na(cmp_matrix[z,])]
     CMPs_long = c(CMPs_long, CMPs_tmp)
-    
+
     probs_tmp = probs_matrix[z,][!is.na(probs_matrix[z,])]
     probs_long = c(probs_long, probs_tmp)
-    
+
     RTs_tmp = RT_matrix[z,][!is.na(RT_matrix[z,])]
     RTs_long = c(RTs_long, RTs_tmp)
-    
+
     masses_tmp = mass_matrix[z,][!is.na(mass_matrix[z,])]
     masses_long = c(masses_long, masses_tmp)
-    
+
     areas_tmp = area_matrix[z,][!is.na(area_matrix[z,])]
     areas_long = c(areas_long, areas_tmp)
-    
+
     MZs_tmp = mz_matrix[z,][!is.na(mz_matrix[z,])]
     MZs_long = c(MZs_long, MZs_tmp)
-    
+
     rtBYmass_tmp = rtBYmass_matrix[z,][!is.na(rtBYmass_matrix[z,])]
     rtBYmass_long = c(rtBYmass_long, rtBYmass_tmp)
   }
