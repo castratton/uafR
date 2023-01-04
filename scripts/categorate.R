@@ -32,21 +32,26 @@
 #'@param input_format Designates the data structure for input library 
 #'[chemical_library]. Default setting is "wide" can be changed to "long."
 #'
-#'@returns List with 4 data frames: (1) information from database 
+#'@return List with 4 data frames: (1) information from database 
 #'searches, (2) atomic and molecular sub-group structure summary, (3) strong 
 #'(similarity > 0.95) or moderate (similarity > 0.85) matches with input 
 #'library groups, and (4) top chemical from groups a chemical shared a 
 #'strong match with.
 #'
+#'@examples
+#'compounds = c("3-Octanone","Decane","Mesitylene","1,2,4-trimethyl-benzene",
+#'"D-Limonene","beta-ethyl benzeneethanol","1,4-diethyl benzene",
+#'"1,2-diethyl benzene","1,3,8-p-Menthatriene","(2-methyl-1-propenyl)-Benzene",
+#'"1-Phenyl-1-butene","Linalool","Nonanal","5-nonyl-2-Thiophenecarboxylic acid",
+#'"Dichloroacetaldehyde","Linalyl acetate","Beta-Ocimene","2-Thiophenecarboxylic 
+#'acid","1-Pent-3-ynylcyclopenta-1,3-diene")
+#'chemical_library = data(library_dat)
+#'compounds_categorated = categorate(compounds, chemical_library)
+#'
 #'@importFrom ChemmineR "read.SDFset()"
 #'@importFrom webchem "get_cid()"
 #'@importFrom jsonlite "fromJSON()"
 
-"Databases", "FMCS", "FunctionalGroups", "BestChemMatch"
-# compounds = unknowns_merged$Area$Chemical[c(14,16,17)]
-# chemical_library = library_dat
-# input_format = "wide"
-# compounds = c("Acetic ester", "Ethyl hexanoate", "Octanal", "Linalool", "Undecane", "Methyl salicylate")
 
 categorate = function(compounds, chemical_library, input_format = "wide"){
  getNCI = function(url_path){
