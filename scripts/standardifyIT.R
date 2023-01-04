@@ -7,18 +7,21 @@
 #'@param input uafR 'theMerger()' output. 
 #'
 
-# data_in = unknowns_merged
+# data_in = publishedNew_exacto
+# standard_type = "Internal"
+# standard_used = "Tetradecane"
+# IS_ng = 190.5
+# IS_uL = 1
+# collect_time = 1
+# sample_amt = 1
+# ES_calibration = NA
 
 standardifyIt = function(data_in, standard_type = "Internal",
                          standard_used = "Tetradecane",
                          IS_ng = 190.5, IS_uL = 1, 
                          collect_time = 1, sample_amt = 1,
                          ES_calibration = NA){
- standardify = function(u, v, 
-                        w, x, 
-                        y, z){
-  standardised = (u/v*w)/x/y/z
- }
+ standardify = function(u, v, w, x, y, z){standardised = (u/v*w)/x/y/z}
  options(scipen = n)
  type_internal = standard_type == "Internal"
  type_external = standard_type == "External"
@@ -27,16 +30,23 @@ standardifyIt = function(data_in, standard_type = "Internal",
  
  data_clms = data_in[,-c(1,2,3,4)]
  meta_clms = data_in[,c(1,2,3,4)]
- IS = standard_used
- IS_quants = as.numeric(paste0(data_in[data_in$Compound == IS, -c(1,2,3,4)]))
+ # IS = standard_used
+ # IS_quants = as.numeric(paste0(data_clms[data_in$Compound == IS, -c(1,2,3,4)]))
  
- if(type_internal){data_out_standard = data.frame(matrix(nrow = nrow(data_clms)-1, ncol = 0))}else{data_out_standard = data.frame(matrix(nrow = nrow(data_clms), ncol = 0))}
+ if(type_internal){
+    data_out_standard = data.frame(matrix(nrow = nrow(data_clms)-1, ncol = 0))
+    IS = standard_used
+    IS_quants = as.numeric(paste0(data_clms[meta_clms$Compound == IS,]))
+    data_clms = data_clms[meta_clms$Compound != IS,]
+    meta_clms = meta_clms[meta_clms$Compound != IS,]
+ }else{
+    data_out_standard = data.frame(matrix(nrow = nrow(data_clms), ncol = 0))
+ }
+ 
  
  
  if (type_internal & size_sample_amt > 1){
    for(i in 1:ncol(data_clms)){
-      data_clms = data_clms[data_in$Compound != IS,]
-      meta_clms = meta_clms[data_in$Compound != IS,]
       Input = data_clms[, i]
       IS = IS_quants[,i]
       sample_quant = sample_amt[,i]
@@ -53,8 +63,6 @@ standardifyIt = function(data_in, standard_type = "Internal",
  
  if (type_internal & size_sample_amt == 1){
    for(i in 1:ncol(data_clms)){
-      data_clms = data_clms[data_in$Compound != IS,]
-      meta_clms = meta_clms[data_in$Compound != IS,]
       Input = data_clms[,i]
       IS = IS_quants[i]
       
