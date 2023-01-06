@@ -1,0 +1,64 @@
+Component RT,Base Peak MZ,Base Peak Area,Component Area,Compound Name,Match Factor,Sample Name,File Name
+4.119230007,47.93,136981.118,155249.8751,Boron trifluoride,76.04995421,Std_soln_00,Std_soln_00.D
+4.124089059,86,19352.90496,28258.35316,"Methane-d, trichloro-",67.81567692,Std_soln_07,Std_soln_07.D
+4.139093742,83.95,83223.21528,208342.5507,Methylene chloride,84.53595126,Std_soln_00a,Std_soln_00a.D
+4.170414683,39.93,474.1713505,442.7390493,"6-Phenyl-6H-1,2,3,4,5,6,7-[1,2,3]triazolo[4,5-e][1,2,3,4]tetrazine-1,3-dione",59.41866798,Std_soln_00,Std_soln_00.D
+4.176672459,123,178.3476436,728.8452354,"Benzene, nitro-",54.52483833,Std_soln_00a,Std_soln_00a.D
+4.177583963,42.97,918.0456547,1760.983328,"1,2,5-Oxadiazole",53.90680385,Std_soln_07,Std_soln_07.D
+4.209614366,84,15351.36913,30688.36884,"3-Amino-1,2,4-triazole-5-carboxylic acid",66.38391223,Std_soln_07,Std_soln_07.D
+4.210337843,48.98,780.9921753,44329.43091,"Acetaldehyde, ethylidenehydrazone",52.73599961,Std_soln_07,Std_soln_07.D
+4.244357505,40.97,1631.947741,3347.284494,"1,5-Heptadiene, 3,4-dimethyl-",69.35501532,Std_soln_07,Std_soln_07.D
+4.245289214,44,13424.57623,44480.58849,"Benzenemethanol, .alpha.-(1-aminoethyl)-, [R-(R*,R*)]-",71.86075095,Std_soln_00,Std_soln_00.D
+4.259727806,44,3965.967003,4871.44566,2-Chloropropionamide,69.21751,Std_soln_00a,Std_soln_00a.D
+4.311943817,83.95,5273.09475,6496.158642,"Propane, 2-isocyanato-2-methyl-",70.20884502,Std_soln_07,Std_soln_07.D
+4.321807327,49,3490.598182,8029.116849,Chloromethanesulfonyl chloride,53.27876528,Std_soln_00,Std_soln_00.D
+4.399552776,51,4167.65603,653.6032555,Difluoromethyl trifluoromethanesulfonate,59.88728782,Std_soln_00a,Std_soln_00a.D
+4.585271565,51,2232.113668,4487.089612,Propiolonitrile,71.81945569,Std_soln_00,Std_soln_00.D
+4.790488232,55,235.0585713,243.9123731,"Hex-2-enoic acid, 6-(4-cyano-phenyl)-naphthalen-2-yl ester",61.37809385,Std_soln_07,Std_soln_07.D
+5.038087399,42.04,537.8702964,1036.150413,Borane carbonyl,78.8404204,Std_soln_00,Std_soln_00.D
+5.204418633,281,3138.404681,5674.163663,"4H-1-Benzopyran-4-one, 6,7-dimethoxy-3-phenyl-",67.67142704,Std_soln_07,Std_soln_07.D
+5.375726307,88,58618.40355,294869.1357,"Hexanoic acid, ethyl ester",99.35011811,Std_soln_00a,Std_soln_00a.D
+5.376121074,88.05,53462.18483,263866.0427,"Hexanoic acid, ethyl ester",99.32456762,Std_soln_00,Std_soln_00.D
+5.387309241,87.89,2139.524836,9896.488149,"Hexanoic acid, ethyl ester",80.6837734,Std_soln_07,Std_soln_07.D
+5.389953069,87.89,2139.524836,4415.381396,"1,2-Hydrazinedicarboxaldehyde",56.80996484,Std_soln_07,Std_soln_07.D
+5.460360601,43,14177.75118,125725.8982,Octanal,97.10302206,Std_soln_00a,Std_soln_00a.D
+5.463818905,56.04,3028.540813,30943.11385,Octanal,96.05008229,Std_soln_07,Std_soln_07.D
+5.469682077,43.05,2233.861173,12892.39576,"2-Hexen-1-ol, (E)-",77.4212099,Std_soln_00,Std_soln_00.D
+5.469949169,43,2221.856475,16150.39788,"2-Octen-1-ol, (E)-",77.99357091,Std_soln_00,Std_soln_00.D
+6.798384935,57,57409.9381,238776.2287,Undecane,98.6771852,Std_soln_00a,Std_soln_00a.D
+6.798701234,57,20362.85115,86270.05019,Undecane,97.10731572,Std_soln_00,Std_soln_00.D
+6.799430348,57.02,972.2233454,4068.040329,"Pentane, 2,2,3,4-tetramethyl-",88.01397782,Std_soln_07,Std_soln_07.D
+6.940865911,78,143.3783232,261.152423,"2-Hydroxypyridine, heptafluorobutyrate",55.88044279,Std_soln_00,Std_soln_00.D
+7.028021843,51,164.9831103,488.46653,"Ethane, 1,1,2,2-tetrafluoro-",60.58201432,Std_soln_07,Std_soln_07.D
+7.206578692,90.99,530.5478373,1800.438792,1-Phenyl-2-(4-methylphenyl)-diazene 1-oxide,58.06796729,Std_soln_00a,Std_soln_00a.D
+7.35764313,86,483.7668831,954.403126,"2-Propenamide, N-[2-(diethylamino)ethyl]-N,2-dimethyl-",67.20731723,Std_soln_07,Std_soln_07.D
+7.365246707,85.94,483.7668831,832.5005103,Isocrotonic acid,54.02365427,Std_soln_07,Std_soln_07.D
+7.480789837,41,369.3482378,783.038707,"N-(Trifluoroacetyl)-N,O,O',O''-tetrakis(trimethylsilyl)norepinephrine",51.73098,Std_soln_07,Std_soln_07.D
+7.956405145,39.92,344.1710053,558.9690082,Borane carbonyl,51.64533591,Std_soln_07,Std_soln_07.D
+8.227396843,84.91,264.7703718,1072.334241,1H-Tetrazol-5-amine,79.21851772,Std_soln_00a,Std_soln_00a.D
+8.229033559,84,544.0138138,906.4700739,Pipradrol,62.62271472,Std_soln_07,Std_soln_07.D
+8.286703432,120,68338.64902,209705.1878,Methyl salicylate,98.16152088,Std_soln_00a,Std_soln_00a.D
+8.296408204,119.99,10092.6559,30332.90221,Methyl salicylate,95.79911297,Std_soln_00,Std_soln_00.D
+8.299188894,151.98,5577.897051,8303.300918,"Oxazolo[4,5-b]pyridine-2(3H)-thione",51.35131891,Std_soln_00,Std_soln_00.D
+8.303958027,120,2389.303339,6476.478451,Methyl salicylate,86.29569222,Std_soln_07,Std_soln_07.D
+8.348031108,105,238.4950003,420.8119135,"3-Hexen-1-ol, benzoate, (Z)-",68.78156469,Std_soln_00,Std_soln_00.D
+8.348757856,77.98,273.3867752,619.1002836,"N-Benzyloxy-2,2-bis(trifluoromethyl)aziridine",73.7152934,Std_soln_00,Std_soln_00.D
+8.945276959,41,174.5365445,754.6105818,5-Oxa-6-azaspiro[3.4]oct-6-ene,52.9140807,Std_soln_07,Std_soln_07.D
+9.037030103,84,1328.342518,1850.155031,1-(1'-pyrrolidinyl)-2-butanone,60.85451282,Std_soln_00a,Std_soln_00a.D
+9.076861291,175.14,2244.374665,4094.369369,"Benzene, 1,3-bis(1,1-dimethylethyl)-",83.57122902,Std_soln_00a,Std_soln_00a.D
+9.35153663,85.94,353.7398072,644.9798263,N-Ethylbuphedrone,67.06602148,Std_soln_07,Std_soln_07.D
+9.846992927,78,339.2443518,1060.978417,"Pyridine, 2-nitro-",65.14287407,Std_soln_00,Std_soln_00.D
+9.918570636,49,423.8478471,1134.490289,Chloromethyl chloroacetate,67.85361401,Std_soln_07,Std_soln_07.D
+10.05251496,39.93,123.3233448,427.4039608,"Acetamide, N-[2,2,2-trichloro-1-(5-oxo-4-phenyl-5,6-dihydro-4H-[1,3,4]thiadiazin-2-ylamino)ethyl]-",55.08392808,Std_soln_00a,Std_soln_00a.D
+10.93942473,105,1636.541902,2927.873395,"Acetic acid, sodium salt",65.47176855,Std_soln_07,Std_soln_07.D
+11.57372486,77.98,143.5212199,269.8406034,"Benzenemethanol, .alpha.-butyl-4-iodo-",73.20825572,Std_soln_00a,Std_soln_00a.D
+11.69045818,363.19,17.54853001,49.13146711,"1-(2,6-Dimethylphenyl)-2-methyl-3-ethoxycarbonyl-5-(4-methoxyphenyl)-pyrrole",53.50569162,Std_soln_00a,Std_soln_00a.D
+12.15506453,44,258.8872542,671.2238175,"Acetamide, 2-fluoro-",79.46928073,Std_soln_00,Std_soln_00.D
+12.30318888,86,609.1908489,975.755278,"2,3-Butanedione",66.51493942,Std_soln_07,Std_soln_07.D
+12.52328349,40,676.9722757,857.2963984,Acetonitrile,58.02905973,Std_soln_07,Std_soln_07.D
+12.62616292,43,186.234993,392.6673528,2-Pyrimidinecarbonitrile,64.04172932,Std_soln_00,Std_soln_00.D
+12.64349424,84,581.6746072,1791.179246,"2-Pyrrolidinone, 5-(cyclohexylmethyl)-",51.78502947,Std_soln_07,Std_soln_07.D
+13.02349936,40,329.5265238,515.701883,Cyanopyrazine,61.6422945,Std_soln_00,Std_soln_00.D
+13.26182057,85.94,513.5401983,809.1084301,Pentedrone,62.82073944,Std_soln_00,Std_soln_00.D
+13.26416532,86,513.5401983,543.0087742,N-Ethylbuphedrone,64.64940487,Std_soln_00,Std_soln_00.D
+13.51233429,76.96,360.6205222,1297.450454,"Propanedinitrile, methylene-",73.12351952,Std_soln_00,Std_soln_00.D

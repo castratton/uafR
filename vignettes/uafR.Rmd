@@ -1,0 +1,51 @@
+---
+title: "uafR"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{uafR}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+# Reproducible automation of GC/MS data processing
+> Nothing in life is to be feared; it is only to be understood. -- Marie Curie
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+# library(uafR)
+standard_spread = readRDS("standard_spread.rds")
+```
+
+## Hello [Chemical] World!
+  Chemistry plays an active role in every aspect of human existence. Whether it be the digested molecules of our food, the solid matrices of plastic and metal that hold/run our technology, or the macromolecules that build and run our cells, the compositions are all chemical. To understand this aspect of our existence, advanced instruments exist that allow chemicals to be collected from any system and identified by name. These precise instruments also allow the number of molecules for each individual chemical to be quantified across analyzed samples. While the output from these machines is immediately available, preparing the raw output for interpretive statistics can require hours of trained labor per sample.
+  To remove the bottleneck that exists between the acquisition of raw GC/MS output and the interpretation of chemicals across experimental treatments, we have developed advanced algorithms that automate the entire process. Ours is the first GC/MS utility that accesses published information for every tentative chemical to intelligently select portions of each sample that describe user-specified query chemicals. This information makes ours the most accurate and advanced post-GC/MS processing application to date.
+
+## An Optimal GC/MS Workflow
+### Input Data Structure
+  The original workflow for uafR was developed using Agilent instruments and software. The recommended software for generating the necessary data in the default format (i.e. with correct column names) is Unknowns Analysis (). That said, any software or utility that generates the necessary information can be used with simple modifications (e.g. changing the column names).
+
+```{r}
+standard_input = read.csv("standard_data.csv", stringsAsFactors = F)
+head(standard_input)
+```
+
+### Spread It Out
+  The first step in the process is to convert the raw input to a format that downstream functions can work with. spreadOut() prepares the read in .CSV for intelligent *sorting* (using retention times and published masses) then *aggregation* of sample portions that describe a chemical (using all published names and top m/z peaks). A list containing all necessary information for mzExacto() is returned.
+  Contents of the list include matrices storing raw area values, chemical identities, m/z values, match factors, retention times, exact mass data (if published), and a unique code for each data point (retention time pasted to exact mass). The list also has a nested list with all published chemical names, top m/z peaks, exact mass, and structural fingerprints in SDF format.
+  
+```{r}
+head(standard_spread$Compounds)
+head(standard_spread$RT)
+head(standard_spread$MatchFactor)
+head(standard_spread$Mass)
+head(standard_spread$Area)
+head(standard_spread$rtBYmass)
+standard_spread$webInfo$Octanal
+```
+
+### Choose Your Chemicals

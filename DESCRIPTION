@@ -1,12 +1,31 @@
-Package: uafR
 Type: Package
-Title: What the Package Does (Title Case)
+Package: uafR
+Title: Automates GC/MS Data Processing
 Version: 0.1.0
-Author: Who wrote it
-Maintainer: The package maintainer <yourself@somewhere.net>
+Authors@R: c(
+    person("Chase","Stratton",email = "stratton@landinstitute.org", role = c("cre","aut"))
+    person("Philipp","Hansen",email = "hansen@landinstitute.org", role = "aut")
+    person("Yvonne","Thompson",email = "thompsony@landinstitute.org", role = "aut")
+    person("Konilo","Zio",email = "konilo.zio@gmail.com", role = "aut")
+    person("William R.","Morrison III",email = "william.morrison@usda.org", role = "aut")
+    person("Ebony","Murrell",email = "murrell@landinstitute.org", role = "aut")) 
+Maintainer: <stratton@landinstitute.org>
 Description: More about what it does (maybe more than one line)
     Use four spaces when indenting paragraphs within the Description.
 License: What license is it under?
+URL: https://github.com/castratton/uafR
+BugReports: https://github.com/castratton/uafR/issues
+Depends:
+    R (>= 4.2.2)
+Imports:
+    ChemmineR (>= 3.50.0)
+    webchem (>= 1.2.0)
+    jsonlite (>= 1.8.4)
 Encoding: UTF-8
+Language: en-US
 LazyData: true
 RoxygenNote: 7.2.3
+Suggests: 
+    knitr,
+    rmarkdown
+VignetteBuilder: knitr
