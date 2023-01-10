@@ -2,7 +2,7 @@
 
 
 
-# GCMS alignment 
+# uafR 
 ## Objective
 
 This working repository is dedicated to the development of an R package capable of streamlining the processing of GCMS outputs.
