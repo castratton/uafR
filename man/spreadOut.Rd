@@ -11,27 +11,26 @@ spreadOut(input)
 compound identities across all samples.}
 }
 \value{
-A list with matrices storing raw area values, chemical identities, 
+A list with matrices storing raw area values, chemical identities,
 m/z values, match factors, retention times, exact mass data (if published),
 and a unique code for each data point (retention time pasted to exact mass).
 The list also contains an additional list with all published chemical names,
 top m/z peaks, exact mass, and structural fingerprints in SDF format.
 }
 \description{
-Prepares input GC/MS data for subsequent functions. 
-Relevant information for every instance of every chemical across 
+Prepares input GC/MS data for subsequent functions.
+Relevant information for every instance of every chemical across
 all samples is placed on the same matrices with no overlaps. Chemicals
 are also searched on PubChem and all published names, published m/z
-histograms, exact mass data, and structural fingerprints (in SDF 
+histograms, exact mass data, and structural fingerprints (in SDF
 format) are downloaded and stored as a large list.
 }
 \details{
 Automatically prepares .CSV input containing retention time,
-detected m/z, component area, compound name, match factor, and sample 
+detected m/z, component area, compound name, match factor, and sample
 or file name for downstream uafR functions.
 }
 \examples{
-input = data(example_dat)
-spreadOut(input)
+spreadOut(standard_data)
 
 }

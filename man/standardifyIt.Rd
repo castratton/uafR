@@ -2,7 +2,7 @@
 % Please edit documentation in R/standardifyIT.R
 \name{standardifyIt}
 \alias{standardifyIt}
-\title{Post-merge function to quantify compound emission rates relative to internal or external standard(s).}
+\title{standardifyIt}
 \usage{
 standardifyIt(
   data_in,
@@ -16,10 +16,25 @@ standardifyIt(
 )
 }
 \arguments{
-\item{input}{uafR 'theMerger()' output.}
+\item{data_in}{mzExacto output}
+
+\item{standard_type}{specifies type of standardization to perform ("Internal" or "External")}
+
+\item{standard_used}{specifies the standard used as an internal standard (name your chemical)}
+
+\item{IS_ng}{specifies the quantified number of molecules in the standard}
+
+\item{IS_uL}{specifies the amount of standard added to the samples}
+
+\item{collect_time}{specifies how long samples were collected for (e.g. hour(s))}
+
+\item{sample_amt}{specifies how many individuals/items the samples were collected from}
+
+\item{ES_calibration}{input matrix from which calibrations will be fit for external standardization}
 }
 \description{
-If using internal standard (IS), will use the 'standardify()' function with user-specified 
-inputs. If using external standard (ES), will require an input "matrix" from which standard curves will 
-be derived.
+Post-merge function to quantify compound emission rates relative to internal or external
+standard(s). If using internal standard (IS), will use the contained `standardify()` function with
+user-specified inputs. If using external standard (ES), an input "matrix" from which standard curves
+can be derived.
 }

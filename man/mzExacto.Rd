@@ -7,33 +7,30 @@
 mzExacto(data_in, chemicals)
 }
 \arguments{
-\item{data_in}{User defined object containing the large list output from 
-"spreadOut()."}
+\item{data_in}{the list output from `spreadOut()`}
 
-\item{chemicals}{A vector containing chemical names in IUPAC notation 
-(preferred).}
+\item{chemicals}{A vector containing chemical names in IUPAC notation}
 }
 \value{
-A data frame containing chemical names [chemicals], their 
-optimal retention time, exact mass, best identified match factor, and 
+A data frame containing chemical names(`chemicals`), their
+optimal retention time, exact mass, best identified match factor, and
 aggregated component area across every sample it was identified in.
 }
 \description{
-Uses the output from "spreadOut" and a list of chemicals 
-to extract data for most likely matches. Samples that contain a chemical 
-have all identified area(s) aggregated. The most likely identifications 
-are determined by prioritizing matches of exact chemical names, followed 
-by m/z overlaps within precise retention time windows that are determined 
+Uses the output from "spreadOut" and a list of chemicals
+to extract data for most likely matches. Samples that contain a chemical
+have all identified area(s) aggregated. The most likely identifications
+are determined by prioritizing matches of exact chemical names, followed
+by m/z overlaps within precise retention time windows that are determined
 by published molecular masses.
 }
 \details{
-Communicates with PubChem to collect information on every search 
-chemical [chemicals]. Uses this information to intelligently search the 
-raw "spreadOut" data for samples where a chemical exists.
+Communicates with PubChem to collect information on every search
+chemical. Uses this information to intelligently search the
+raw `spreadOut()` data for samples where a chemical exists.
 }
 \examples{
-data_in = readRDS("dat_spread.RDS")
-chemicals = c("ethyl hexanoate","methyl salicylate","octanal","undecane")
-data_exacto = mzExacto(data_in, chemicals)
+query_chemicals = c("Ethyl hexanoate","Methyl salicylate","Octanal","Undecane")
+mzExacto(standard_spread, query_chemicals)
 
 }
