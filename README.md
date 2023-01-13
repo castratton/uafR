@@ -41,7 +41,3 @@ chem_library = data.frame(cbind(GroupA, GroupB))
 
 query_categorated = categorate(query_chemicals, chem_library, input_format = "wide")
 ```
-
-![]("inst/images/TLI_USDA.png")
-
-<img src="inst/images/TLI_USDA.png" style="display: block; margin: 0 auto;" width=40px>
