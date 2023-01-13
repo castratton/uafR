@@ -27,9 +27,7 @@ Authors@R:
           family = "Murrell", 
           role = "aut", 
           email = "murrell@landinstitute.org"))
-Description: This R package automates chemical processing for tentative chemical 
-identities in mass spectrometry workflows. It includes a powerful set of functions 
-that make chemical interpretations accurate and efficient.
+Description: This R package automates chemical processing for tentative chemical identities in mass spectrometry workflows. It includes a powerful set of functions that make chemical interpretations accurate and efficient.
 License: MIT + file LICENSE
 URL: https://github.com/castratton/uafR
 BugReports: https://github.com/castratton/uafR/issues
