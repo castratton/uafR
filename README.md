@@ -10,5 +10,5 @@ Create an R package that automates GC/LC-MS processing.
 
 ## Repository structure
 
-* Sample data are stored in "\data"
-* Functions are in "\R"
+* Sample data are stored in "/data"
+* Functions are in "/R"
