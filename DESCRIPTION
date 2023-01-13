@@ -27,8 +27,9 @@ Authors@R:
           family = "Murrell", 
           role = "aut", 
           email = "murrell@landinstitute.org"))
-Description: More about what it does (maybe more than one line) Use four
-    spaces when indenting paragraphs within the Description.
+Description: This R package automates chemical processing for tentative chemical 
+identities in mass spectrometry workflows. It includes a powerful set of functions 
+that make chemical interpretations accurate and efficient.
 License: MIT + file LICENSE
 URL: https://github.com/castratton/uafR
 BugReports: https://github.com/castratton/uafR/issues
