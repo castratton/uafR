@@ -58,6 +58,7 @@ mzExacto <- function(data_in, chemicals){
   custom_min = function(x) {if (length(x)>0) min(x) else 0}
   custom_max = function(x) {if (length(x)>0) max(x) else 0}
 
+  chemicals = unique(chemicals)
   area_matrix = data_in$Area
   probs_matrix = data_in$MatchFactor
   cmp_matrix = data_in$Compounds

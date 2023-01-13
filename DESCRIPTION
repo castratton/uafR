@@ -2,31 +2,38 @@ Type: Package
 Package: uafR
 Title: Automates GC/MS Data Processing
 Version: 0.1.0
-Authors@R: c(
-    person("Chase","Stratton",email = "stratton@landinstitute.org", role = c("cre","aut")),
-    person("Philipp","Hansen",email = "hansen@landinstitute.org", role = "aut"),
-    person("Yvonne","Thompson",email = "thompsony@landinstitute.org", role = "aut"),
-    person("Konilo","Zio",email = "konilo.zio@gmail.com", role = "aut"),
-    person("William R.","Morrison III",email = "william.morrison@usda.org", role = "aut"),
-    person("Ebony","Murrell",email = "murrell@landinstitute.org", role = "aut")) 
-Maintainer: <stratton@landinstitute.org>
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
+Authors@R: 
+ c(person(given = "Chase", 
+          family = "Stratton", 
+          role = c("aut", "cre"), 
+          email = "stratton@landinstitute.org"), 
+   person(given = "Philipp", 
+          family = "Hansen", 
+          role = "aut",
+          email = "hansen@landinstitute.org"), 
+   person(given = "Yvonne", 
+          family = "Thompson", 
+          role = "aut", 
+          email = "thompsony@landinstitute.org"), 
+   person(given = "Konilo", 
+          family = "Zio", 
+          email = "konilo.zio@gmail.com", 
+          role = "aut"), 
+   person(given = c("William", "R."), 
+          family = c("Morrison", "III"), 
+          email = "william.morrison@usda.org", 
+          role = "aut"), 
+   person(given = "Ebony", 
+          family = "Murrell", 
+          role = "aut", 
+          email = "murrell@landinstitute.org"))
+Description: More about what it does (maybe more than one line) Use four
+    spaces when indenting paragraphs within the Description.
 License: MIT + file LICENSE
 URL: https://github.com/castratton/uafR
 BugReports: https://github.com/castratton/uafR/issues
 Depends:
     R (>= 4.2)
-Encoding: UTF-8
-Language: en-US
-LazyData: true
-RoxygenNote: 7.2.3
-Suggests: 
-    knitr,
-    rmarkdown,
-    testthat (>= 3.0.0)
-VignetteBuilder: knitr
-Config/testthat/edition: 3
 Imports: 
     ChemmineR,
     fmcsR,
@@ -35,3 +42,15 @@ Imports:
     stats,
     utils,
     webchem
+Suggests: 
+    knitr,
+    rmarkdown,
+    spelling,
+    testthat (>= 3.0.0)
+VignetteBuilder: 
+    knitr
+Config/testthat/edition: 3
+Encoding: UTF-8
+Language: en-US
+LazyData: true
+RoxygenNote: 7.2.3

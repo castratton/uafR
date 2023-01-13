@@ -48,3 +48,4 @@ vignettes/*.pdf
 .html
 >>>>>>> 1a167b825293dfedeb466693bb48fea638c944d9
 inst/doc
+revdep/
