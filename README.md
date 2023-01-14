@@ -17,9 +17,9 @@ You can install the development version of uafR from [GitHub](https://github.com
 devtools::install_github("castratton/uafR")
 ```
 
-## Example
+## Example GC-MS + Cheminformatics Workflows
 
-This is a basic example which shows you how to solve a common problem:
+These are basic examples of how to use core functions:
 
 ``` r
 library(uafR)
