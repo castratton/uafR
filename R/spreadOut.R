@@ -78,7 +78,7 @@ spreadOut = function(input){
 
    row.names(gcms_spread_mass) = paste0(input$Component.RT, input$Component.Area, input$Base.Peak.MZ)
    colnames(gcms_spread_mass) = unique(input$File.Name)
-   ##################################################################################################
+
    tentative_identities = as.character(paste0(input$Compound.Name))
    tentative_RTs = as.numeric(paste0(input$Component.RT))
    num_tentative = length(tentative_identities)
@@ -87,7 +87,7 @@ spreadOut = function(input){
 
    all_tentative_list = list()
    all_search_list = list()
-   # num_unique_CMPs
+
    tentative_masses = c()
    searchNames_published = list()
 
@@ -96,9 +96,7 @@ spreadOut = function(input){
       current_CMP = tentative_identities[chem]
       current_RT = tentative_RTs[chem]
       chem_cid = tryCatch(webchem::get_cid(tentative_identities[chem]), error = function(error) {return(NA)})
-      # chem_cid = get_cid(CMPs_tmp)
-      # cat(paste0('[', w, '/', length(compounds), ']', '-', CMPs_tmp, '\n'))
-      # cat(CMPs_tmp, )
+
       if(is.na(chem_cid[[1,2]])){
          smiles_url = paste0("https://cactus.nci.nih.gov/chemical/structure/",current_CMP,"/smiles")
          inchi_url = paste0("https://cactus.nci.nih.gov/chemical/structure/",current_CMP,"/stdinchikey")
@@ -125,18 +123,11 @@ spreadOut = function(input){
 
       chem_url = paste0('https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/compound/', chem_cid,'/JSON?heading=GC-MS')
 
-      #################################################################################################################
       chem_names_url = paste0('https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/compound/', chem_cid,'/JSON?heading=Depositor-Supplied+Synonyms')
 
-      # chem_info = tryCatch(jsonlite::fromJSON(chem_url),
-      #                      error = function(error) {return("None")})
-      # getPubChemJSON(chem_names_url)
       chem_names_info = tryCatch(jsonlite::fromJSON(chem_names_url),
                                  error = function(error) {return("None")})
       if(chem_names_info == "None"){next}
-      # if(chem_info == "None"){next}
-      # chem_json_dat = data.frame(unlist(chem_info$Record$Section))
-      # colnames(chem_json_dat) = "info"
 
       chem_names_json_dat = data.frame(unlist(chem_names_info$Record$Section))
       colnames(chem_names_json_dat) = "info"
@@ -146,8 +137,6 @@ spreadOut = function(input){
       colnames(all_current_chem_names) = "names"
 
       searchNames_published[[chem]] = unique(all_current_chem_names$names)
-      ##################################################################################################################
-      # all_search_list[[chem]] = unique(all_current_chem_names$names)
 
       chem_info = tryCatch(jsonlite::fromJSON(chem_url),
                            error = function(error) {return("None")})
@@ -158,7 +147,6 @@ spreadOut = function(input){
 
          chem_info = tryCatch(jsonlite::fromJSON(chem_url),
                               error = function(error) {return("None")})
-         # mz_primary_alt = "1a"
          alt_trigger = T
       } else{}
 
@@ -258,19 +246,6 @@ spreadOut = function(input){
 
    if(length(all_search_list) < length(tentative_identities)){all_search_list[[length(tentative_identities)]] = "NA"}
    names(all_search_list) = tentative_identities
-
-   # tentative_mass_split = strsplit(tentative_masses, ';')
-   # tentative_mass = as.numeric(paste0(sapply(tentative_mass_split, '[[', 1)))
-   # tentative_CMP1 = as.character(paste0(sapply(tentative_mass_split, '[[', 2)))
-   # tentative_CMP2 = as.character(paste0(sapply(tentative_mass_split, '[[', 3)))
-   # tentative_df = data.frame(cbind(tentative_mass, tentative_CMP1, tentative_CMP2))
-   # colnames(tentative_df) = c("Mass", "Chemical1", "Chemical2")
-   # rownames(tentative_df) = NULL
-
-   # tentative_df[sort(tentative_df$Mass, decreasing = T),]
-   # tentative_mass_df = do.call(rbind.data.frame, tentative_mass_split)
-   # colnames(tentative_mass_df) = NULL
-   ################################################################################
 
    sample_names = unique(input$File.Name)
    compound_names = unique(input$Compound.Name)
