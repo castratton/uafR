@@ -10,7 +10,7 @@ An R package that automates GC/LC-MS processing.
 
 ## Installation
 
-You can install the development version of uafR from [GitHub](https://github.com/) with:
+When made public, you can install the development version of uafR from [GitHub](https://github.com/) with:
 
 ``` r
 # install.packages("devtools")
