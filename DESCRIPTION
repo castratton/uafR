@@ -14,7 +14,7 @@ Authors@R:
    person(given = "Yvonne", 
           family = "Thompson", 
           role = "aut", 
-          email = "thompsony@landinstitute.org"), 
+          email = "ythompson@landinstitute.org"), 
    person(given = "Konilo", 
           family = "Zio", 
           email = "konilo.zio@gmail.com", 
