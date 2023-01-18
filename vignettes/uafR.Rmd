@@ -39,13 +39,13 @@ query_categ = readRDS("query_categorated.rds")
 standard_categ = readRDS("standard_categorated.rds")
 ```
 
-## <span style="color: rgba(104, 0, 96, 1); font-size:120%; background-color: rgba(0, 0, 0, 0)">Hello [Chemical] World!</span>
+## <span style="color: rgba(104, 0, 96, 1); font-size:120%; background-color: rgba(0, 0, 0, 0.01)">Hello [Chemical] World!</span>
 
 |        <span style="color: black; font-size:115%; background:inherit">Chemistry plays an active role in every aspect of human existence. Whether it be the digested molecules of our food, the solid matrices of plastic and metal that hold/run our technology, or the macromolecules that build and run our cells, the compositions are all chemical. To understand this aspect of our existence, there are advanced instruments and techniques that identify chemicals of any system to name. These precise instruments also allow the number of molecules for each individual chemical to be quantified across analyzed samples. While the output from these machines is immediately available, preparing the raw output for interpretive statistics can require hours/days of trained labor per sample and months per experiment.  </span>
 |  
-|        <span style="color: black; font-size:115%; background:inherit">To remove the bottleneck that exists between the acquisition of raw GC/MS output and the interpretation of chemicals across experimental treatments, we have developed advanced algorithms that automate the entire process. Ours is the first GC/MS utility that accesses published information for every tentative chemical to intelligently select portions of each sample that describe user-specified query chemicals. This information makes uafR the most accurate and advanced post-GC/MS processing application to date.</span>
+|        <span style="color: black; font-size:115%; background:inherit">To remove the bottleneck that exists between the acquisition of raw GC/MS output and the interpretation of chemicals across experimental treatments, we have developed advanced algorithms that automate the entire process. Ours is the first GC/MS utility that accesses published information for every tentative compound to intelligently select portions of each sample that describe user-specified query chemicals. This information makes uafR the most accurate and advanced post-GC/MS processing application to date.</span>
 
-## <span style="color: rgba(104, 0, 96, 1); font-size:120%; background-color: rgba(0, 0, 0, 0)">New Standard, GC/MS Workflows</span>
+## <span style="color: rgba(104, 0, 96, 1); font-size:120%; background-color: rgba(0, 0, 0, 0.01)">New Standard, Mass Spectrometry Workflows</span>
 ### <span style="color: rgba(104, 0, 96, 1); font-size:120%; background-color: rgba(0, 0, 0, 0)">Input Data Structure</span>
 |        <span style="color: black; font-size:115%; background:inherit">The original workflow for uafR was developed using Agilent instruments and software. The recommended software for generating the necessary data in the default format (i.e. with correct column names) is [Unknowns Analysis](https://www.agilent.com/cs/library/usermanuals/public/G3335-90187_Unknowns_Analysis_Familiarization-en.pdf). That said, any software or utility that generates the necessary information can be used with simple modifications (e.g. changing the column names).</span>
 
@@ -61,7 +61,7 @@ standard_categ = readRDS("standard_categorated.rds")
 8.296408       |119.99            |30332.9022        |Methyl salicylate           |95.79911        |Std_soln_00    
 8.303958       |120.00            |6476.4785         |Methyl salicylate           |86.29569        |Std_soln_07    
 8.348031       |105.00            |420.8119          |3-Hexen-1-ol, benzoate, (Z)-|68.78156        |Std_soln_00    
-...            |...               |...               |...                         |...             |...          
+**...**        |**...**           |**...**           |**...**                     |**...**         |**...**         
 
 
 ### <span style="color: rgba(104, 0, 96, 1); font-size:120%; background-color: rgba(0, 0, 0, 0)">Spread It Out</span>
@@ -79,7 +79,7 @@ Sample_1                    |  Sample_2       |  Sample_3
 Methyl salicylate           |\<NA\>           |\<NA\>    
 \<NA\>                      |Methyl salicylate|\<NA\>      
 3-Hexen-1-ol, benzoate, (Z)-|\<NA\>           |\<NA\>        
-...                         |...              |...             
+**...**                     |**...**          |**...**           
 
 
 2. <span style="color: black; font-size:115%; background:inherit">**retention times**</span>
@@ -93,7 +93,7 @@ Sample_1       |  Sample_2       |  Sample_3
 8.296408204    |\<NA\>           |\<NA\>    
 \<NA\>         |8.303958027      |\<NA\>      
 8.348031108    |\<NA\>           |\<NA\>        
-...            |...              |...             
+**...**        |**...**          |**...**           
 
 3. <span style="color: black; font-size:115%; background:inherit">**match factors**</span>
 ```{r, echo = F}
@@ -106,7 +106,7 @@ Sample_1       |  Sample_2       |  Sample_3
 95.79911297    |\<NA\>           |\<NA\>    
 \<NA\>         |86.29569222      |\<NA\>      
 68.78156469    |\<NA\>           |\<NA\>        
-...            |...              |...             
+**...**        |**...**      |**...**             
 
 4. <span style="color: black; font-size:115%; background:inherit">**captured M/Z value**</span>
 ```{r, echo = F}
@@ -119,7 +119,7 @@ Sample_1       |  Sample_2       |  Sample_3
 119.99         |\<NA\>           |\<NA\>    
 \<NA\>         |120              |\<NA\>      
 105            |\<NA\>           |\<NA\>        
-...            |...              |...             
+**...**        |**...**          |**...**       
 
 5. <span style="color: black; font-size:115%; background:inherit">**exact mass data (if published)**</span>
 ```{r, echo = F}
@@ -132,7 +132,7 @@ Sample_1       |  Sample_2       |  Sample_3
 152.047344113  |\<NA\>           |\<NA\>    
 \<NA\>         |152.047344113    |\<NA\>      
 204.115029749  |\<NA\>           |\<NA\>        
-...            |...              |...             
+**...**        |**...**          |**...**         
 
 6. <span style="color: black; font-size:115%; background:inherit">**raw area values**</span>
 ```{r, echo = F}
@@ -145,7 +145,7 @@ Sample_1       |  Sample_2       |  Sample_3
 30332.90221    |\<NA\>           |\<NA\>    
 \<NA\>         |6476.478451      |\<NA\>      
 420.8119135    |\<NA\>           |\<NA\>        
-...            |...              |...             
+**...**        |**...**          |**...**       
 
 7. <span style="color: black; font-size:115%; background:inherit">**a unique code for each input data point (retention time pasted to exact mass)**</span>
 ```{r, echo = F}
@@ -159,7 +159,7 @@ Sample_1                    |  Sample_2                       |  Sample_3
 8.296408204 \| 152.047344113|\<NA\>                           |\<NA\>    
 \<NA\>                      |8.303958027 \| 152.047344113     |\<NA\>      
 8.348031108 \| 204.115029749|\<NA\>                           |\<NA\>        
-...                         |...                              |...             
+**...**                     |**...**                          |**...**             
 
 8. <span style="color: black; font-size:115%; background:inherit">**and a nested list with**:   </span>
 
@@ -338,7 +338,7 @@ FDA_df[!duplicated(FDA_df),]
 8.296408       |119.99            |30332.9022        |Methyl salicylate           |95.79911        |Std_soln_00    
 8.303958       |120.00            |6476.4785         |Methyl salicylate           |86.29569        |Std_soln_07    
 8.348031       |105.00            |420.8119          |3-Hexen-1-ol, benzoate, (Z)-|68.78156        |Std_soln_00    
-...            |...               |...               |...                         |...             |...          
+**...**        |**...**           |**...**           |**...**                     |**...**         |**...**          
   
 |        <span style="color: black; font-size:115%; background:inherit">Which still leaves some "junk" that our analysis would probably be better without. To remedy this, we could - 1) `categorate()` all of the chemicals (`Compound.Name`) at this `Match.Factor` then subset by some feature(s); or, 2) continue to adjust the `Match.Factor` until the data make more chemical sense.</span> 
 
@@ -355,13 +355,13 @@ FDA_df[!duplicated(FDA_df),]
 8.296408       |119.99            |30332.9022        |Methyl salicylate           |95.79911        |Std_soln_00    
 8.303958       |120.00            |6476.4785         |Methyl salicylate           |86.29569        |Std_soln_07    
 \<NA\>         |\<NA\             |\<NA\>            |\<NA\>                      |\<NA\>          |\<NA\>      
-...            |...               |...               |...                         |...             |...          
+**...**        |**...**           |**...**           |**...**                     |**...**         |**...**         
 
 |        <span style="color: black; font-size:115%; background:inherit">While it may seem as though all is well from this fraction of the data, it is important to remember that it is only a peek at what is lost or gained from the `Match.Factor` adjustments. To emphasize this point, consider what is lost by this adjustment:</span>
 
 <span style="color: black; font-size:135%; background:inherit"> `query_chems = standard_dat$Compound.Name[standard_dat$Match.Factor >= 90]`</span>
 
-|        <span style="color: black; font-size:115%; background:inherit">The high level of stochasticity behind every data point in a GC/MS analysis is another reason previous algorithms fail when assigning area values across samples. ***Hopefully*** more simply put -- with chemicals, things don't always go exactly the same. While this has historically driven manual over data-driven workflows, it could also be argued that it drives subjectivity into chemical analysis. Modern programming languages allow even complex workflows to be automated. By accessing published information we are able to mirror the optimal manual workflow for chemicals that were either misread in a sample or buried by similarities. This allows razor-sharp precision when excising from "gray" regions of the data.  </span>
+|        <span style="color: black; font-size:115%; background:inherit">The high level of stochasticity behind every data point in a mass spectrometry analysis is another reason previous algorithms fail when assigning area values across samples. ***Hopefully*** more simply put -- with chemicals, things don't always go exactly the same. While this has historically driven manual over data-driven workflows, it could also be argued that it drives subjectivity into chemical analysis. Modern programming languages allow even complex workflows to be automated. By accessing published information we are able to mirror the optimal manual workflow for chemicals that were either misread in a sample or buried by similarities. This allows razor-sharp precision when excising from "gray" regions of the data.  </span>
 |        <span style="color: black; font-size:115%; background:inherit">In this example, the known chemicals were found simply by sub-setting with `Match.Factor`:</span>
 
 <span style="color: black; font-size:135%; background:inherit"> `query_chems = standard_dat$Compound.Name[standard_dat$Match.Factor > 89]`</span>
@@ -376,9 +376,6 @@ Ethyl hexanoate   |144.115029749|5.379718874|99.35011811|263866.0427 |9896.48814
 Methyl salicylate |152.047344113|8.295689887|98.16152088|30332.90221 |6476.478451|209705.1878
 Undecane          |156.187800766|6.129191467|98.6771852 |86270.05019 |243.9123731|238776.2287
 
-|        <span style="color: black; font-size:115%; background:inherit">But, the combined `Match.Factor` and `categorate()` approach can and should be the new standard for experiments that yield a large amount of complex chemical data.</span>
-  
-  
-  
+|        <span style="color: black; font-size:115%; background:inherit">But, the combined `Match.Factor` and `categorate()` approach can churn through a large amount of complex chemical data faster and with more accuracy than any manual protocol for unknown compound selections.</span>
   
 ***
