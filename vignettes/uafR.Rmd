@@ -12,7 +12,6 @@ vignette: >
 <span style="color: purple; font-size:215%; background:none">Nothing in life is to be feared; it is only to be understood.</span>   
 <span style="color: black; font-size:200%; background:none">--Marie Curie</span>
 
- 
 
 ***
 
@@ -41,9 +40,9 @@ standard_categ = readRDS("standard_categorated.rds")
 
 ## <span style="color: rgba(104, 0, 96, 1); font-size:120%; background-color: rgba(0, 0, 0, 0.01)">Hello [Chemical] World!</span>
 
-|        <span style="color: black; font-size:115%; background:inherit">Chemistry plays an active role in every aspect of human existence. Whether it be the digested molecules of our food, the solid matrices of plastic and metal that hold/run our technology, or the macromolecules that build and run our cells, the compositions are all chemical. To understand this aspect of our existence, there are advanced instruments and techniques that identify chemicals of any system to name. These precise instruments also allow the number of molecules for each individual chemical to be quantified across analyzed samples. While the output from these machines is immediately available, preparing the raw output for interpretive statistics can require hours/days of trained labor per sample and months per experiment.  </span>
+|        <span style="color: black; font-size:115%; background:inherit">Chemistry plays an active role in every aspect of human existence. Whether it be the digested molecules of our food, the solid matrices of plastic and metal that comprise our technology, or the macromolecules that build and run our cells, the compositions are all chemical. To understand this aspect of our existence, there are advanced instruments and techniques that identify chemicals of any system to name. These precise instruments also allow the number of molecules for each individual chemical to be quantified across analyzed samples. While the output from these machines is immediately available, preparing the raw output for interpretive statistics can require hours/days of trained labor per sample and months per experiment.  </span>
 |  
-|        <span style="color: black; font-size:115%; background:inherit">To remove the bottleneck that exists between the acquisition of raw GC/MS output and the interpretation of chemicals across experimental treatments, we have developed advanced algorithms that automate the entire process. Ours is the first GC/MS utility that accesses published information for every tentative compound to intelligently select portions of each sample that describe user-specified query chemicals. This information makes uafR the most accurate and advanced post-GC/MS processing application to date.</span>
+|        <span style="color: black; font-size:115%; background:inherit">To remove the bottleneck that exists between the acquisition of raw mass spectrometry output and the interpretation of chemicals across experimental treatments, we have developed advanced algorithms that automate the entire process. Ours is the first GC/MS utility that accesses published information for every tentative compound to intelligently select portions of each sample that describe user-specified query chemicals. This information makes uafR the most accurate and advanced post-GC/MS processing application to date.</span>
 
 ## <span style="color: rgba(104, 0, 96, 1); font-size:120%; background-color: rgba(0, 0, 0, 0.01)">New Standard, Mass Spectrometry Workflows</span>
 ### <span style="color: rgba(104, 0, 96, 1); font-size:120%; background-color: rgba(0, 0, 0, 0)">Input Data Structure</span>

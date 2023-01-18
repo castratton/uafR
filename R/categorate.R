@@ -90,7 +90,6 @@ categorate = function(compounds, chemical_library, input_format = "wide"){
     name_lib=colnames(data)
     names(librarylist) <- name_lib
     assign("librarylist",librarylist, envir = parent.frame())
-
    }
 
    if(input_Format == "long" && output_Format =="vectors"){
@@ -114,13 +113,13 @@ categorate = function(compounds, chemical_library, input_format = "wide"){
                        "KEGG_df", "FEMA_df",
                        "FDA_SPL_df", "Chemical")
   colnames(CMP_info_df) = Chem_data_source
-  # compounds = c("linalool", "aspartame")
+
   for(w in 1:length(compounds)){
    CMPs_tmp = compounds[w]
 
    chem_cid = webchem::get_cid(CMPs_tmp)
    cat(paste0('[', w, '/', length(compounds), ']', '-', CMPs_tmp, '\n'))
-   # cat(CMPs_tmp, )
+
    if(is.na(chem_cid[[1,2]])){
     smiles_url = paste0("https://cactus.nci.nih.gov/chemical/structure/",CMPs_tmp,"/smiles")
     inchi_url = paste0("https://cactus.nci.nih.gov/chemical/structure/",CMPs_tmp,"/stdinchikey")
@@ -151,7 +150,6 @@ categorate = function(compounds, chemical_library, input_format = "wide"){
    FEMA_url = paste0('https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/compound/',chem_cid,'/JSON?source=Flavor+and+Extract+Manufacturers+Association+(FEMA)')
    MeSH_url = paste0('https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/compound/',chem_cid,'/JSON?source=Medical+Subject+Headings+(MeSH)')
    FDA_SPL_url = paste0('https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/compound/',chem_cid,'/JSON?source=FDA/SPL+Indexing+Data')
-   # CAMEO_url = paste0('https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/compound/',current_cid,'/JSON?source=CAMEO+Chemicals')
 
    reactives_info = tryCatch(jsonlite::fromJSON(reactives_url), error = function(error) {return("None")})
    LOTUS_info = tryCatch(jsonlite::fromJSON(LOTUS_url), error = function(error) {return("None")})
@@ -159,7 +157,6 @@ categorate = function(compounds, chemical_library, input_format = "wide"){
    FEMA_info = tryCatch(jsonlite::fromJSON(FEMA_url), error = function(error) {return("None")})
    MeSH_info = tryCatch(jsonlite::fromJSON(MeSH_url), error = function(error) {return("None")})
    FDA_SPL_info = tryCatch(jsonlite::fromJSON(FDA_SPL_url), error = function(error) {return("None")})
-   # CAMEO_info = tryCatch(jsonlite::fromJSON(CAMEO_url), error = function(error) {return("None")})
 
    if (reactives_info != "None"){
     reactives_value = as.matrix(unlist(reactives_info))
@@ -273,18 +270,17 @@ categorate = function(compounds, chemical_library, input_format = "wide"){
    SDF_input_set = ChemmineR::read.SDFset(url_compounds)
   }
 
-###################################################################################################
   personalLib(chemical_library, input_format, output_Format = "list")
   categories = names(chemical_library)
 
   cid_dict = list()
-  # i = 3
+
   for(i in 1:length(categories)){
     cids_current = c()
     chemicals_tmp = paste0(chemical_library[[i]])
     chemicals_tmp = chemicals_tmp[!(chemicals_tmp=="")]
     cat(paste0('[', i, '/', length(categories), ']', '-', categories[i], '\n'))
-    # k = 3
+
     for(k in 1:length(chemicals_tmp)){
       CMPs_tmp = chemicals_tmp[k]
 
@@ -310,15 +306,11 @@ categorate = function(compounds, chemical_library, input_format = "wide"){
       chem_cid = gsub("NA",
                       "180",
                       chem_cid)
-      # if(chem_cid == "180"){alt_trigger = T}
 
       cids_current = c(cids_current, chem_cid)
     }
     cid_dict[[i]] = cids_current
   }
-  ###########################################################################################
-  # length(cid_dict)
-  # length(cid_dict[[1]])
   SDF_library_list = list()
 
   for(t in 1:length(cid_dict)){
@@ -345,10 +337,6 @@ categorate = function(compounds, chemical_library, input_format = "wide"){
 
    SDF_library_list[[t]] = current_set
   }
-  ###########################################################################################
-
-  # SDF_input_set
-  # SDF_library_list
 
   functional_df = data.frame(matrix(ncol = length(SDF_library_list)+1, nrow = 0))
   functional_columns = names(librarylist)
@@ -368,8 +356,6 @@ categorate = function(compounds, chemical_library, input_format = "wide"){
   colnames(SDF_info_df) = SDF_columns
   ChemmineR::cid(SDF_input_set) = ChemmineR::makeUnique(ChemmineR::cid(SDF_input_set))
 
-  # cat(paste0('[', t, '/', length(cid_dict), ']', '-', names(SDF_library_list[[t]]), '\n'))
-  # SDF = 1
   for(SDF in 1:length(SDF_input_set)){
 
    Ncharges = tryCatch(sapply(ChemmineR::bonds(SDF_input_set[SDF], type="charge"),length), error = function(error) {return("None")})
@@ -396,18 +382,16 @@ categorate = function(compounds, chemical_library, input_format = "wide"){
    row.names(SDF_info_row) = NULL
    colnames(SDF_info_row) = SDF_columns
    SDF_info_df = rbind(SDF_info_df, SDF_info_row)
-   # library_matches = list()
+
    functional_row = data.frame(t(rep("No", ncol(functional_df))))
    matchems_row = data.frame(t(rep("No", ncol(matchems_df))))
-   # SDF = 1
-   # v = 2
+
    for(v in 1:length(SDF_library_list)){
     batch_test_set = tryCatch(fmcsR::fmcsBatch(SDF_input_set[SDF],
                                         SDF_library_list[[v]],
                                         au = 0,
                                         bu = 0),
                               error = function(error) {return(batch_test_set = rbind(rep(0, 5), rep(0, 5)))})
-
 
     colnames(functional_row) = c(names(librarylist), "Chemical")
     row.names(functional_row) = NULL
@@ -440,11 +424,9 @@ categorate = function(compounds, chemical_library, input_format = "wide"){
 
    functional_row$Chemical = Chemical
    matchems_row$Chemical = Chemical
-   # colnames(functional_row) =
+
    functional_df = rbind(functional_df, functional_row)
    matchems_df = rbind(matchems_df, matchems_row)
-   # cat(paste0('[', SDF, '/', length(SDF_input_set), ']', '-', functional_row, '\n'))
-   # library_matches[[]] = list()
   }
 
 

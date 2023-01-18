@@ -75,13 +75,6 @@ mzExacto <- function(data_in, chemicals){
   mass_df = as.data.frame(mass_matrix)
   rtBYmass_df = as.data.frame(rtBYmass_matrix)
 
-  # CMPs_long = c()
-  # probs_long = c()
-  # RTs_long = c()
-  # masses_long = c()
-  # areas_long = c()
-  # MZs_long = c()
-  # rtBYmass_long = c()
   cat("Preparing the data. Stay tuned. \n")
   input_area_long = as.numeric(paste0(area_df[!is.na(area_df)]))
   input_probs_long = as.numeric(paste0(probs_df[!is.na(probs_df)]))
@@ -94,7 +87,7 @@ mzExacto <- function(data_in, chemicals){
   bad_masses = c(58.041864811, 999.99)
 
   RT_mass_lm = lm(input_RT_long[!(input_mass_long %in% bad_masses) & input_probs_long > max(input_probs_long)-25]~input_mass_long[!(input_mass_long %in% bad_masses) & input_probs_long > max(input_probs_long)-25], na.action = na.omit)
-  # summary(RT_mass_lm)
+
   eqn_coefficients = as.numeric(paste0(RT_mass_lm[[1]]))
   RT_step_set = (max(RT_mass_lm[[5]])-min(RT_mass_lm[[5]]))/length(RT_mass_lm[[5]])
 
@@ -184,7 +177,7 @@ mzExacto <- function(data_in, chemicals){
     chem_names_info = tryCatch(jsonlite::fromJSON(chem_names_url),
                                error = function(error) {return("None")})
     if(paste0(chem_names_info) == "None"){chem_names_json_dat = data.frame(current_CMP)}else{chem_names_json_dat = data.frame(unlist(chem_names_info$Record$Section))}
-    # chem_names_json_dat = data.frame(unlist(chem_names_info$Record$Section))
+
     colnames(chem_names_json_dat) = "info"
 
     if(paste0(chem_names_info) == "None"){
@@ -436,9 +429,7 @@ mzExacto <- function(data_in, chemicals){
         tentative_mz_counts = c(tentative_mz_counts, tentative_mz_counts_tmp)
         tentative_masses = c(tentative_masses, tentative_masses_tmp)
       }else{next}
-
     }
-
 
     exact_rows_final = unique(exact_rows)
     tentative_rows_final = unique(tentative_rows)
@@ -457,7 +448,7 @@ mzExacto <- function(data_in, chemicals){
     exact_rows_list[[k]] = list(exact_rows_final, exact_RTs_final, exact_probs_final)
     tentative_rows_list[[k]] = list(tentative_rows_final, tentative_RTs_final, tentative_probs_final, tentative_mz_counts, tentative_masses_final)
   }
-  # names(all_search_list)
+
   names(exact_rows_list) = chems_ordered
   names(tentative_rows_list) = chems_ordered
 
@@ -477,8 +468,6 @@ mzExacto <- function(data_in, chemicals){
 
   exclude_exacts_tmp = as.vector(unlist(sapply(exact_rows_list, '[[', 1)))
   exclude_exacts = exclude_exacts_tmp[!is.na(exclude_exacts_tmp)]
-
-  # p = 27
 
   for(p in seq_along(chems_ordered)){
     exact_trigger = F
@@ -510,20 +499,16 @@ mzExacto <- function(data_in, chemicals){
     area_rows_second_tmp = rbind(rep(0,ncol(area_matrix)))
     RT_rows_second_tmp = rbind(rep(0,ncol(area_matrix)))
     probs_rows_second_tmp = rbind(rep(0,ncol(area_matrix)))
-    # r = 12
 
     for(r in 1:ncol(area_rows_first)){
 
       if(sum(as.numeric(area_rows_first[,r])) == 0){
-        # unique(tentative_rows_list[p][[1]][[4]])
         best_mz_matches_tmp = rtBYmass_long[RTs_long %in% tentative_rows_list[p][[1]][[2]]][!is.na(tentative_rows_list[p][[1]][[2]])]
         best_mz_matches_tmp = best_mz_matches_tmp[!is.na(best_mz_matches_tmp)]
         tentative_counts = tentative_rows_list[p][[1]][[4]]
         tentative_counts[is.na(tentative_counts)] = 0
         count_test = tentative_counts[RTs_long %in% tentative_rows_list[p][[1]][[2]]][!is.na(tentative_rows_list[p][[1]][[2]])]
-        # cbind(best_mz_matches_tmp, tentative_counts[RTs_long %in% tentative_rows_list[p][[1]][[2]][!is.na(tentative_rows_list[p][[1]][[2]])]])
-        # RTs_long %in% tentative_rows_list[p][[1]][[2]][!is.na(tentative_rows_list[1][[1]][[2]])]
-        # rtBYmass_long[1:length(tentative_counts)][tentative_counts %in% best_mz_matches_tmp]
+
         if(suppressWarnings(max(count_test, na.rm = T) <= 1)){next}
         best_mz_matches_code_tmp = best_mz_matches_tmp[count_test >= 2]
         best_mz_matches_code = best_mz_matches_code_tmp[!(best_mz_matches_code_tmp %in% exclude_exacts)]
@@ -540,24 +525,20 @@ mzExacto <- function(data_in, chemicals){
         best_mass = mean(as.numeric(mass_tmp[rtBYmass_tmp %in% best_mz_matches_code]), na.rm = T)
 
         best_RT = custom_max(as.numeric(RTs_long[rtBYmass_long %in% best_mz_matches_code][!is.na(RTs_long[rtBYmass_long %in% best_mz_matches_code])])) #RT_tmp[probs_tmp == max_prob][!is.na(RT_tmp)]
-        # if(exact_trigger == T){best_RT = custom_max(as.numeric(RTs_long[rtBYmass_long %in% exact_rows_list[p][[1]][[1]]]))}
-        # if(best_RT == 0 & p > 1){best_RT = NA}
+
         previous_RTs = c(previous_RTs, best_RT)
 
         mass_RT_test = model_fun_use(median_mass, eqn_coefficients[2], eqn_coefficients[1])
 
         if(p == 1){RT_range = as.numeric(RT_tmp) < best_RT + eqn_coefficients[2]}else{RT_range = as.numeric(RT_tmp) > best_RT - 0.15 & as.numeric(RT_tmp) <= best_RT + 0.15} # RT_step_set
-        # if(exact_trigger == T){RT_range = as.numeric(RT_tmp) > best_RT - 0.15 & as.numeric(RT_tmp) <= best_RT + 0.15}
-        # if(exact_trigger == T){probs_range = as.numeric(probs_tmp) >= max_prob - 25}
+
         rtBYmass_tmp = rtBYmass_tmp[RT_range]
-        # if(exact_trigger == T){rtBYmass_tmp = rtBYmass_tmp[RT_range & probs_range]}
+
         if(p == 1){rtBYmass_tmp = rtBYmass_tmp}else{rtBYmass_tmp = rtBYmass_tmp[!(rtBYmass_tmp %in% rtBYmass_previous)]}
-        # rtBYmass_previous = c(rtBYmass_previous, rtBYmass_tmp)
 
         area_rows_filler_tmp = area_matrix[rtBYmass_long %in% rtBYmass_tmp, r]
         area_rows_filler_tmp[is.na(area_rows_filler_tmp)] = 0
         area_rows_filler = sum(as.numeric(area_rows_filler_tmp))
-        # if(is.na(area_rows_filler)){area_rows_filler = 0}
 
         RT_rows_filler_tmp = RT_matrix[rtBYmass_long %in% rtBYmass_tmp, r]
         RT_rows_filler_tmp[is.na(RT_rows_filler_tmp)] = 0
@@ -569,9 +550,6 @@ mzExacto <- function(data_in, chemicals){
 
       }else{
         area_rows_filler = RT_rows_filler = probs_rows_filler = 0
-        # area_rows_second_tmp[,r] = sum(as.numeric(area_rows_first[,r]))
-        # RT_rows_second_tmp[,r] = min(as.numeric(RT_rows_first[,r]))
-        # probs_rows_second_tmp[,r] = max(as.numeric(probs_rows_first[,r]))
       }
       area_rows_second_tmp[,r] = area_rows_filler
       RT_rows_second_tmp[,r] = RT_rows_filler

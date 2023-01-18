@@ -207,7 +207,9 @@ spreadOut = function(input){
          all_current_names = c(current_CMP, CMP_name_tmp)
          mass_tmp = "NA"}
 
+      if(length(chem_mz_matches2) > 5){chem_mz_matches2 = chem_mz_matches2[1:5]}
       mz_print = paste(chem_mz_matches2, collapse = " | ")
+
       total_chems = length(tentative_identities)
 
       step_printer = c(1:num_tentative*100)

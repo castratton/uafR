@@ -1,6 +1,6 @@
 Type: Package
 Package: uafR
-Title: Automates GC/MS Data Processing
+Title: Automates Mass Spectrometry Data Processing
 Version: 0.1.0
 Authors@R: 
  c(person(given = "Chase", 
