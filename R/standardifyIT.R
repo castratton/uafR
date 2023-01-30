@@ -10,7 +10,7 @@
 #'@param standard_used specifies the standard used as an internal standard (name your chemical)
 #'@param IS_ng specifies the quantified number of molecules in the standard
 #'@param IS_uL specifies the amount of standard added to the samples
-#'@param collect_time specifies how long samples were collected for (e.g. hour(s))
+#'@param collect_time specifies how long samples were collected for (e.g. hour(s), day(s), year(s))
 #'@param sample_amt specifies how many individuals/items the samples were collected from
 #'@param ES_calibration input matrix from which calibrations will be fit for external standardization
 #'

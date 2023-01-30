@@ -86,7 +86,8 @@ mzExacto <- function(data_in, chemicals){
 
   bad_masses = c(58.041864811, 999.99)
 
-  RT_mass_lm = lm(input_RT_long[!(input_mass_long %in% bad_masses) & input_probs_long > max(input_probs_long)-25]~input_mass_long[!(input_mass_long %in% bad_masses) & input_probs_long > max(input_probs_long)-25], na.action = na.omit)
+  RT_mass_lm = lm(input_RT_long[!(input_mass_long %in% bad_masses) & input_probs_long > max(input_probs_long)-25]~input_mass_long[!(input_mass_long %in% bad_masses) & input_probs_long > max(input_probs_long)-25],
+                  na.action = na.omit)
 
   eqn_coefficients = as.numeric(paste0(RT_mass_lm[[1]]))
   RT_step_set = (max(RT_mass_lm[[5]])-min(RT_mass_lm[[5]]))/length(RT_mass_lm[[5]])
@@ -119,18 +120,21 @@ mzExacto <- function(data_in, chemicals){
 
   for (x in 1:nrow(mz_inputs)){
     input_MZs_tmp = mz_inputs[x,][!is.na(mz_inputs[x,])]
-    input_MZs_long = c(input_MZs_long, input_MZs_tmp)
+    input_MZs_long = c(input_MZs_long,
+                       input_MZs_tmp)
   }
 
   df_columns = ncol(area_matrix)+3
   df_rows = length(chemicals)
-  all_df_last_merge = data.frame(matrix(nrow = df_rows, ncol = df_columns))
+  all_df_last_merge = data.frame(matrix(nrow = df_rows,
+                                        ncol = df_columns))
   num_unique_CMPs = length(chemicals)
 
   final_list = list()
   searchNames_published = list()
 
-  colnames(all_df_last_merge) = c("RT", "Mass", "Chemical", colnames(area_matrix))
+  colnames(all_df_last_merge) = c("RT", "Mass",
+                                  "Chemical", colnames(area_matrix))
 
   chem_mass_set = c()
   mz_mass_list = list()
@@ -146,16 +150,27 @@ mzExacto <- function(data_in, chemicals){
     chem_cid = webchem::get_cid(chemicals[chem])
 
     if(is.na(chem_cid[[1,2]])){
-      smiles_url = paste0("https://cactus.nci.nih.gov/chemical/structure/",current_CMP,"/smiles")
-      inchi_url = paste0("https://cactus.nci.nih.gov/chemical/structure/",current_CMP,"/stdinchikey")
-      smiles_url = gsub("\\ ", "%20", smiles_url)
-      inchi_url = gsub("\\ ", "%20", inchi_url)
+      smiles_url = paste0("https://cactus.nci.nih.gov/chemical/structure/",
+                          current_CMP,
+                          "/smiles")
+      inchi_url = paste0("https://cactus.nci.nih.gov/chemical/structure/",
+                         current_CMP,
+                         "/stdinchikey")
+      smiles_url = gsub("\\ ",
+                        "%20",
+                        smiles_url)
+      inchi_url = gsub("\\ ",
+                       "%20",
+                       inchi_url)
       smile_string = getNCI(smiles_url)
       inchi_string = getNCI(inchi_url)
 
       if(smile_string != "None"){
-        InChiKey = substr(inchi_string,10, nchar(inchi_string))
-        smile_cid = webchem::get_cid(paste0(smile_string), from = "smiles")
+        InChiKey = substr(inchi_string,
+                          10,
+                          nchar(inchi_string))
+        smile_cid = webchem::get_cid(paste0(smile_string),
+                                     from = "smiles")
 
         chem_cid = smile_cid
       }else{}
@@ -170,9 +185,13 @@ mzExacto <- function(data_in, chemicals){
                     "180",
                     chem_cid)
 
-    chem_url = paste0('https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/compound/', chem_cid,'/JSON?heading=GC-MS')
+    chem_url = paste0('https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/compound/',
+                      chem_cid,
+                      '/JSON?heading=GC-MS')
 
-    chem_names_url = paste0('https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/compound/', chem_cid,'/JSON?heading=Depositor-Supplied+Synonyms')
+    chem_names_url = paste0('https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/compound/',
+                            chem_cid,
+                            '/JSON?heading=Depositor-Supplied+Synonyms')
 
     chem_names_info = tryCatch(jsonlite::fromJSON(chem_names_url),
                                error = function(error) {return("None")})
@@ -197,7 +216,9 @@ mzExacto <- function(data_in, chemicals){
     if (chem_info == "None" | chem_cid == 180){
       chem_cid = 180
 
-      chem_url = paste0('https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/compound/', chem_cid, '/JSON?heading=GC-MS')
+      chem_url = paste0('https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/compound/',
+                        chem_cid,
+                        '/JSON?heading=GC-MS')
 
       chem_info = tryCatch(jsonlite::fromJSON(chem_url),
                            error = function(error) {return("None")})
@@ -218,10 +239,14 @@ mzExacto <- function(data_in, chemicals){
 
     chem_json_dat = data.frame(unlist(chem_info$Record$Section$Section))
     colnames(chem_json_dat) = "info"
-    mz_rows_1 = grep("[[:digit:]]+\\.[[:digit:]]\\ [[:digit:]]+\\.[[:digit:]]", chem_json_dat$info)
-    mz_rows_2 = grep("[[:digit:]]{2,3}\\ [[:digit:]]+\\.[[:digit:]]", chem_json_dat$info)
-    mz_rows_3 = grep("[[:digit:]]{2,3}\\ [[:digit:]]{2,3}", chem_json_dat$info)
-    mz_rows_4 = grep("^[[:digit:]]{2,3}$", chem_json_dat$info)
+    mz_rows_1 = grep("[[:digit:]]+\\.[[:digit:]]\\ [[:digit:]]+\\.[[:digit:]]",
+                     chem_json_dat$info)
+    mz_rows_2 = grep("[[:digit:]]{2,3}\\ [[:digit:]]+\\.[[:digit:]]",
+                     chem_json_dat$info)
+    mz_rows_3 = grep("[[:digit:]]{2,3}\\ [[:digit:]]{2,3}",
+                     chem_json_dat$info)
+    mz_rows_4 = grep("^[[:digit:]]{2,3}$",
+                     chem_json_dat$info)
 
     if (length(mz_rows_1) > 0) {
       mz_rows = mz_rows_1
@@ -243,8 +268,12 @@ mzExacto <- function(data_in, chemicals){
     }
 
     chem_mz_matches = unique(paste0(unlist(strsplit(paste0(chem_json_dat[mz_rows,])," "))))
-    chem_mz_matches2 = gsub("\\.0\\>","",chem_mz_matches)
-    chem_mz_matches2 = gsub("\\.[[:digit:]]0\\>","",chem_mz_matches2)
+    chem_mz_matches2 = gsub("\\.0\\>",
+                            "",
+                            chem_mz_matches)
+    chem_mz_matches2 = gsub("\\.[[:digit:]]0\\>",
+                            "",
+                            chem_mz_matches2)
 
     mz_count = 1:length(chem_mz_matches2)
     odds = mz_count[mz_count%%2 != 0]
@@ -252,23 +281,29 @@ mzExacto <- function(data_in, chemicals){
 
     mz_primary = chem_mz_matches2[odds]
     mz_secondary = chem_mz_matches2[evens]
-    chem_mz_matches2 = mz_primary[order(mz_secondary, decreasing = T)]
+    chem_mz_matches2 = mz_primary[order(mz_secondary,
+                                        decreasing = T)]
 
     all_current_names = paste0(unique(all_current_chem_names$names))
 
     if(alt_trigger == T){
       mz_primary = input_MZs_long[input_CMPs_long == input_CMPs_tmp]
-      all_current_names = c(current_CMP, CMP_name_tmp)
+      all_current_names = c(current_CMP,
+                            CMP_name_tmp)
       mass_tmp = "NA"}
 
-    mz_print = paste(chem_mz_matches2, collapse = " | ")
+    mz_print = paste(chem_mz_matches2,
+                     collapse = " | ")
     total_chems = length(chemicals)
 
     step_printer = c(1:num_unique_CMPs*100)
-    step_cmper = chem/25
+    step_cmper = chem/15
 
     if(step_cmper %in% step_printer | chem == 1){
-      cat(paste0('\n', '[Current/Total]', ' |--Exact Mass--|--CMP Name 1--|--CMP Name 2--|--Top MZ Peaks--|', '\n'))
+      cat(paste0('\n',
+                 '[Current/Total]',
+                 ' |--Exact Mass--|--CMP Name 1--|--CMP Name 2--|--Top MZ Peaks--|',
+                 '\n'))
     } else {}
 
     names(mass_tmp) = NULL
@@ -285,11 +320,21 @@ mzExacto <- function(data_in, chemicals){
                        current_CMP,
                        ' | ',
                        mz_print)
-    cat(paste0('[', chem, ' / ', num_unique_CMPs, ']', ': ', all_print, '\n'))
+    cat(paste0('[',
+               chem,
+               ' / ',
+               num_unique_CMPs,
+               ']',
+               ': ',
+               all_print,
+               '\n'))
 
-    mz_mass_list[[chem]] = list(mass_tmp, mz_primary)
+    mz_mass_list[[chem]] = list(mass_tmp,
+                                mz_primary)
 
-    all_search_list[[chem]] = list(all_current_names, mz_primary, mass_tmp)
+    all_search_list[[chem]] = list(all_current_names,
+                                   mz_primary,
+                                   mass_tmp)
   }
 
   if(length(mz_mass_list) < length(chemicals)){mz_mass_list[[length(chemicals)]] = "NA"}
@@ -301,8 +346,12 @@ mzExacto <- function(data_in, chemicals){
   if(length(all_search_list) < length(chemicals)){all_search_list[[length(chemicals)]] = "NA"}
   names(all_search_list) = chemicals
 
-  mass_each_chem = sapply(mz_mass_list, '[[', 1)
-  mz_each_chem = sapply(mz_mass_list, '[[', -1)
+  mass_each_chem = sapply(mz_mass_list,
+                          '[[',
+                          1)
+  mz_each_chem = sapply(mz_mass_list,
+                        '[[',
+                        -1)
   mass_each_chem[mass_each_chem == "NA"] = 999.999
 
   mass_orderer = as.numeric(paste0(mass_each_chem))
@@ -347,14 +396,23 @@ mzExacto <- function(data_in, chemicals){
   }
 
   all_tentative_list = data_in$webInfo
-  names(all_tentative_list) = paste0(RTs_long, ' | ', masses_long)
+  names(all_tentative_list) = paste0(RTs_long,
+                                     ' | ',
+                                     masses_long)
 
   all_best_RTs = c()
   previous_areas = c()
 
-  row_find_df = data.frame(cbind(CMPs_long, as.numeric(paste0(RTs_long)), as.numeric(paste0(probs_long)), suppressWarnings(as.numeric(paste0(masses_long))), MZs_long, as.numeric(paste0(areas_long))))
+  row_find_df = data.frame(cbind(CMPs_long,
+                                 as.numeric(paste0(RTs_long)),
+                                 as.numeric(paste0(probs_long)),
+                                 suppressWarnings(as.numeric(paste0(masses_long))),
+                                 MZs_long,
+                                 as.numeric(paste0(areas_long))))
   rownames(row_find_df) = NULL
-  colnames(row_find_df) = c("Chemical", "RT", "Probs", "Mass", "MZ", "Area")
+  colnames(row_find_df) = c("Chemical", "RT",
+                            "Probs", "Mass",
+                            "MZ", "Area")
 
   probs_found = c()
   RT_found = c()
@@ -368,8 +426,11 @@ mzExacto <- function(data_in, chemicals){
   RT_range = c()
 
   for(RT_rt in 1:length(masses_ordered)){
-    RT_range_tmp = model_fun_use(as.numeric(masses_ordered[[RT_rt]]), a1 = eqn_coefficients[2], b = eqn_coefficients[1])
-    RT_range = c(RT_range, RT_range_tmp)
+    RT_range_tmp = model_fun_use(as.numeric(masses_ordered[[RT_rt]]),
+                                 a1 = eqn_coefficients[2],
+                                 b = eqn_coefficients[1])
+    RT_range = c(RT_range,
+                 RT_range_tmp)
   }
   names(RT_range) = chems_ordered
 
@@ -382,7 +443,9 @@ mzExacto <- function(data_in, chemicals){
 
 
   for(k in 1:length(all_search_list)){
-    print_statement = paste0("Working on ", chems_ordered[k],"\n")
+    print_statement = paste0("Working on ",
+                             chems_ordered[k],
+                             "\n")
     cat(print_statement)
     current_chem = chems_ordered[k]
     all_rows_current = c()
@@ -445,8 +508,14 @@ mzExacto <- function(data_in, chemicals){
     all_rows_current = c(unique(exact_rows), unique(tentative_rows))
     previous_rows = c(previous_rows, all_rows_current)
 
-    exact_rows_list[[k]] = list(exact_rows_final, exact_RTs_final, exact_probs_final)
-    tentative_rows_list[[k]] = list(tentative_rows_final, tentative_RTs_final, tentative_probs_final, tentative_mz_counts, tentative_masses_final)
+    exact_rows_list[[k]] = list(exact_rows_final,
+                                exact_RTs_final,
+                                exact_probs_final)
+    tentative_rows_list[[k]] = list(tentative_rows_final,
+                                    tentative_RTs_final,
+                                    tentative_probs_final,
+                                    tentative_mz_counts,
+                                    tentative_masses_final)
   }
 
   names(exact_rows_list) = chems_ordered
@@ -457,8 +526,11 @@ mzExacto <- function(data_in, chemicals){
 
   final_row_all = c()
 
-  final_df_all = data.frame(matrix(nrow = length(chems_ordered), ncol = ncol(area_matrix)+4))
-  colnames(final_df_all) = c("Compound", "Mass", "RT", "Best Match", colnames(area_matrix))
+  final_df_all = data.frame(matrix(nrow = length(chems_ordered),
+                                   ncol = ncol(area_matrix)+4))
+  colnames(final_df_all) = c("Compound", "Mass",
+                             "RT", "Best Match",
+                             colnames(area_matrix))
 
   final_list = list()
 
@@ -515,20 +587,29 @@ mzExacto <- function(data_in, chemicals){
         if(length(best_mz_matches_code) < 1){next}
 
         rtBYmass_tmp = sapply(tentative_rows_list[p], '[[', 1)
-        RT_tmp = sapply(tentative_rows_list[p], '[[', 2)
+        RT_tmp = sapply(tentative_rows_list[p],
+                        '[[',
+                        2)
         if(suppressWarnings(is.na(RT_tmp[[2]]))){RT_tmp = as.numeric(RTs_long[rtBYmass_long %in% rtBYmass_tmp])}
-        probs_tmp = sapply(tentative_rows_list[p], '[[', 3)
+        probs_tmp = sapply(tentative_rows_list[p],
+                           '[[',
+                           3)
         if(suppressWarnings(is.na(probs_tmp[[2]]))){probs_tmp = as.numeric(probs_long[rtBYmass_long %in% rtBYmass_tmp])}
-        mass_tmp = sapply(tentative_rows_list[p], '[[', 5)
+        mass_tmp = sapply(tentative_rows_list[p],
+                          '[[',
+                          5)
         max_prob = custom_max(as.numeric(probs_tmp[!is.na(probs_tmp)]))
         median_mass = median(as.numeric(mass_tmp[!is.na(mass_tmp)]))
         best_mass = mean(as.numeric(mass_tmp[rtBYmass_tmp %in% best_mz_matches_code]), na.rm = T)
 
         best_RT = custom_max(as.numeric(RTs_long[rtBYmass_long %in% best_mz_matches_code][!is.na(RTs_long[rtBYmass_long %in% best_mz_matches_code])])) #RT_tmp[probs_tmp == max_prob][!is.na(RT_tmp)]
 
-        previous_RTs = c(previous_RTs, best_RT)
+        previous_RTs = c(previous_RTs,
+                         best_RT)
 
-        mass_RT_test = model_fun_use(median_mass, eqn_coefficients[2], eqn_coefficients[1])
+        mass_RT_test = model_fun_use(median_mass,
+                                     eqn_coefficients[2],
+                                     eqn_coefficients[1])
 
         if(p == 1){RT_range = as.numeric(RT_tmp) < best_RT + eqn_coefficients[2]}else{RT_range = as.numeric(RT_tmp) > best_RT - 0.15 & as.numeric(RT_tmp) <= best_RT + 0.15} # RT_step_set
 
@@ -555,9 +636,12 @@ mzExacto <- function(data_in, chemicals){
       RT_rows_second_tmp[,r] = RT_rows_filler
       probs_rows_second_tmp[,r] = probs_rows_filler
     }
-    area_rows_second = rbind(area_rows_second, area_rows_second_tmp)
-    RT_rows_second = rbind(RT_rows_second, RT_rows_second_tmp)
-    probs_rows_second = rbind(probs_rows_second, probs_rows_second_tmp)
+    area_rows_second = rbind(area_rows_second,
+                             area_rows_second_tmp)
+    RT_rows_second = rbind(RT_rows_second,
+                           RT_rows_second_tmp)
+    probs_rows_second = rbind(probs_rows_second,
+                              probs_rows_second_tmp)
 
     colnames(area_rows_first) = NULL
     rownames(area_rows_first) = NULL
@@ -567,7 +651,8 @@ mzExacto <- function(data_in, chemicals){
     rownames(area_rows_second) = NULL
     area_rows_second = data.frame(area_rows_second)
 
-    area_rows_all = rbind(area_rows_first, area_rows_second)
+    area_rows_all = rbind(area_rows_first,
+                          area_rows_second)
 
     colnames(RT_rows_first) = NULL
     rownames(RT_rows_first) = NULL
@@ -577,7 +662,8 @@ mzExacto <- function(data_in, chemicals){
     rownames(RT_rows_second) = NULL
     RT_rows_second = data.frame(RT_rows_second)
 
-    RT_rows_all = rbind(RT_rows_first, RT_rows_second)
+    RT_rows_all = rbind(RT_rows_first,
+                        RT_rows_second)
 
     colnames(probs_rows_first) = NULL
     rownames(probs_rows_first) = NULL
@@ -587,24 +673,34 @@ mzExacto <- function(data_in, chemicals){
     rownames(probs_rows_second) = NULL
     probs_rows_second = data.frame(probs_rows_second)
 
-    probs_rows_all = rbind(probs_rows_first, probs_rows_second)
+    probs_rows_all = rbind(probs_rows_first,
+                           probs_rows_second)
 
     all_areas_list[[p]] = area_rows_all
     all_RTs_list[[p]] = RT_rows_all
     all_probs_list[[p]] = probs_rows_all
 
-    final_list[[p]] = list(area_rows_all, RT_rows_all, probs_rows_all)
+    final_list[[p]] = list(area_rows_all,
+                           RT_rows_all,
+                           probs_rows_all)
 
     final_row = c()
 
     for(s in 1:ncol(area_rows_all)){
       final_row_tmp = sum(as.numeric(area_rows_all[,s]))
-      final_row = c(final_row, final_row_tmp)
+      final_row = c(final_row,
+                    final_row_tmp)
     }
     if(any(is.infinite(unlist(RT_rows_all)))){RT_rows_all[sapply(RT_rows_all, simplify = 'matrix', is.infinite)] = 0}
 
-    final_row_all_tmp = cbind(chems_ordered[p], masses_ordered[p], mean(as.numeric(RT_rows_all[RT_rows_all > 0 & !is.na(RT_rows_all)])), custom_max(as.numeric(probs_rows_all[probs_rows_all > 0 & !is.na(probs_rows_all)])), rbind(final_row))
-    colnames(final_row_all_tmp) = c("Compound", "Mass", "RT", "Best Match", colnames(area_matrix))
+    final_row_all_tmp = cbind(chems_ordered[p],
+                              masses_ordered[p],
+                              mean(as.numeric(RT_rows_all[RT_rows_all > 0 & !is.na(RT_rows_all)])),
+                              custom_max(as.numeric(probs_rows_all[probs_rows_all > 0 & !is.na(probs_rows_all)])),
+                              rbind(final_row))
+    colnames(final_row_all_tmp) = c("Compound", "Mass",
+                                    "RT", "Best Match",
+                                    colnames(area_matrix))
 
     final_df_all[p,] = final_row_all_tmp
     options(digits=7)
