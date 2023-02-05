@@ -1,22 +1,29 @@
 #'@title exactoThese
 #'
-#'@description Takes categorated output as input and subsets by information in it.
+#'@description Takes categorated output as input and makes chemical subsets by the information in it.
 #'
-#'@details Provides a set of search chemicals for mzExacto. User gets to select
-#'chemicals based on information generated in categorate.
+#'@details Provides a set of search chemicals for `mzExacto()`. User gets to select
+#'chemicals based on information generated from `categorate()`.
 #'
-#'@param categoratedInput
-#'@param subsetBy
-#'@param subsetArgs
-#'@param subsetArgs2
-#'@param subset_input
+#'@param categoratedInput the lists output from `categorate()`
+#'@param subsetBy specifies the list to subset by (Database, FMCS, or Library)
+#'@param subsetArgs additional arguments to specify which values to subset by
+#'@param subsetArgs2 additional arguments to specify which values to subset by
+#'@param subset_input used when subsetting by FMCS information (e.g. molecular weight)
 #'
 #'@returns A vector of chemical names that meet each user-specification. Used as input
-#'for mzExacto.
+#'for `mzExacto()`.
 #'
 #'@examples
+#'exactoThese(categoratedInput, subsetBy = "Database", subsetArgs = "All")
+#'exactoThese(categoratedInput, subsetBy = "Database", subsetArgs = "reactives")
+#'exactoThese(categoratedInput, subsetBy = "Database", subsetArgs = "LOTUS")
+#'exactoThese(categoratedInput, subsetBy = "Database", subsetArgs = "KEGG")
+#'exactoThese(categoratedInput, subsetBy = "Database", subsetArgs = "FEMA")
+#'exactoThese(categoratedInput, subsetBy = "Database", subsetArgs = "FDA_SPL")
+#'exactoThese(categoratedInput, subsetBy = "Database", subsetArgs = c("reactives", "FEMA"))
+#'exactoThese(categoratedInput, subsetBy = "FMCS", subsetArgs = "MW", subsetArgs2 = "Between", subset_input = c(125, 200))
 #'
-#'@importFrom
 #'@export
 
 exactoThese = function(categoratedInput, subsetBy = "Database", subsetArgs = "All", subsetArgs2 = NA, subset_input = NA){

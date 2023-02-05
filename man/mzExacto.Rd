@@ -17,16 +17,16 @@ optimal retention time, exact mass, best identified match factor, and
 aggregated component area across every sample it was identified in.
 }
 \description{
-Uses the output from "spreadOut" and a list of chemicals
-to extract data for most likely matches. Samples that contain a chemical
+Uses the output from `spreadOut()` and a list of chemicals
+to extract data for. Samples that contain a chemical
 have all identified area(s) aggregated. The most likely identifications
 are determined by prioritizing matches of exact chemical names, followed
 by m/z overlaps within precise retention time windows that are determined
-by published molecular masses.
+by molecular masses published on PubChem.
 }
 \details{
 Communicates with PubChem to collect information on every search
-chemical. Uses this information to intelligently search the
+chemical. Uses this information to search the
 raw `spreadOut()` data for samples where a chemical exists.
 }
 \examples{
