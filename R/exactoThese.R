@@ -111,5 +111,5 @@ exactoThese = function(categoratedInput, subsetBy = "Database", subsetArgs = "Al
   library_logical = library_groups %in% subsetArgs
   exactoChems = categoratedInput$FunctionalGroups$Chemical[categoratedInput$FunctionalGroups[,library_logical] != "None"]
  }
- tryCatch(return(exactoChems[!is.na(exactoChems)]), error = function(error) {stop("Database Subset Arguments Unrecognized, Please Try Again!")})
+ tryCatch(return(unique(exactoChems[!is.na(exactoChems)])), error = function(error) {stop("Database Subset Arguments Unrecognized, Please Try Again!")})
 }

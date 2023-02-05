@@ -15,6 +15,7 @@ vignette: >
 
 ***
 
+![Graphical Abstract](GraphicalAbstract.jpg)
 
 ```{css, echo = F}
 pre code {
@@ -278,10 +279,10 @@ undecane          |RCHO     |0             |H       |24             |0
 undecane          |RCOR     |0             |C       |11             |0
 
 |        <span style="color: black; font-size:115%; background:inherit">This is only a subset of the output from this utility/function meant to emphasize some of the more useful results. The actual output includes columns for the molecular weight, molecular formula, presence/absence of rings (cyclical carbon groups), and additional common functional groups including those with phosporous or nitrogen. </span>
-|        <span style="color: black; font-size:115%; background:inherit">Getting back to the GC/MS workflow, subsetting the `query_chemicals` with these outputs is very easily achieved using basic R code:</span>
+|        <span style="color: black; font-size:115%; background:inherit">Getting back to the GC/MS workflow, subsetting the `query_chemicals` with these outputs is very easily achieved using `exactoThese()`:</span>
 
-`query_chemicals = `
-`query_chemicals = `
+`query_chemicals = exactoThese(chems_categorated, subsetBy = "Database", subsetArgs = c("LOTUS", "FEMA"))`
+`query_chemicals = exactoThese(input_categorated, subsetBy = "FMCS", subsetArgs = "MW", subsetArgs2 = "Between", subset_input = c(50,115))`
 
 ***
 #### <span style="color: rgba(104, 0, 96, 1); font-size:120%; background-color: rgba(159, 160, 255, 0.1)">Unknown Exploration</span>
