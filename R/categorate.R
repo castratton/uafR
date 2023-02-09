@@ -116,6 +116,7 @@ categorate = function(compounds, chemical_library, input_format = "wide"){
    CMPs_tmp = compounds[w]
 
    chem_cid = webchem::get_cid(CMPs_tmp)
+   if(w == 1){cat("Searching query chemicals for structural data, please be patient!\n")}
    cat(paste0('[', w, '/', length(compounds), ']', '-', CMPs_tmp, '\n'))
 
    if(is.na(chem_cid[[1,2]])){
@@ -272,17 +273,20 @@ categorate = function(compounds, chemical_library, input_format = "wide"){
   categories = names(chemical_library)
 
   cid_dict = list()
+  cat("Setting up your input library for Tanimoto matching...\n")
 
   for(i in 1:length(categories)){
     cids_current = c()
     chemicals_tmp = paste0(chemical_library[[i]])
     chemicals_tmp = chemicals_tmp[!(chemicals_tmp=="")]
+
     cat(paste0('[', i, '/', length(categories), ']', '-', categories[i], '\n'))
 
     for(k in 1:length(chemicals_tmp)){
       CMPs_tmp = chemicals_tmp[k]
 
       chem_cid = webchem::get_cid(CMPs_tmp)
+
       cat(paste0('[', k, '/', length(chemicals_tmp), ']', '-', CMPs_tmp, '\n'))
       if(is.na(chem_cid[[1,2]])){
         smiles_url = paste0("https://cactus.nci.nih.gov/chemical/structure/",CMPs_tmp,"/smiles")
@@ -432,6 +436,6 @@ categorate = function(compounds, chemical_library, input_format = "wide"){
   names(data_list) = c("Databases", "FMCS", "FunctionalGroups", "BestChemMatch")
   return(data_list)
  }
- else{cat("No library detected! Try Again.")}
+ else{cat("No library detected! Please Try Again.")}
 }
 

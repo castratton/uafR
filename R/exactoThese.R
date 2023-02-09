@@ -27,7 +27,9 @@
 #'@export
 
 exactoThese = function(categoratedInput, subsetBy = "Database", subsetArgs = "All", subsetArgs2 = NA, subset_input = NA){
- if(subsetBy == "Database"){
+  subset_opts = c("Database", "FMCS", "Library")
+  if(!(subsetBy %in% subset_opts)){stop("First Subset Argument Unrecognized!\n Your options are: 1. Database, 2. FMCS, 3. Library")}
+  if(subsetBy == "Database"){
   dbSubset_args = list("All", "reactives", "LOTUS", "KEGG", "FEMA", "FDA_SPL",
                     c("reactives", "LOTUS"), c("reactives", "KEGG"),
                     c("reactives", "FEMA"), c("reactives", "FDA_SPL"),
@@ -53,7 +55,7 @@ exactoThese = function(categoratedInput, subsetBy = "Database", subsetArgs = "Al
   FEMA_logical = categoratedInput$Databases$FEMA_df != "None"
   FDA_SPL_logical = categoratedInput$Databases$FDA_SPL_df != "None"
 
-  if(!(paste(subsetArgs, collapse = " ") %in% dbSubset_any)){stop("Database Subset Arguments Unrecognized, Please Try Again!")}
+  if(!(paste(subsetArgs, collapse = " ") %in% dbSubset_any)){stop("Database Subset Arguments Unrecognized, Please Try Again!\n If subsetting by multiple, their order matters: \n1. reactives, 2. LOTUS, 3. KEGG, 4. FEMA, 5. FDA_SPL")}
   if(paste(subsetArgs, collapse = " ") == paste(dbSubset_args[[1]], collapse = " ")){exactoChems = categoratedInput$Databases$Chemical[reactives_logical & LOTUS_logical & KEGG_logical & FEMA_logical & FDA_SPL_logical]}
   if(paste(subsetArgs, collapse = " ") == paste(dbSubset_args[[2]], collapse = " ")){exactoChems = categoratedInput$Databases$Chemical[reactives_logical]}
   if(paste(subsetArgs, collapse = " ") == paste(dbSubset_args[[3]], collapse = " ")){exactoChems = categoratedInput$Databases$Chemical[LOTUS_logical]}
@@ -88,6 +90,7 @@ exactoThese = function(categoratedInput, subsetBy = "Database", subsetArgs = "Al
   FMCS_subsetArgs2 = list("Equals", "Greater Than", "Less Than", "Between")
   FMCS_subset_val = subset_input
 
+
   if(subsetArgs == FMCS_subsetArgs[[1]] & subsetArgs2 == FMCS_subsetArgs2[[1]]){exactoChems = categoratedInput$FMCS$Chemical[categoratedInput$FMCS$MW != "None" & as.numeric(paste0(categoratedInput$FMCS$MW)) == FMCS_subset_val]}
   if(subsetArgs == FMCS_subsetArgs[[1]] & subsetArgs2 == FMCS_subsetArgs2[[2]]){exactoChems = categoratedInput$FMCS$Chemical[categoratedInput$FMCS$MW != "None" & as.numeric(paste0(categoratedInput$FMCS$MW)) > FMCS_subset_val]}
   if(subsetArgs == FMCS_subsetArgs[[1]] & subsetArgs2 == FMCS_subsetArgs2[[3]]){exactoChems = categoratedInput$FMCS$Chemical[categoratedInput$FMCS$MW != "None" & as.numeric(paste0(categoratedInput$FMCS$MW)) < FMCS_subset_val]}
@@ -114,9 +117,9 @@ exactoThese = function(categoratedInput, subsetBy = "Database", subsetArgs = "Al
   if(subsetArgs == FMCS_subsetArgs[[5]] & subsetArgs2 == FMCS_subsetArgs2[[4]]){exactoChems = categoratedInput$FMCS$Chemical[categoratedInput$FMCS$NCharges != "None" & as.numeric(paste0(categoratedInput$FMCS$NCharges)) > FMCS_subset_val[1] & as.numeric(paste0(categoratedInput$FMCS$NCharges)) < FMCS_subset_val[2]]}
  }
  if(subsetBy == "Library"){
-  library_groups = colnames(categoratedInput$FunctionalGroups)
-  library_logical = library_groups %in% subsetArgs
-  exactoChems = categoratedInput$FunctionalGroups$Chemical[categoratedInput$FunctionalGroups[,library_logical] != "None"]
+   library_groups = colnames(categoratedInput$FunctionalGroups)
+   library_logical = library_groups %in% subsetArgs
+   exactoChems = categoratedInput$FunctionalGroups$Chemical[categoratedInput$FunctionalGroups[,library_logical] != "None"]
  }
- tryCatch(return(unique(exactoChems[!is.na(exactoChems)])), error = function(error) {stop("Database Subset Arguments Unrecognized, Please Try Again!")})
+ tryCatch(return(unique(exactoChems[!is.na(exactoChems)])), error = function(error) {stop("Database Subset Arguments Unrecognized, Please Try Again!\n If subsetting by multiple, their order matters: \n1. reactives, 2. LOTUS, 3. KEGG, 4. FEMA, 5. FDA_SPL")})
 }
