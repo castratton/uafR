@@ -35,9 +35,22 @@ input_exacto = mzExacto(input_spread, query_chemicals)
 
 ## example usage for chemical informatics:
 query_chemicals = c("Linalool", "Methyl Salicylate", "Limonene", "alpha-Thujene")
-GroupA = c("Guaiacol",	"Tridecane",	"Ethyl heptanoate")
-GroupB = c("2-Aminothiazole", "Aspirin", "Octanoic acid")
+GroupA = c("Guaiacol",	"Tridecane",	"Ethyl heptanoate", "Caffeine")
+GroupB = c("2-Aminothiazole", "Aspirin", "Octanoic acid", "alpha-Pinene", "Toluene")
 chem_library = data.frame(cbind(GroupA, GroupB))
 
 query_categorated = categorate(query_chemicals, chem_library, input_format = "wide")
+
+## example of using the info from categorate() to get a user-defined set of chemicals:
+exactoThese(query_categorated, subsetBy = "Database", subsetArgs = "All")
+exactoThese(query_categorated, subsetBy = "Database", subsetArgs = "reactives")
+exactoThese(query_categorated, subsetBy = "Database", subsetArgs = "LOTUS")
+exactoThese(query_categorated, subsetBy = "Database", subsetArgs = "KEGG")
+exactoThese(query_categorated, subsetBy = "Database", subsetArgs = "FEMA")
+exactoThese(query_categorated, subsetBy = "Database", subsetArgs = "FDA_SPL")
+exactoThese(query_categorated, subsetBy = "Database", subsetArgs = c("reactives", "FEMA"))
+exactoThese(query_categorated, subsetBy = "FMCS", subsetArgs = "MW", subsetArgs2 = "Greater Than", subset_input = 125)
+exactoThese(query_categorated, subsetBy = "FMCS", subsetArgs = "MW", subsetArgs2 = "Less Than", subset_input = 205)
+exactoThese(query_categorated, subsetBy = "FMCS", subsetArgs = "MW", subsetArgs2 = "Between", subset_input = c(125, 200))
+exactoThese(query_categorated, subsetBy = "Library", subsetArgs = "GroupB")
 ```

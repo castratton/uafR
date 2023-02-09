@@ -119,7 +119,7 @@ exactoThese = function(categoratedInput, subsetBy = "Database", subsetArgs = "Al
  if(subsetBy == "Library"){
    library_groups = colnames(categoratedInput$FunctionalGroups)
    library_logical = library_groups %in% subsetArgs
-   exactoChems = categoratedInput$FunctionalGroups$Chemical[categoratedInput$FunctionalGroups[,library_logical] != "None"]
+   exactoChems = categoratedInput$FunctionalGroups$Chemical[categoratedInput$FunctionalGroups[,library_logical] != "No"]
  }
  tryCatch(return(unique(exactoChems[!is.na(exactoChems)])), error = function(error) {stop("Database Subset Arguments Unrecognized, Please Try Again!\n If subsetting by multiple, their order matters: \n1. reactives, 2. LOTUS, 3. KEGG, 4. FEMA, 5. FDA_SPL")})
 }
