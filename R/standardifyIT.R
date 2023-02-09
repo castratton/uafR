@@ -47,6 +47,7 @@ standardifyIt = function(data_in, standard_type = "Internal",
 
 
  if (type_internal & size_sample_amt > 1){
+    stop("Under development, stay tuned!")
    for(i in 1:ncol(data_clms)){
       Input = data_clms[, i]
       IS = IS_quants[,i]
@@ -79,6 +80,7 @@ standardifyIt = function(data_in, standard_type = "Internal",
  } else {}
 
  if (type_external & size_sample_amt > 1 & hasArg(ES_calibration)){
+    stop("Under development, stay tuned!")
    ES_Abundance = ES_calibration$Component.Area
    ES_ng = ES_calibration$Quantity
 
@@ -122,6 +124,7 @@ standardifyIt = function(data_in, standard_type = "Internal",
  } else {}
 
  if (type_external & size_sample_amt == 1 & hasArg(ES_calibration)){
+    stop("Under development, stay tuned!")
    ES_Abundance = ES_calibration$Component.Area
    ES_ng = ES_calibration$Quantity
 
