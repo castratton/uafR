@@ -31,7 +31,6 @@ bases:
 LOTUS the natural products occurrence database [LOTUS](https://lotus.naturalproducts.net/),
 Flavor and Extract Manufacturers Association [FEMA](https://www.femaflavor.org/),
 Kyoto Encyclopedia of Genes and Genomes [KEGG](https://www.genome.jp/kegg/),
-medical subject headings [MeSH](https://www.nlm.nih.gov/mesh/),
 Food and Drug Administration [FDA/SPL](https://www.fda.gov/),
 and Reactive Groups from [PubChem](https://pubchem.ncbi.nlm.nih.gov/).
 Also downloads structural data in SDF format to summarize the atomic

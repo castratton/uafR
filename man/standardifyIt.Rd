@@ -32,9 +32,18 @@ standardifyIt(
 
 \item{ES_calibration}{input matrix from which calibrations will be fit for external standardization}
 }
+\value{
+Returns the original data standardized relative to the user-specified internal or external
+inputs
+}
 \description{
 Post-merge function to quantify compound emission rates relative to internal or external
 standard(s). If using internal standard (IS), will use the contained `standardify()` function with
 user-specified inputs. If using external standard (ES), an input "matrix" from which standard curves
 can be derived.
+}
+\examples{
+standardifyIt(standard_exacto, standard_type = "Internal", standard_used = "Tetradecane", IS_ng = 1, IS_uL = 1, collect_time = 1)
+standardifyIt(standard_exacto, standard_type = "External", ES_calibration = ExternalStandard_data)
+
 }

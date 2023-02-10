@@ -25,7 +25,7 @@ exactoThese(
 }
 \value{
 A vector of chemical names that meet each user-specification. Used as input
-for mzExacto.
+for `mzExacto()`.
 }
 \description{
 Takes categorated output as input and makes chemical subsets by the information in it.
