@@ -45,6 +45,9 @@ spreadOut = function(input){
                                error = function(error) {return(T)})
       suppressWarnings(string_holder)
    }
+   possible_clmns = c("Component.RT", "Base.Peak.MZ", "Base.Peak.Area", "Component.Area", "Compound.Name", "Match.Factor", "Sample.Name", "File.Name")
+   if(!(all(colnames(input) %in% possible_clmns))){stop("Column Names Do Not Match Expected Input!! \n Necessary columns are: 'Component.RT', 'Component.Area', \n 'Base.Peak.MZ', 'File.Name', 'Compound.Name', 'Match.Factor'")}
+   cat("Welcome to uafR! Preparing your data, please be patient.\n")
 
    gcms_spread_area = data.frame(matrix(ncol = length(unique(input$File.Name)), nrow = length(input$Component.RT)))
    gcms_spread_RT = data.frame(matrix(ncol = length(unique(input$File.Name)), nrow = length(input$Component.RT)))
