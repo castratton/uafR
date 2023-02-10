@@ -43,5 +43,4 @@ exactoThese(categoratedInput, subsetBy = "Database", subsetArgs = "FEMA")
 exactoThese(categoratedInput, subsetBy = "Database", subsetArgs = "FDA_SPL")
 exactoThese(categoratedInput, subsetBy = "Database", subsetArgs = c("reactives", "FEMA"))
 exactoThese(categoratedInput, subsetBy = "FMCS", subsetArgs = "MW", subsetArgs2 = "Between", subset_input = c(125, 200))
-
 }

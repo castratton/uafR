@@ -23,7 +23,6 @@
 #'exactoThese(categoratedInput, subsetBy = "Database", subsetArgs = "FDA_SPL")
 #'exactoThese(categoratedInput, subsetBy = "Database", subsetArgs = c("reactives", "FEMA"))
 #'exactoThese(categoratedInput, subsetBy = "FMCS", subsetArgs = "MW", subsetArgs2 = "Between", subset_input = c(125, 200))
-#'
 #'@export
 
 exactoThese = function(categoratedInput, subsetBy = "Database", subsetArgs = "All", subsetArgs2 = NA, subset_input = NA){
