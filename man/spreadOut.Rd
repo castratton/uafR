@@ -7,8 +7,9 @@
 spreadOut(input)
 }
 \arguments{
-\item{input}{A .CSV file containing raw GC/MS output with tentative
-compound identities across all samples.}
+\item{input}{A .CSV file containing raw mass spectrometry output with 'Component.RT',
+'Component.Area', 'Base.Peak.MZ', 'File.Name', 'Compound.Name', and 'Match.Factor' as
+column names/required input}
 }
 \value{
 Returns a list with matrices storing raw area values, chemical identities,
@@ -18,7 +19,7 @@ The list also contains an additional list with all published chemical names,
 top m/z peaks, exact mass, and structural fingerprints in SDF format.
 }
 \description{
-Prepares input GC/MS data for subsequent functions.
+Prepares input mass spectrometry data for subsequent functions.
 Relevant information for every instance of every chemical across
 all samples is placed on the same matrices with no overlaps. Chemicals
 are also searched on PubChem and all published names, published m/z

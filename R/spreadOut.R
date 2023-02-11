@@ -1,6 +1,6 @@
 #'@title spreadOut
 #'
-#'@description Prepares input GC/MS data for subsequent functions.
+#'@description Prepares input mass spectrometry data for subsequent functions.
 #'Relevant information for every instance of every chemical across
 #'all samples is placed on the same matrices with no overlaps. Chemicals
 #'are also searched on PubChem and all published names, published m/z
@@ -11,8 +11,9 @@
 #'detected m/z, component area, compound name, match factor, and sample
 #'or file name for downstream uafR functions.
 #'
-#'@param input A .CSV file containing raw GC/MS output with tentative
-#'compound identities across all samples.
+#'@param input A .CSV file containing raw mass spectrometry output with 'Component.RT',
+#''Component.Area', 'Base.Peak.MZ', 'File.Name', 'Compound.Name', and 'Match.Factor' as
+#'column names/required input
 #'
 #'@returns Returns a list with matrices storing raw area values, chemical identities,
 #'m/z values, match factors, retention times, exact mass data (if published),
