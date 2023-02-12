@@ -76,5 +76,3 @@ these_chems = exactoThese(query_categorated, subsetBy = "Library", subsetArgs = 
 
 input_exacto = mzExacto(input_spread, these_chems)
 ```
-FMCS_subsetArgs = list("MW", "Rings", "Groups",
-                         "Atoms", "NCharges")
