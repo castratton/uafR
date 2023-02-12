@@ -15,8 +15,6 @@ When made public, you can install the development version of uafR from [GitHub](
 ``` r
 # install.packages("devtools")
 devtools::install_github("castratton/uafR")
-
-library(uafR)
 ```
 
 ## Example Mass Spectrometry Workflows
@@ -24,6 +22,8 @@ library(uafR)
 These are basic examples of how to use core functions. The input .CSV file has strict column name/input data requirements. The column names MUST include: 'Component.RT','Component.Area', 'Base.Peak.MZ', 'File.Name', 'Compound.Name', and 'Match.Factor' in no particular order.
 
 ``` r
+library(uafR)
+
 input_dat = read.csv("your/gcms/dataset.csv")
 ```
 ### In this example, the user knows what chemicals they are interested in:
