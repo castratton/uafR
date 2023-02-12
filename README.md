@@ -26,6 +26,15 @@ library(uafR)
 
 input_dat = read.csv("your/gcms/dataset.csv")
 ```
+ Component.RT  |  Base.Peak.MZ    |  Component.Area  |       Compound.Name        |  Match.Factor  |  Sample.Name  
+:-------------:|:----------------:|:----------------:|:---------------------------|:--------------:|:------------:
+8.229034       |84.00             |906.4701          |Pipradrol                   |62.62271        |Std_soln_07    
+8.286703       |120.00            |209705.1878       |Methyl salicylate           |98.16152        |Std_soln_00a    
+8.296408       |119.99            |30332.9022        |Methyl salicylate           |95.79911        |Std_soln_00    
+8.303958       |120.00            |6476.4785         |Methyl salicylate           |86.29569        |Std_soln_07    
+8.348031       |105.00            |420.8119          |3-Hexen-1-ol, benzoate, (Z)-|68.78156        |Std_soln_00    
+**...**        |**...**           |**...**           |**...**                     |**...**         |**...**         
+
 ### In this example, the user knows what chemicals they are interested in:
 ``` r
 input_spread = spreadOut(input_dat)
