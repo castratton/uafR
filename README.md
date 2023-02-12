@@ -4,10 +4,6 @@
 <!-- badges: start -->
 <!-- badges: end -->
 
-<center>
-![Graphical Abstract](vignettes/GraphicalAbstract.jpg)
-</center>
-
 ## Objective
 
 An R package that automates GC/LC-MS processing.
