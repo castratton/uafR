@@ -56,7 +56,7 @@ standard_categ = readRDS("standard_categorated.rds")
 # standard_input[c(38:43),]
 ```
 
- Component.RT  |  Base.Peak.MZ    |  Component.Area  |       Compound.Name        |  Match.Factor  |  Sample.Name  
+ Component.RT  |  Base.Peak.MZ    |  Component.Area  |       Compound.Name        |  Match.Factor  |  File.Name  
 :-------------:|:----------------:|:----------------:|:---------------------------|:--------------:|:------------:
 8.229034       |84.00             |906.4701          |Pipradrol                   |62.62271        |Std_soln_07    
 8.286703       |120.00            |209705.1878       |Methyl salicylate           |98.16152        |Std_soln_00a    
