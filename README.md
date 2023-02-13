@@ -4,6 +4,9 @@
 <!-- badges: start -->
 <!-- badges: end -->
 
+````{r}
+
+```
 ## Objective
 
 An R package that automates GC/LC-MS processing.
@@ -19,7 +22,7 @@ devtools::install_github("castratton/uafR")
 
 ## Example Mass Spectrometry Workflows
 
-These are basic examples of how to use core functions. The input .CSV file has strict column name/input data requirements. The column names MUST include: 'Component.RT','Component.Area', 'Base.Peak.MZ', 'File.Name', 'Compound.Name', and 'Match.Factor' in no particular order.
+These are basic examples of how to use core functions. The input .CSV file has strict column name/input data requirements. The column names MUST include: 'Component.RT', 'Component.Area', 'Base.Peak.MZ', 'File.Name', 'Compound.Name', and 'Match.Factor' in no particular order.
 
 ``` r
 library(uafR)
