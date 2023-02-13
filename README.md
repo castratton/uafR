@@ -4,9 +4,6 @@
 <!-- badges: start -->
 <!-- badges: end -->
 
-````{r}
-
-```
 ## Objective
 
 An R package that automates GC/LC-MS processing.
