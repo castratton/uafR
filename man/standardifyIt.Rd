@@ -43,7 +43,8 @@ user-specified inputs. If using external standard (ES), an input "matrix" from w
 can be derived.
 }
 \examples{
-standardifyIt(standard_exacto, standard_type = "Internal", standard_used = "Tetradecane", IS_ng = 1, IS_uL = 1, collect_time = 1)
+standardifyIt(standard_exacto, standard_type = "Internal", standard_used = "Octanal",
+IS_ng = 1, IS_uL = 1, collect_time = 1)
 standardifyIt(standard_exacto, standard_type = "External", ES_calibration = ExternalStandard_data)
 
 }

@@ -35,12 +35,13 @@ Provides a set of search chemicals for `mzExacto()`. User gets to select
 chemicals based on information generated from `categorate()`.
 }
 \examples{
-exactoThese(categoratedInput, subsetBy = "Database", subsetArgs = "All")
-exactoThese(categoratedInput, subsetBy = "Database", subsetArgs = "reactives")
-exactoThese(categoratedInput, subsetBy = "Database", subsetArgs = "LOTUS")
-exactoThese(categoratedInput, subsetBy = "Database", subsetArgs = "KEGG")
-exactoThese(categoratedInput, subsetBy = "Database", subsetArgs = "FEMA")
-exactoThese(categoratedInput, subsetBy = "Database", subsetArgs = "FDA_SPL")
-exactoThese(categoratedInput, subsetBy = "Database", subsetArgs = c("reactives", "FEMA"))
-exactoThese(categoratedInput, subsetBy = "FMCS", subsetArgs = "MW", subsetArgs2 = "Between", subset_input = c(125, 200))
+exactoThese(standard_categorated, subsetBy = "Database", subsetArgs = "All")
+exactoThese(standard_categorated, subsetBy = "Database", subsetArgs = "reactives")
+exactoThese(standard_categorated, subsetBy = "Database", subsetArgs = "LOTUS")
+exactoThese(standard_categorated, subsetBy = "Database", subsetArgs = "KEGG")
+exactoThese(standard_categorated, subsetBy = "Database", subsetArgs = "FEMA")
+exactoThese(standard_categorated, subsetBy = "Database", subsetArgs = "FDA_SPL")
+exactoThese(standard_categorated, subsetBy = "Database", subsetArgs = c("reactives", "FEMA"))
+exactoThese(standard_categorated, subsetBy = "FMCS", subsetArgs = "MW",
+subsetArgs2 = "Between", subset_input = c(125, 200))
 }

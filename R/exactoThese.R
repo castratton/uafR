@@ -15,14 +15,15 @@
 #'for `mzExacto()`.
 #'
 #'@examples
-#'exactoThese(categoratedInput, subsetBy = "Database", subsetArgs = "All")
-#'exactoThese(categoratedInput, subsetBy = "Database", subsetArgs = "reactives")
-#'exactoThese(categoratedInput, subsetBy = "Database", subsetArgs = "LOTUS")
-#'exactoThese(categoratedInput, subsetBy = "Database", subsetArgs = "KEGG")
-#'exactoThese(categoratedInput, subsetBy = "Database", subsetArgs = "FEMA")
-#'exactoThese(categoratedInput, subsetBy = "Database", subsetArgs = "FDA_SPL")
-#'exactoThese(categoratedInput, subsetBy = "Database", subsetArgs = c("reactives", "FEMA"))
-#'exactoThese(categoratedInput, subsetBy = "FMCS", subsetArgs = "MW", subsetArgs2 = "Between", subset_input = c(125, 200))
+#'exactoThese(standard_categorated, subsetBy = "Database", subsetArgs = "All")
+#'exactoThese(standard_categorated, subsetBy = "Database", subsetArgs = "reactives")
+#'exactoThese(standard_categorated, subsetBy = "Database", subsetArgs = "LOTUS")
+#'exactoThese(standard_categorated, subsetBy = "Database", subsetArgs = "KEGG")
+#'exactoThese(standard_categorated, subsetBy = "Database", subsetArgs = "FEMA")
+#'exactoThese(standard_categorated, subsetBy = "Database", subsetArgs = "FDA_SPL")
+#'exactoThese(standard_categorated, subsetBy = "Database", subsetArgs = c("reactives", "FEMA"))
+#'exactoThese(standard_categorated, subsetBy = "FMCS", subsetArgs = "MW",
+#'subsetArgs2 = "Between", subset_input = c(125, 200))
 #'@export
 
 exactoThese = function(categoratedInput, subsetBy = "Database", subsetArgs = "All", subsetArgs2 = NA, subset_input = NA){
@@ -41,7 +42,7 @@ exactoThese = function(categoratedInput, subsetBy = "Database", subsetArgs = "Al
                     c("reactives", "LOTUS", "KEGG", "FEMA"),
                     c("reactives", "LOTUS", "KEGG", "FDA_SPL"),
                     c("LOTUS", "KEGG", "FEMA", "FDA_SPL"))
-  dbSubset_expand = c("reactives", "LOTUS", "KEGG", "FEMA", "FDA_SPL")
+  dbSubset_expand = c("All", "reactives", "LOTUS", "KEGG", "FEMA", "FDA_SPL")
   dbSubset_any_tmp1 = expand.grid(dbSubset_expand, dbSubset_expand)
   dbSubset_any_tmp2 = expand.grid(dbSubset_expand, dbSubset_expand, dbSubset_expand)
   dbSubset_any_tmp3 = expand.grid(dbSubset_expand, dbSubset_expand, dbSubset_expand, dbSubset_expand)
