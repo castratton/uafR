@@ -15,6 +15,8 @@
 #'
 #'@param chemicals A vector containing chemical names in IUPAC notation
 #'
+#'@param decontaminate A logical set to remove uncertain chemicals or junk from output
+#'
 #'@returns A data frame containing chemical names(`chemicals`), their
 #'optimal retention time, exact mass, best identified match factor, and
 #'aggregated component area across every sample it was identified in.

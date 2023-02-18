@@ -4,12 +4,14 @@
 \alias{mzExacto}
 \title{mzExacto}
 \usage{
-mzExacto(data_in, chemicals)
+mzExacto(data_in, chemicals, decontaminate = T)
 }
 \arguments{
 \item{data_in}{the list output from `spreadOut()`}
 
 \item{chemicals}{A vector containing chemical names in IUPAC notation}
+
+\item{decontaminate}{A logical set to remove uncertain chemicals or junk from output}
 }
 \value{
 A data frame containing chemical names(`chemicals`), their
