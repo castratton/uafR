@@ -32,7 +32,7 @@
 #'@importFrom utils adist
 #'@export
 
-mzExacto <- function(data_in, chemicals){
+mzExacto <- function(data_in, chemicals, decontaminate = T){
   options(digits=22)
   getNCI = function(url_path){
     con = url(url_path)
@@ -705,5 +705,7 @@ mzExacto <- function(data_in, chemicals){
     final_df_all[p,] = final_row_all_tmp
     options(digits=7)
   }
+  if(decontaminate == T){final_df_all = final_df_all[final_df_all$RT != "NaN",]}
+  if(decontaminate == T){final_df_all = final_df_all[final_df_all$Mass != 999.999,]}
   return(final_df_all)
 }
