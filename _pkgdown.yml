@@ -17,15 +17,19 @@ navbar:
       aria-label: github
     intro:
       text: Descriptive Walkthrough
-      href: articles/uafR.html
+      href: vignettes/uafR.html
 
 authors:
   Chase Stratton:
+    href: https://landinstitute.org/about-us/staff/chase-stratton/
   Philipp Hansen:
   Yvonne Thompson:
+    href: https://landinstitute.org/about-us/staff/yvonne-thompson/
   Konilo Zio:
   William R. Morrison III:
+    href: https://www.ars.usda.gov/plains-area/mhk/cgahr/spieru/people/rob-morrison/
   Ebony Murrell:
+    href: https://landinstitute.org/about-us/staff/ebony-murrell/
 
 reference:
 - title: All functions
