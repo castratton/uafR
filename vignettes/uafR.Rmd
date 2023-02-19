@@ -5,8 +5,7 @@ vignette: >
   %\VignetteIndexEntry{uafR}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
-resource_files:
-  - images/GraphicalAbstract.jpg
+resource_files: images/GraphicalAbstract.jpg
 ---
 # <span style="color: rgba(80, 0, 96, 1); font-size:120%; background-color: rgba(0, 0, 0, 0)">Automated GC/MS data processing</span>
 
