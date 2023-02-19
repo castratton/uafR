@@ -77,9 +77,9 @@
     
     
 <div class="section level2">
-<h2 id="automated-gcms-data-processing">
+<h2 id="automated-gclc-ms-data-processing">
 <span style="color: rgba(80, 0, 96, 1); font-size:120%; background-color: rgba(0, 0, 0, 0)">Automated
-GC/MS data processing</span><a class="anchor" aria-label="anchor" href="#automated-gcms-data-processing"></a>
+GC/LC-MS data processing</span><a class="anchor" aria-label="anchor" href="#automated-gclc-ms-data-processing"></a>
 </h2>
 <hr>
 <p><span style="color: rgba(80, 0, 96, 1); font-size:215%; background:none">Nothing
@@ -88,7 +88,7 @@ Curie</span></p>
 <hr>
 <center>
 <div class="figure">
-<img src="images/GraphicalAbstract.jpg" alt=""><p class="caption">Graphical Abstract</p>
+<img src="GraphicalAbstract.jpg" alt=""><p class="caption">Graphical Abstract</p>
 </div>
 </center>
 <style type="text/css">
@@ -117,11 +117,11 @@ per experiment. </span><br><br>
 remove the bottleneck that exists between the acquisition of raw mass
 spectrometry output and the interpretation of chemicals across
 experimental treatments, we have developed advanced algorithms that
-automate the entire process. Ours is the first GC/MS utility that
+automate the entire process. Ours is the first GC/LC-MS utility that
 accesses published information for every tentative compound to
 intelligently select portions of each sample that describe
 user-specified query chemicals. This information makes uafR the most
-accurate and advanced post-GC/MS processing application to
+accurate and advanced post GC/LC-MS processing application to
 date.</span>
 </div>
 </div>
@@ -233,6 +233,7 @@ list include matrices (here focused on methyl salicylate) that store:
 <li><span style="color: black; font-size:115%; background:inherit"><strong>chemical
 names</strong></span></li>
 </ol>
+<center>
 <table class="table">
 <thead><tr class="header">
 <th align="center">Sample_1</th>
@@ -272,10 +273,12 @@ names</strong></span></li>
 </tr>
 </tbody>
 </table>
+</center>
 <ol start="2" style="list-style-type: decimal">
 <li><span style="color: black; font-size:115%; background:inherit"><strong>retention
 times</strong></span></li>
 </ol>
+<center>
 <table class="table">
 <thead><tr class="header">
 <th align="center">Sample_1</th>
@@ -315,10 +318,12 @@ times</strong></span></li>
 </tr>
 </tbody>
 </table>
+</center>
 <ol start="3" style="list-style-type: decimal">
 <li><span style="color: black; font-size:115%; background:inherit"><strong>match
 factors</strong></span></li>
 </ol>
+<center>
 <table class="table">
 <thead><tr class="header">
 <th align="center">Sample_1</th>
@@ -358,10 +363,12 @@ factors</strong></span></li>
 </tr>
 </tbody>
 </table>
+</center>
 <ol start="4" style="list-style-type: decimal">
 <li><span style="color: black; font-size:115%; background:inherit"><strong>captured
 M/Z value</strong></span></li>
 </ol>
+<center>
 <table class="table">
 <thead><tr class="header">
 <th align="center">Sample_1</th>
@@ -401,10 +408,12 @@ M/Z value</strong></span></li>
 </tr>
 </tbody>
 </table>
+</center>
 <ol start="5" style="list-style-type: decimal">
 <li><span style="color: black; font-size:115%; background:inherit"><strong>exact
 mass data (if published)</strong></span></li>
 </ol>
+<center>
 <table class="table">
 <thead><tr class="header">
 <th align="center">Sample_1</th>
@@ -444,10 +453,12 @@ mass data (if published)</strong></span></li>
 </tr>
 </tbody>
 </table>
+</center>
 <ol start="6" style="list-style-type: decimal">
 <li><span style="color: black; font-size:115%; background:inherit"><strong>raw
 area values</strong></span></li>
 </ol>
+<center>
 <table class="table">
 <thead><tr class="header">
 <th align="center">Sample_1</th>
@@ -487,11 +498,13 @@ area values</strong></span></li>
 </tr>
 </tbody>
 </table>
+</center>
 <ol start="7" style="list-style-type: decimal">
 <li><span style="color: black; font-size:115%; background:inherit"><strong>a
 unique code for each input data point (retention time pasted to exact
 mass)</strong></span></li>
 </ol>
+<center>
 <table class="table">
 <colgroup>
 <col width="31%">
@@ -536,6 +549,7 @@ mass)</strong></span></li>
 </tr>
 </tbody>
 </table>
+</center>
 <ol start="8" style="list-style-type: decimal">
 <li><span style="color: black; font-size:115%; background:inherit"><strong>and a
 nested list with</strong>: </span></li>
@@ -669,7 +683,7 @@ Types/Classes of Chemicals are Known </span><a class="anchor" aria-label="anchor
 <div class="line-block">       <span style="color: black; font-size:115%; background:inherit"><code><a href="../reference/categorate.html">categorate()</a></code>
 is an overpowered function that accesses a broad array of categorical
 data for searched chemicals. Here we present a single application from
-the output of <code><a href="../reference/categorate.html">categorate()</a></code> that could help in GC/MS
+the output of <code><a href="../reference/categorate.html">categorate()</a></code> that could help in GC/LC-MS
 analyses where classes/types of chemical groupings are known, but not
 specific compounds. For a detailed overview of additional chemistry
 workflows (e.g. meta-analyses) that <code><a href="../reference/categorate.html">categorate()</a></code> could
@@ -995,7 +1009,7 @@ molecular weight, molecular formula, presence/absence of rings (cyclical
 carbon groups), and additional common functional groups including those
 with phosporous or nitrogen. </span><br>
        <span style="color: black; font-size:115%; background:inherit">Getting back to
-the GC/MS workflow, subsetting the <code>query_chemicals</code> with
+the GC/LC-MS workflow, subsetting the <code>query_chemicals</code> with
 these outputs is very easily achieved using
 <code><a href="../reference/exactoThese.html">exactoThese()</a></code>:</span>
 </div>
