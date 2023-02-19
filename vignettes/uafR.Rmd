@@ -5,9 +5,9 @@ vignette: >
   %\VignetteIndexEntry{uafR}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
-resource_files: images/GraphicalAbstract.jpg
+resource_files: man/figures/GraphicalAbstract.jpg
 ---
-# <span style="color: rgba(80, 0, 96, 1); font-size:120%; background-color: rgba(0, 0, 0, 0)">Automated GC/MS data processing</span>
+# <span style="color: rgba(80, 0, 96, 1); font-size:120%; background-color: rgba(0, 0, 0, 0)">Automated GC/LC-MS data processing</span>
 
 ***
 <span style="color: rgba(80, 0, 96, 1); font-size:215%; background:none">Nothing in life is to be feared; it is only to be understood.</span>   
@@ -17,7 +17,7 @@ resource_files: images/GraphicalAbstract.jpg
 ***
 
 <center>
-![Graphical Abstract](images/GraphicalAbstract.jpg)
+![Graphical Abstract](GraphicalAbstract.jpg)
 </center>
 
 ```{css, echo = F}
@@ -46,7 +46,7 @@ standard_categ = readRDS("standard_categorated.rds")
 
 |        <span style="color: black; font-size:115%; background:inherit">Chemistry plays an active role in every aspect of human existence. Whether it be the digested molecules of our food, the solid matrices of plastic and metal that comprise our technology, or the macromolecules that build and run our cells, the compositions are all chemical. To understand this aspect of our existence, there are advanced instruments and techniques that identify chemicals of any system to name. These precise instruments also allow the number of molecules for each individual chemical to be quantified across analyzed samples. While the output from these machines is immediately available, preparing the raw output for interpretive statistics can require hours/days of trained labor per sample and months per experiment.  </span>
 |  
-|        <span style="color: black; font-size:115%; background:inherit">To remove the bottleneck that exists between the acquisition of raw mass spectrometry output and the interpretation of chemicals across experimental treatments, we have developed advanced algorithms that automate the entire process. Ours is the first GC/MS utility that accesses published information for every tentative compound to intelligently select portions of each sample that describe user-specified query chemicals. This information makes uafR the most accurate and advanced post-GC/MS processing application to date.</span>
+|        <span style="color: black; font-size:115%; background:inherit">To remove the bottleneck that exists between the acquisition of raw mass spectrometry output and the interpretation of chemicals across experimental treatments, we have developed advanced algorithms that automate the entire process. Ours is the first GC/LC-MS utility that accesses published information for every tentative compound to intelligently select portions of each sample that describe user-specified query chemicals. This information makes uafR the most accurate and advanced post GC/LC-MS processing application to date.</span>
 
 ## <span style="color: rgba(80, 0, 96, 1); font-size:120%; background-color: rgba(0, 0, 0, 0.01)">New Standard, Mass Spectrometry Workflows</span>
 ### <span style="color: rgba(80, 0, 96, 1); font-size:120%; background-color: rgba(0, 0, 0, 0)">Input Data Structure</span>
@@ -75,6 +75,8 @@ standard_categ = readRDS("standard_categorated.rds")
 ```{r, echo = F}
 # standard_spread$Compounds[c(38:43),]
 ```
+
+<center>
 Sample_1                    |  Sample_2       |  Sample_3  
 :--------------------------:|:---------------:|:----------------:
 \<NA\>                      |Pipradrol        |\<NA\>      
@@ -83,12 +85,14 @@ Methyl salicylate           |\<NA\>           |\<NA\>
 \<NA\>                      |Methyl salicylate|\<NA\>      
 3-Hexen-1-ol, benzoate, (Z)-|\<NA\>           |\<NA\>        
 **...**                     |**...**          |**...**           
-
+</center>
 
 2. <span style="color: black; font-size:115%; background:inherit">**retention times**</span>
 ```{r, echo = F}
 # standard_spread$RT[c(38:43),]
 ```
+
+<center>
 Sample_1       |  Sample_2       |  Sample_3  
 :-------------:|:---------------:|:-----------:
 \<NA\>         |8.229033559      |\<NA\>      
@@ -97,11 +101,14 @@ Sample_1       |  Sample_2       |  Sample_3
 \<NA\>         |8.303958027      |\<NA\>      
 8.348031108    |\<NA\>           |\<NA\>        
 **...**        |**...**          |**...**           
+</center>
 
 3. <span style="color: black; font-size:115%; background:inherit">**match factors**</span>
 ```{r, echo = F}
 # standard_spread$MatchFactor[c(38:43),]
 ```
+
+<center>
 Sample_1       |  Sample_2       |  Sample_3  
 :-------------:|:---------------:|:-----------:
 \<NA\>         |62.62271472      |\<NA\>      
@@ -110,11 +117,14 @@ Sample_1       |  Sample_2       |  Sample_3
 \<NA\>         |86.29569222      |\<NA\>      
 68.78156469    |\<NA\>           |\<NA\>        
 **...**        |**...**      |**...**             
+</center>
 
 4. <span style="color: black; font-size:115%; background:inherit">**captured M/Z value**</span>
 ```{r, echo = F}
 # standard_spread$MZ[c(38:43),]
 ```
+
+<center>
   Sample_1     |  Sample_2       |  Sample_3  
 :-------------:|:---------------:|:-----------:
 \<NA\>         |84               |\<NA\>      
@@ -123,11 +133,14 @@ Sample_1       |  Sample_2       |  Sample_3
 \<NA\>         |120              |\<NA\>      
 105            |\<NA\>           |\<NA\>        
 **...**        |**...**          |**...**       
+</center>
 
 5. <span style="color: black; font-size:115%; background:inherit">**exact mass data (if published)**</span>
 ```{r, echo = F}
 # standard_spread$Mass[c(38:43),]
 ```
+
+<center>
 Sample_1       |  Sample_2       |  Sample_3  
 :-------------:|:---------------:|:-----------:
 \<NA\>         |267.162314293    |\<NA\>      
@@ -136,11 +149,14 @@ Sample_1       |  Sample_2       |  Sample_3
 \<NA\>         |152.047344113    |\<NA\>      
 204.115029749  |\<NA\>           |\<NA\>        
 **...**        |**...**          |**...**         
+</center>
 
 6. <span style="color: black; font-size:115%; background:inherit">**raw area values**</span>
 ```{r, echo = F}
 # standard_spread$Area[c(38:43),]
 ```
+
+<center>
 Sample_1       |  Sample_2       |  Sample_3  
 :-------------:|:---------------:|:-----------:
 \<NA\>         |906.4700739      |\<NA\>      
@@ -149,12 +165,15 @@ Sample_1       |  Sample_2       |  Sample_3
 \<NA\>         |6476.478451      |\<NA\>      
 420.8119135    |\<NA\>           |\<NA\>        
 **...**        |**...**          |**...**       
+</center>
 
 7. <span style="color: black; font-size:115%; background:inherit">**a unique code for each input data point (retention time pasted to exact mass)**</span>
 ```{r, echo = F}
 # options(width = 200)
 # standard_spread$rtBYmass[c(38:43),]
 ```
+
+<center>
 Sample_1                    |  Sample_2                       |  Sample_3  
 :--------------------------:|:-------------------------------:|:--------------------------:
 \<NA\>                      |8.229033559 \| 267.162314293     |\<NA\>      
@@ -163,6 +182,7 @@ Sample_1                    |  Sample_2                       |  Sample_3
 \<NA\>                      |8.303958027 \| 152.047344113     |\<NA\>      
 8.348031108 \| 204.115029749|\<NA\>                           |\<NA\>        
 **...**                     |**...**                          |**...**             
+</center>
 
 8. <span style="color: black; font-size:115%; background:inherit">**and a nested list with**:   </span>
 
@@ -219,7 +239,7 @@ Undecane          |156.187800766|6.129191467|98.6771852 |86270.05019 |243.912373
 
 ***
 #### <span style="color: rgba(80, 0, 96, 1); font-size:120%; background-color: rgba(0, 0, 0, 0)">When Types/Classes of Chemicals are Known </span>
-|        <span style="color: black; font-size:115%; background:inherit">`categorate()` is an overpowered function that accesses a broad array of categorical data for searched chemicals. Here we present a single application from the output of `categorate()` that could help in GC/MS analyses where classes/types of chemical groupings are known, but not specific compounds. For a detailed overview of additional chemistry workflows (e.g. meta-analyses) that `categorate()` could catalyze, we recommend the companion manuscript (linked when published).</span>
+|        <span style="color: black; font-size:115%; background:inherit">`categorate()` is an overpowered function that accesses a broad array of categorical data for searched chemicals. Here we present a single application from the output of `categorate()` that could help in GC/LC-MS analyses where classes/types of chemical groupings are known, but not specific compounds. For a detailed overview of additional chemistry workflows (e.g. meta-analyses) that `categorate()` could catalyze, we recommend the companion manuscript (linked when published).</span>
 |        <span style="color: black; font-size:115%; background:inherit">A required input for running `categorate()` is a library to perform structural matches against. This library is a .CSV file that can contain as many sets of chemicals as the user's hardware can handle. For the following example, we have restricted our search to 4 sets of chemicals that we know are structurally similar to our query chemicals from the previous section (Types B, C, D, and E below) and one set that should not have any matches (Type A).</span>
   
 Type.A                                        |Type.B                |Type.C   |Type.D            |Type.E
@@ -282,7 +302,7 @@ undecane          |RCHO     |0             |H       |24             |0
 undecane          |RCOR     |0             |C       |11             |0
 
 |        <span style="color: black; font-size:115%; background:inherit">This is only a subset of the output from this utility/function meant to emphasize some of the more useful results. The actual output includes columns for the molecular weight, molecular formula, presence/absence of rings (cyclical carbon groups), and additional common functional groups including those with phosporous or nitrogen. </span>
-|        <span style="color: black; font-size:115%; background:inherit">Getting back to the GC/MS workflow, subsetting the `query_chemicals` with these outputs is very easily achieved using `exactoThese()`:</span>
+|        <span style="color: black; font-size:115%; background:inherit">Getting back to the GC/LC-MS workflow, subsetting the `query_chemicals` with these outputs is very easily achieved using `exactoThese()`:</span>
 
 <span style="color: black; font-size:135%; background:inherit">**`query_chemicals = exactoThese(input_categorated, subsetBy = "FMCS", `**</span>  
 <span style="color: black; font-size:135%; background:inherit">    **`subsetArgs = "MW", subsetArgs2 = "Between", subset_input = c(50,115))`**</span>  
