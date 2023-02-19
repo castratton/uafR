@@ -4,6 +4,8 @@
 <!-- badges: start -->
 <!-- badges: end -->
 
+![Graphical Abstract](man/figures/GraphicalAbstract)
+
 ## Objective
 
 An R package that automates GC/LC-MS processing.

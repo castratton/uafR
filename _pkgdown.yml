@@ -1,0 +1,46 @@
+navbar:
+  structure:
+    left:
+    - intro
+    - reference
+    - articles
+    - tutorials
+    - news
+    right: github
+  components:
+    reference:
+      text: Function Documentation
+      href: reference/index.html
+    github:
+      icon: fab fa-github fa-lg
+      href: https://github.com/castratton/uafR/
+      aria-label: github
+    intro:
+      text: Descriptive Walkthrough
+      href: articles/uafR.html
+
+authors:
+  Chase Stratton:
+  Philipp Hansen:
+  Yvonne Thompson:
+  Konilo Zio:
+  William R. Morrison III:
+  Ebony Murrell:
+
+reference:
+- title: All functions
+  contents:
+  - '`categorate`'
+  - '`exactoThese`'
+  - '`ExternalStandard_data`'
+  - '`library_data`'
+  - '`library_data_long`'
+  - '`mzExacto`'
+  - '`personalLib`'
+  - '`spreadOut`'
+  - '`standardifyIt`'
+  - '`standard_categorated`'
+  - '`standard_data`'
+  - '`standard_exacto`'
+  - '`standard_spread`'
+

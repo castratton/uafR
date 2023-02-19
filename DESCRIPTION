@@ -2,34 +2,35 @@ Type: Package
 Package: uafR
 Title: Automates Mass Spectrometry Data Processing
 Version: 0.1.0
-Authors@R: 
- c(person(given = "Chase", 
-          family = "Stratton", 
+Authors@R: c(
+    person("Chase", 
+          "Stratton", 
           role = c("aut", "cre"), 
           email = "stratton@landinstitute.org"), 
-   person(given = "Philipp", 
-          family = "Hansen", 
+    person("Philipp", 
+          "Hansen", 
           role = "aut",
           email = "hansen@landinstitute.org"), 
-   person(given = "Yvonne", 
-          family = "Thompson", 
+    person("Yvonne", 
+          "Thompson", 
           role = "aut", 
           email = "ythompson@landinstitute.org"), 
-   person(given = "Konilo", 
-          family = "Zio", 
+    person("Konilo", 
+          "Zio", 
           email = "konilo.zio@gmail.com", 
           role = "aut"), 
-   person(given = c("William", "R."), 
-          family = c("Morrison", "III"), 
+    person("William", 
+          "Morrison", 
           email = "william.morrison@usda.org", 
           role = "aut"), 
-   person(given = "Ebony", 
-          family = "Murrell", 
+    person("Ebony", 
+          "Murrell", 
           role = "aut", 
           email = "murrell@landinstitute.org"))
 Description: This R package automates chemical processing for tentative chemical identities in mass spectrometry workflows. It includes a powerful set of functions that make chemical interpretations accurate and efficient.
 License: MIT + file LICENSE
-URL: https://github.com/castratton/uafR
+URL: https://github.com/castratton/uafR,
+    https://castratton.github.io/uafR/
 BugReports: https://github.com/castratton/uafR/issues
 Depends:
     R (>= 4.2)

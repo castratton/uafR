@@ -16,7 +16,7 @@ vignette: >
 ***
 
 <center>
-![Graphical Abstract](GraphicalAbstract.jpg)
+![Graphical Abstract](man/figures/GraphicalAbstract)
 </center>
 
 ```{css, echo = F}
