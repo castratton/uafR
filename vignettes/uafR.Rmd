@@ -18,7 +18,7 @@ resource_files:
 ***
 
 <center>
-![Graphical Abstract](man/figures/GraphicalAbstract)
+![Graphical Abstract](images/GraphicalAbstract.jpg)
 </center>
 
 ```{css, echo = F}
