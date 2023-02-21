@@ -100,36 +100,19 @@ chemicals based on information generated from `categorate()`.</p>
     <div id="ref-examples">
     <h2>Examples</h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu">exactoThese</span><span class="op">(</span><span class="va">standard_categorated</span>, subsetBy <span class="op">=</span> <span class="st">"Database"</span>, subsetArgs <span class="op">=</span> <span class="st">"All"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Borane carbonyl"   "Methyl salicylate"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> NULL</span>
 <span class="r-in"><span><span class="fu">exactoThese</span><span class="op">(</span><span class="va">standard_categorated</span>, subsetBy <span class="op">=</span> <span class="st">"Database"</span>, subsetArgs <span class="op">=</span> <span class="st">"reactives"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Boron trifluoride"    "Methylene chloride"   "Borane carbonyl"     </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [4] "Octanal"              "Undecane"             "Methyl salicylate"   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [7] "Acetamide, 2-fluoro-"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> NULL</span>
 <span class="r-in"><span><span class="fu">exactoThese</span><span class="op">(</span><span class="va">standard_categorated</span>, subsetBy <span class="op">=</span> <span class="st">"Database"</span>, subsetArgs <span class="op">=</span> <span class="st">"LOTUS"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Methylene chloride"                  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [2] "Borane carbonyl"                     </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [3] "Hexanoic acid, ethyl ester"          </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [4] "Octanal"                             </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [5] "2-Hexen-1-ol, (E)-"                  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [6] "2-Octen-1-ol, (E)-"                  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [7] "Undecane"                            </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [8] "Methyl salicylate"                   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [9] "Benzene, 1,3-bis(1,1-dimethylethyl)-"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> NULL</span>
 <span class="r-in"><span><span class="fu">exactoThese</span><span class="op">(</span><span class="va">standard_categorated</span>, subsetBy <span class="op">=</span> <span class="st">"Database"</span>, subsetArgs <span class="op">=</span> <span class="st">"KEGG"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Borane carbonyl"      "Octanal"              "Methyl salicylate"   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [4] "Acetamide, 2-fluoro-"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> NULL</span>
 <span class="r-in"><span><span class="fu">exactoThese</span><span class="op">(</span><span class="va">standard_categorated</span>, subsetBy <span class="op">=</span> <span class="st">"Database"</span>, subsetArgs <span class="op">=</span> <span class="st">"FEMA"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Borane carbonyl"            "Hexanoic acid, ethyl ester"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [3] "2-Hexen-1-ol, (E)-"         "Methyl salicylate"         </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> NULL</span>
 <span class="r-in"><span><span class="fu">exactoThese</span><span class="op">(</span><span class="va">standard_categorated</span>, subsetBy <span class="op">=</span> <span class="st">"Database"</span>, subsetArgs <span class="op">=</span> <span class="st">"FDA_SPL"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [1] "Boron trifluoride"          "Methylene chloride"        </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [3] "Borane carbonyl"            "Hexanoic acid, ethyl ester"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [5] "Octanal"                    "2-Hexen-1-ol, (E)-"        </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [7] "2-Octen-1-ol, (E)-"         "Undecane"                  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [9] "1H-Tetrazol-5-amine"        "Methyl salicylate"         </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [11] "Acetamide, 2-fluoro-"      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> NULL</span>
 <span class="r-in"><span><span class="fu">exactoThese</span><span class="op">(</span><span class="va">standard_categorated</span>, subsetBy <span class="op">=</span> <span class="st">"Database"</span>, subsetArgs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"reactives"</span>, <span class="st">"FEMA"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Borane carbonyl"   "Methyl salicylate"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> NULL</span>
 <span class="r-in"><span><span class="fu">exactoThese</span><span class="op">(</span><span class="va">standard_categorated</span>, subsetBy <span class="op">=</span> <span class="st">"FMCS"</span>, subsetArgs <span class="op">=</span> <span class="st">"MW"</span>,</span></span>
 <span class="r-in"><span>subsetArgs2 <span class="op">=</span> <span class="st">"Between"</span>, subset_input <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">125</span>, <span class="fl">200</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "hexanoic acid ethyl ester"          "octanal"                           </span>
