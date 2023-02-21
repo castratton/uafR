@@ -106,11 +106,23 @@ categorate = function(compounds, chemical_library, input_format = "wide"){
   }
 
   cids_all_input = c()
-  CMP_info_df = data.frame(matrix(ncol = 6, nrow = 0))
-  Chem_data_source = c("reactives_df", "LOTUS_df",
-                       "KEGG_df", "FEMA_df",
-                       "FDA_SPL_df", "Chemical")
-  colnames(CMP_info_df) = Chem_data_source
+  # CMP_info_df = data.frame(matrix(ncol = 6, nrow = 0))
+  CMP_reactives = data.frame(matrix(ncol = 2, nrow = 0))
+  CMP_LOTUS = data.frame(matrix(ncol = 2, nrow = 0))
+  CMP_KEGG = data.frame(matrix(ncol = 2, nrow = 0))
+  CMP_FEMA = data.frame(matrix(ncol = 2, nrow = 0))
+  CMP_FDA_SPL = data.frame(matrix(ncol = 2, nrow = 0))
+
+  # Chem_data_source = c("reactives_df", "LOTUS_df",
+  #                      "KEGG_df", "FEMA_df",
+  #                      "FDA_SPL_df", "Chemical")
+  # colnames(CMP_info_df) = Chem_data_source
+
+  colnames(CMP_reactives) = c("reactives", "Chemical")
+  colnames(CMP_LOTUS) = c("LOTUS", "Chemical")
+  colnames(CMP_KEGG) = c("KEGG", "Chemical")
+  colnames(CMP_FEMA) = c("FEMA", "Chemical")
+  colnames(CMP_FDA_SPL) = c("FDA_SPL", "Chemical")
 
   for(w in 1:length(compounds)){
    CMPs_tmp = compounds[w]
@@ -242,10 +254,33 @@ categorate = function(compounds, chemical_library, input_format = "wide"){
    cids_all_input = c(cids_all_input, chem_cid)
 
 
-   CMP_info_row = as.data.frame(t(rbind.data.frame(reactives_df, LOTUS_df, KEGG_df, FEMA_df, FDA_SPL_df, CMPs_tmp)))
-   colnames(CMP_info_row) = Chem_data_source
-   CMP_info_df = rbind(CMP_info_df, CMP_info_row)
-   row.names(CMP_info_df) = NULL
+   # CMP_info_row = as.data.frame(t(rbind.data.frame(reactives_df, LOTUS_df, KEGG_df, FEMA_df, FDA_SPL_df, CMPs_tmp)))
+   reactives_row = as.data.frame(cbind(reactives_df, CMPs_tmp))
+   LOTUS_row = as.data.frame(cbind(LOTUS_df, CMPs_tmp))
+   KEGG_row = as.data.frame(cbind(KEGG_df, CMPs_tmp))
+   FEMA_row = as.data.frame(cbind(FEMA_df, CMPs_tmp))
+   FDA_SPL_row = as.data.frame(cbind(FDA_SPL_df, CMPs_tmp))
+
+   # colnames(CMP_info_row) = Chem_data_source
+   colnames(reactives_row) = c("reactives", "Chemical")
+   colnames(LOTUS_row) = c("LOTUS", "Chemical")
+   colnames(KEGG_row) = c("KEGG", "Chemical")
+   colnames(FEMA_row) = c("FEMA", "Chemical")
+   colnames(FDA_SPL_row) = c("FDA_SPL", "Chemical")
+
+   # CMP_info_df = rbind(CMP_info_df, CMP_info_row)
+   CMP_reactives = rbind(CMP_reactives, reactives_row)
+   CMP_LOTUS = rbind(CMP_LOTUS, LOTUS_row)
+   CMP_KEGG = rbind(CMP_KEGG, KEGG_row)
+   CMP_FEMA = rbind(CMP_FEMA, FEMA_row)
+   CMP_FDA_SPL = rbind(CMP_FDA_SPL, FDA_SPL_row)
+
+   # row.names(CMP_info_df) = NULL
+   row.names(CMP_reactives) = NULL
+   row.names(CMP_LOTUS) = NULL
+   row.names(CMP_KEGG) = NULL
+   row.names(CMP_FEMA) = NULL
+   row.names(CMP_FDA_SPL) = NULL
   }
 
   SDF_input_set = ChemmineR::SDFset()
@@ -432,10 +467,10 @@ categorate = function(compounds, chemical_library, input_format = "wide"){
   }
 
 
-  data_list = list(CMP_info_df, SDF_info_df, functional_df, matchems_df)
-  names(data_list) = c("Databases", "FMCS", "FunctionalGroups", "BestChemMatch")
+  # CMP_info_df
+  data_list = list(CMP_reactives, CMP_LOTUS, CMP_KEGG, CMP_FEMA, CMP_FDA_SPL, SDF_info_df, functional_df, matchems_df)
+  names(data_list) = c("reactives", "LOTUS", "KEGG", "FEMA", "FDA_SPL", "FMCS", "FunctionalGroups", "BestChemMatch")
   return(data_list)
  }
  else{cat("No library detected! Please Try Again.")}
 }
-
