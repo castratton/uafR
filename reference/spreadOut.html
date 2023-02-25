@@ -95,11 +95,9 @@ or file name for downstream uafR functions.</p>
     <h2>Examples</h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu">spreadOut</span><span class="op">(</span><span class="va">standard_data</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Welcome to uafR! Preparing your data, please be patient.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [Current/Total] |--Exact Mass--|--CMP Name 1--|--CMP Name 2--|--Top MZ Peaks--|</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1 / 63]: 68.0045147 | trifluoroborane | Boron trifluoride | 49 | 25 | 37</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>URL 'https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/compound/6356/JSON?heading=Depositor-Supplied+Synonyms': Timeout of 60 seconds was reached</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [2 / 63]: 118.920660 | trichloro(deuterio)methane | Methane-d, trichloro- | 84 | 47 | 21 | 12 | 10</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [3 / 63]: 83.9533555 | dichloromethane | Methylene chloride | 49 | 57.85 | 84 | 36.56 | 51</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>URL 'https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/compound/6344/JSON?heading=Depositor-Supplied+Synonyms': Timeout of 60 seconds was reached</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>cannot open URL 'https://cactus.nci.nih.gov/chemical/structure/6-Phenyl-6H-1,2,3,4,5,6,7-[1,2,3]triazolo[4,5-e][1,2,3,4]tetrazine-1,3-dione/smiles': HTTP status was '500 Internal Server Error'</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>cannot open URL 'https://cactus.nci.nih.gov/chemical/structure/6-Phenyl-6H-1,2,3,4,5,6,7-[1,2,3]triazolo[4,5-e][1,2,3,4]tetrazine-1,3-dione/stdinchikey': HTTP status was '500 Internal Server Error'</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [4 / 63]: NA | 2-propanone | 6-Phenyl-6H-1,2,3,4,5,6,7-[1,2,3]triazolo[4,5-e][1,2,3,4]tetrazine-1,3-dione | 43 | 30 | 7.85 | 42 | 23.21</span>
@@ -646,150 +644,150 @@ or file name for downstream uafR functions.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $Mass</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    Std_soln_00.D Std_soln_07.D Std_soln_00a.D</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1     68.0045147          &lt;NA&gt;           &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2           &lt;NA&gt;     118.92066           &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3           &lt;NA&gt;          &lt;NA&gt;     83.9533555</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4             NA          &lt;NA&gt;           &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5           &lt;NA&gt;          &lt;NA&gt;  123.032028402</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6           &lt;NA&gt;  70.016712692           &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7           &lt;NA&gt;  128.03342538           &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8           &lt;NA&gt;  84.068748264           &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9           &lt;NA&gt;  124.12520051           &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10 151.099714038          &lt;NA&gt;           &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11          &lt;NA&gt;          &lt;NA&gt;    107.0137915</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12          &lt;NA&gt;  99.068413911           &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 13   147.9152559          &lt;NA&gt;           &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 14          &lt;NA&gt;          &lt;NA&gt;   199.95665587</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 15  51.010899036          &lt;NA&gt;           &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 16          &lt;NA&gt; 341.141578849           &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 17            NA          &lt;NA&gt;           &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 18          &lt;NA&gt;  282.08920892           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1      118.92066          &lt;NA&gt;           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2           &lt;NA&gt;            NA           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3           &lt;NA&gt;          &lt;NA&gt;  123.032028402</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4   70.016712692          &lt;NA&gt;           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5           &lt;NA&gt;          &lt;NA&gt;   128.03342538</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6           &lt;NA&gt;  84.068748264           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7           &lt;NA&gt;  124.12520051           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8           &lt;NA&gt; 151.099714038           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9           &lt;NA&gt;   107.0137915           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10  99.068413911          &lt;NA&gt;           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11          &lt;NA&gt;          &lt;NA&gt;    147.9152559</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12          &lt;NA&gt;  199.95665587           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13  51.010899036          &lt;NA&gt;           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14          &lt;NA&gt;          &lt;NA&gt;  341.141578849</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 15            NA          &lt;NA&gt;           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 16          &lt;NA&gt;  282.08920892           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 17 144.115029749          &lt;NA&gt;           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18          &lt;NA&gt; 144.115029749           &lt;NA&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 19          &lt;NA&gt;          &lt;NA&gt;  144.115029749</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 20 144.115029749          &lt;NA&gt;           &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 21          &lt;NA&gt; 144.115029749           &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 22          &lt;NA&gt;  88.027277375           &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 23          &lt;NA&gt;          &lt;NA&gt;   128.12011513</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 20  88.027277375          &lt;NA&gt;           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 21          &lt;NA&gt;  128.12011513           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 22          &lt;NA&gt;  128.12011513           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 23          &lt;NA&gt;          &lt;NA&gt;  100.088815002</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 24          &lt;NA&gt;  128.12011513           &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 25 100.088815002          &lt;NA&gt;           &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 26  128.12011513          &lt;NA&gt;           &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 27          &lt;NA&gt;          &lt;NA&gt;  156.187800766</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 28 156.187800766          &lt;NA&gt;           &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 29          &lt;NA&gt; 128.156500638           &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 30   291.0130255          &lt;NA&gt;           &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 31          &lt;NA&gt;  102.00926271           &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 32          &lt;NA&gt;          &lt;NA&gt;             NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 33          &lt;NA&gt;  198.17321333           &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 34          &lt;NA&gt;   86.03677943           &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 35          &lt;NA&gt;  553.21429944           &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 36          &lt;NA&gt;            NA           &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 37          &lt;NA&gt;          &lt;NA&gt;    85.03884512</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 38          &lt;NA&gt; 267.162314293           &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 39          &lt;NA&gt;          &lt;NA&gt;  152.047344113</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 25 156.187800766          &lt;NA&gt;           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 26 156.187800766          &lt;NA&gt;           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 27          &lt;NA&gt;          &lt;NA&gt;  128.156500638</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 28   291.0130255          &lt;NA&gt;           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 29          &lt;NA&gt;  102.00926271           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 30            NA          &lt;NA&gt;           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 31          &lt;NA&gt;  198.17321333           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 32          &lt;NA&gt;          &lt;NA&gt;    86.03677943</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 33          &lt;NA&gt;  553.21429944           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 34          &lt;NA&gt;            NA           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 35          &lt;NA&gt;   85.03884512           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 36          &lt;NA&gt; 267.162314293           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 37          &lt;NA&gt;          &lt;NA&gt;  152.047344113</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 38          &lt;NA&gt; 152.047344113           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 39          &lt;NA&gt;          &lt;NA&gt;             NA</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 40 152.047344113          &lt;NA&gt;           &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 41            NA          &lt;NA&gt;           &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 42          &lt;NA&gt; 152.047344113           &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 43 204.115029749          &lt;NA&gt;           &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 44  299.03809744          &lt;NA&gt;           &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 45          &lt;NA&gt; 111.068413911           &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 46          &lt;NA&gt;          &lt;NA&gt;  141.115364102</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 47          &lt;NA&gt;          &lt;NA&gt;  190.172150702</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 48          &lt;NA&gt; 191.131014166           &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 49 124.027277375          &lt;NA&gt;           &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 50          &lt;NA&gt;   141.9588348           &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 51          &lt;NA&gt;          &lt;NA&gt;      393.98248</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 52          &lt;NA&gt;            NA           &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 53          &lt;NA&gt;          &lt;NA&gt;      290.01676</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 54          &lt;NA&gt;          &lt;NA&gt;   363.18344366</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 55  77.027691913          &lt;NA&gt;           &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 56          &lt;NA&gt;   86.03677943           &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 57          &lt;NA&gt;    41.0265491           &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 58            NA          &lt;NA&gt;           &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 59          &lt;NA&gt;  181.14666423           &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 60 105.032697108          &lt;NA&gt;           &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 61 191.131014166          &lt;NA&gt;           &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 62 191.131014166          &lt;NA&gt;           &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 63  78.021798072          &lt;NA&gt;           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 41 204.115029749          &lt;NA&gt;           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 42          &lt;NA&gt;  299.03809744           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 43 111.068413911          &lt;NA&gt;           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 44 141.115364102          &lt;NA&gt;           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 45          &lt;NA&gt; 190.172150702           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 46          &lt;NA&gt;          &lt;NA&gt;  191.131014166</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 47          &lt;NA&gt;          &lt;NA&gt;  124.027277375</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 48          &lt;NA&gt;   141.9588348           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 49     393.98248          &lt;NA&gt;           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 50          &lt;NA&gt;            NA           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 51          &lt;NA&gt;          &lt;NA&gt;      290.01676</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 52          &lt;NA&gt;  363.18344366           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 53          &lt;NA&gt;          &lt;NA&gt;   77.027691913</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 54          &lt;NA&gt;          &lt;NA&gt;    86.03677943</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 55    41.0265491          &lt;NA&gt;           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 56          &lt;NA&gt;            NA           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 57          &lt;NA&gt;  181.14666423           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 58 105.032697108          &lt;NA&gt;           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 59          &lt;NA&gt; 191.131014166           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 60 191.131014166          &lt;NA&gt;           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 61  78.021798072          &lt;NA&gt;           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 62            NA          &lt;NA&gt;           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 63            NA          &lt;NA&gt;           &lt;NA&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $rtBYmass</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                  Std_soln_00.D               Std_soln_07.D</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1     4.119230007 | 68.0045147                        &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2                         &lt;NA&gt;     4.124089059 | 118.92066</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1      4.119230007 | 118.92066                        &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2                         &lt;NA&gt;            4.124089059 | NA</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 3                         &lt;NA&gt;                        &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4             4.170414683 | NA                        &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4   4.170414683 | 70.016712692                        &lt;NA&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 5                         &lt;NA&gt;                        &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6                         &lt;NA&gt;  4.177583963 | 70.016712692</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7                         &lt;NA&gt;  4.209614366 | 128.03342538</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8                         &lt;NA&gt;  4.210337843 | 84.068748264</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9                         &lt;NA&gt;  4.244357505 | 124.12520051</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10 4.245289214 | 151.099714038                        &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6                         &lt;NA&gt;  4.177583963 | 84.068748264</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7                         &lt;NA&gt;  4.209614366 | 124.12520051</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8                         &lt;NA&gt; 4.210337843 | 151.099714038</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9                         &lt;NA&gt;   4.244357505 | 107.0137915</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10  4.245289214 | 99.068413911                        &lt;NA&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 11                        &lt;NA&gt;                        &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12                        &lt;NA&gt;  4.311943817 | 99.068413911</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 13   4.321807327 | 147.9152559                        &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12                        &lt;NA&gt;  4.311943817 | 199.95665587</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13  4.321807327 | 51.010899036                        &lt;NA&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 14                        &lt;NA&gt;                        &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 15  4.585271565 | 51.010899036                        &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 16                        &lt;NA&gt; 4.790488232 | 341.141578849</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 17            5.038087399 | NA                        &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 18                        &lt;NA&gt;  5.204418633 | 282.08920892</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 15            4.585271565 | NA                        &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 16                        &lt;NA&gt;  4.790488232 | 282.08920892</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 17 5.038087399 | 144.115029749                        &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18                        &lt;NA&gt; 5.204418633 | 144.115029749</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 19                        &lt;NA&gt;                        &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 20 5.376121074 | 144.115029749                        &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 21                        &lt;NA&gt; 5.387309241 | 144.115029749</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 22                        &lt;NA&gt;  5.389953069 | 88.027277375</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 20  5.376121074 | 88.027277375                        &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 21                        &lt;NA&gt;  5.387309241 | 128.12011513</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 22                        &lt;NA&gt;  5.389953069 | 128.12011513</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 23                        &lt;NA&gt;                        &lt;NA&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 24                        &lt;NA&gt;  5.463818905 | 128.12011513</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 25 5.469682077 | 100.088815002                        &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 26  5.469949169 | 128.12011513                        &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 25 5.469682077 | 156.187800766                        &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 26 5.469949169 | 156.187800766                        &lt;NA&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 27                        &lt;NA&gt;                        &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 28 6.798701234 | 156.187800766                        &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 29                        &lt;NA&gt; 6.799430348 | 128.156500638</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 30   6.940865911 | 291.0130255                        &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 31                        &lt;NA&gt;  7.028021843 | 102.00926271</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 28   6.798701234 | 291.0130255                        &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 29                        &lt;NA&gt;  6.799430348 | 102.00926271</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 30            6.940865911 | NA                        &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 31                        &lt;NA&gt;  7.028021843 | 198.17321333</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 32                        &lt;NA&gt;                        &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 33                        &lt;NA&gt;   7.35764313 | 198.17321333</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 34                        &lt;NA&gt;   7.365246707 | 86.03677943</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 35                        &lt;NA&gt;  7.480789837 | 553.21429944</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 36                        &lt;NA&gt;            7.956405145 | NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 33                        &lt;NA&gt;   7.35764313 | 553.21429944</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 34                        &lt;NA&gt;            7.365246707 | NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 35                        &lt;NA&gt;   7.480789837 | 85.03884512</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 36                        &lt;NA&gt; 7.956405145 | 267.162314293</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 37                        &lt;NA&gt;                        &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 38                        &lt;NA&gt; 8.229033559 | 267.162314293</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 38                        &lt;NA&gt; 8.229033559 | 152.047344113</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 39                        &lt;NA&gt;                        &lt;NA&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 40 8.296408204 | 152.047344113                        &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 41            8.299188894 | NA                        &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 42                        &lt;NA&gt; 8.303958027 | 152.047344113</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 43 8.348031108 | 204.115029749                        &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 44  8.348757856 | 299.03809744                        &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 45                        &lt;NA&gt; 8.945276959 | 111.068413911</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 41 8.299188894 | 204.115029749                        &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 42                        &lt;NA&gt;  8.303958027 | 299.03809744</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 43 8.348031108 | 111.068413911                        &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 44 8.348757856 | 141.115364102                        &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 45                        &lt;NA&gt; 8.945276959 | 190.172150702</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 46                        &lt;NA&gt;                        &lt;NA&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 47                        &lt;NA&gt;                        &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 48                        &lt;NA&gt;  9.35153663 | 191.131014166</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 49 9.846992927 | 124.027277375                        &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 50                        &lt;NA&gt;   9.918570636 | 141.9588348</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 48                        &lt;NA&gt;    9.35153663 | 141.9588348</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 49     9.846992927 | 393.98248                        &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 50                        &lt;NA&gt;            9.918570636 | NA</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 51                        &lt;NA&gt;                        &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 52                        &lt;NA&gt;            10.93942473 | NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 52                        &lt;NA&gt;  10.93942473 | 363.18344366</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 53                        &lt;NA&gt;                        &lt;NA&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 54                        &lt;NA&gt;                        &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 55  12.15506453 | 77.027691913                        &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 56                        &lt;NA&gt;   12.30318888 | 86.03677943</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 57                        &lt;NA&gt;    12.52328349 | 41.0265491</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 58            12.62616292 | NA                        &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 59                        &lt;NA&gt;  12.64349424 | 181.14666423</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 60 13.02349936 | 105.032697108                        &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 61 13.26182057 | 191.131014166                        &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 62 13.26416532 | 191.131014166                        &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 63  13.51233429 | 78.021798072                        &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 55    12.15506453 | 41.0265491                        &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 56                        &lt;NA&gt;            12.30318888 | NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 57                        &lt;NA&gt;  12.52328349 | 181.14666423</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 58 12.62616292 | 105.032697108                        &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 59                        &lt;NA&gt; 12.64349424 | 191.131014166</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 60 13.02349936 | 191.131014166                        &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 61  13.26182057 | 78.021798072                        &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 62            13.26416532 | NA                        &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 63            13.51233429 | NA                        &lt;NA&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                 Std_soln_00a.D</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1                         &lt;NA&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2                         &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3     4.139093742 | 83.9533555</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3  4.139093742 | 123.032028402</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 4                         &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5  4.176672459 | 123.032028402</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5   4.176672459 | 128.03342538</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 6                         &lt;NA&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 7                         &lt;NA&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 8                         &lt;NA&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 9                         &lt;NA&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 10                        &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11   4.259727806 | 107.0137915</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11   4.259727806 | 147.9152559</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 12                        &lt;NA&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 13                        &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 14  4.399552776 | 199.95665587</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14 4.399552776 | 341.141578849</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 15                        &lt;NA&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 16                        &lt;NA&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 17                        &lt;NA&gt;</span>
@@ -798,38 +796,38 @@ or file name for downstream uafR functions.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 20                        &lt;NA&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 21                        &lt;NA&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 22                        &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 23  5.460360601 | 128.12011513</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 23 5.460360601 | 100.088815002</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 24                        &lt;NA&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 25                        &lt;NA&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 26                        &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 27 6.798384935 | 156.187800766</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 27 6.798384935 | 128.156500638</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 28                        &lt;NA&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 29                        &lt;NA&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 30                        &lt;NA&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 31                        &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 32            7.206578692 | NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 32   7.206578692 | 86.03677943</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 33                        &lt;NA&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 34                        &lt;NA&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 35                        &lt;NA&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 36                        &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 37   8.227396843 | 85.03884512</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 37 8.227396843 | 152.047344113</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 38                        &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 39 8.286703432 | 152.047344113</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 39            8.286703432 | NA</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 40                        &lt;NA&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 41                        &lt;NA&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 42                        &lt;NA&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 43                        &lt;NA&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 44                        &lt;NA&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 45                        &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 46 9.037030103 | 141.115364102</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 47 9.076861291 | 190.172150702</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 46 9.037030103 | 191.131014166</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 47 9.076861291 | 124.027277375</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 48                        &lt;NA&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 49                        &lt;NA&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 50                        &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 51     10.05251496 | 393.98248</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 51     10.05251496 | 290.01676</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 52                        &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 53     11.57372486 | 290.01676</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 54  11.69045818 | 363.18344366</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 53  11.57372486 | 77.027691913</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 54   11.69045818 | 86.03677943</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 55                        &lt;NA&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 56                        &lt;NA&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 57                        &lt;NA&gt;</span>
@@ -842,76 +840,7 @@ or file name for downstream uafR functions.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $webInfo</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $webInfo$`Boron trifluoride`</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $webInfo$`Boron trifluoride`[[1]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [1] "BORON TRIFLUORIDE"                                                                         </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [2] "Trifluoroborane"                                                                           </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [3] "Boron fluoride"                                                                            </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [4] "Borane, trifluoro-"                                                                        </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [5] "Trifluoroboron"                                                                            </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [6] "7637-07-2"                                                                                 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [7] "Boron fluoride (BF3)"                                                                      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [8] "Fluorure de bore"                                                                          </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [9] "Boron trifluoride-methanol"                                                                </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [10] "Anca 1040"                                                                                 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [11] "Boron trifluoride10B"                                                                      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [12] "16045-88-8"                                                                                </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [13] "15875-25-9"                                                                                </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [14] "7JGD48PX8P"                                                                                </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [15] "CHEBI:33093"                                                                               </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [16] "Borane-11B, trifluoro-"                                                                    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [17] "BF3"                                                                                       </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [18] "BF3 - Butanol solution, 10 % (w/w)"                                                        </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [19] "Fluorure de bore [French]"                                                                 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [20] "Bortrifluorid"                                                                             </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [21] "trifluoridoboron"                                                                          </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [22] "trifluoro Boron"                                                                           </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [23] "boron trifluride"                                                                          </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [24] "HSDB 325"                                                                                  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [25] "Trifluoro-borane"                                                                          </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [26] "boron triflouride"                                                                         </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [27] "boron-trifluoride"                                                                         </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [28] "EINECS 231-569-5"                                                                          </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [29] "UN1008"                                                                                    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [30] "(11B)Boron trifluoride"                                                                    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [31] "UNII-7JGD48PX8P"                                                                           </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [32] "Boron trifluoride, compressed"                                                             </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [33] "Leecure B series (Salt/Mix)"                                                               </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [34] "BORON TRIFLUORIDE [MI]"                                                                    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [35] "Boron trifluoride, &gt;=99.5%"                                                                </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [36] "CHEMBL2220705"                                                                             </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [37] "DTXSID7041677"                                                                             </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [38] "[BF3]"                                                                                     </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [39] "Boron Trifluoride - Butanol Reagent"                                                       </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [40] "EINECS 243-946-1"                                                                          </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [41] "Boron Trifluoride - Methanol Reagent"                                                      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [42] "Boron Trifluoride - Propanol Reagent"                                                      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [43] "MFCD00011316"                                                                              </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [44] "AKOS015916106"                                                                             </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [45] "ZINC242701933"                                                                             </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [46] "UN 1008"                                                                                   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [47] "353-41-3"                                                                                  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [48] "FT-0623180"                                                                                </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [49] "FT-0694035"                                                                                </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [50] "X0034"                                                                                     </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [51] "X0035"                                                                                     </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [52] "X0036"                                                                                     </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [53] "X0037"                                                                                     </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [54] "Boron Trifluoride - Isopropyl Alcohol Reagent"                                             </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [55] "EC 231-569-5"                                                                              </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [56] "Boron trifluoride, electronic grade, &gt;=99.99%"                                             </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [57] "Q409602"                                                                                   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [58] "Boron trifluoride, compressed [UN1008]  [Poison gas]"                                      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [59] "Boron trifluoride - 1-butanol solution, ~10% in 1-butanol (&gt;=1.3 M), for GC derivatization"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $webInfo$`Boron trifluoride`[[2]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "25" "37" "49" "11"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $webInfo$`Boron trifluoride`[[3]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 68.00451</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $webInfo$`Boron trifluoride`[[4]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 4.11923</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> NULL</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $webInfo$`Methane-d, trichloro-`</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $webInfo$`Methane-d, trichloro-`[[1]]</span>
@@ -984,225 +913,7 @@ or file name for downstream uafR functions.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $webInfo$`Methylene chloride`</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $webInfo$`Methylene chloride`[[1]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   [1] "DICHLOROMETHANE"                                                                                                   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   [2] "Methylene chloride"                                                                                                </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   [3] "75-09-2"                                                                                                           </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   [4] "Methylene dichloride"                                                                                              </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   [5] "Methane, dichloro-"                                                                                                </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   [6] "Methylene bichloride"                                                                                              </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   [7] "Methane dichloride"                                                                                                </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   [8] "Solaesthin"                                                                                                        </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   [9] "Solmethine"                                                                                                        </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [10] "Freon 30"                                                                                                          </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [11] "Narkotil"                                                                                                          </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [12] "Aerothene MM"                                                                                                      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [13] "Metylenu chlorek"                                                                                                  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [14] "Chlorure de methylene"                                                                                             </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [15] "Dichlormethan"                                                                                                     </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [16] "Metaclen"                                                                                                          </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [17] "Soleana VDA"                                                                                                       </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [18] "CH2Cl2"                                                                                                            </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [19] "Khladon 30"                                                                                                        </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [20] "dichloro-methane"                                                                                                  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [21] "F 30 (chlorocarbon)"                                                                                               </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [22] "RCRA waste number U080"                                                                                            </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [23] "NCI-C50102"                                                                                                        </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [24] "R 30"                                                                                                              </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [25] "dichlormethane"                                                                                                    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [26] "Methoklone"                                                                                                        </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [27] "HCC 30"                                                                                                            </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [28] "Salesthin"                                                                                                         </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [29] "dichloro methane"                                                                                                  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [30] "Chlorodorm D"                                                                                                      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [31] "NSC 406122"                                                                                                        </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [32] "UN 1593"                                                                                                           </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [33] "F 30"                                                                                                              </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [34] "Methylene chloride [NF]"                                                                                           </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [35] "Dichloromethane, HPLC Grade"                                                                                       </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [36] "588X2YUY0A"                                                                                                        </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [37] "CHEBI:15767"                                                                                                       </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [38] "MFCD00000881"                                                                                                      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [39] "NSC-406122"                                                                                                        </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [40] "Methylene chloride (NF)"                                                                                           </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [41] "Methylenum chloratum"                                                                                              </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [42] "R30 (refrigerant)"                                                                                                 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [43] "Caswell No. 568"                                                                                                   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [44] "Metylenu chlorek [Polish]"                                                                                         </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [45] "HSDB 66"                                                                                                           </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [46] "CCRIS 392"                                                                                                         </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [47] "Chloride, Methylene"                                                                                               </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [48] "Chlorure de methylene [French]"                                                                                    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [49] "Bichloride, Methylene"                                                                                             </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [50] "Dichloride, Methylene"                                                                                             </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [51] "EINECS 200-838-9"                                                                                                  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [52] "UN1593"                                                                                                            </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [53] "DICHLOROMETHANE, NF"                                                                                               </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [54] "RCRA waste no. U080"                                                                                               </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [55] "DICHLOROMETHANE, ACS"                                                                                              </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [56] "EPA Pesticide Chemical Code 042004"                                                                                </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [57] "BRN 1730800"                                                                                                       </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [58] "dichioromethane"                                                                                                   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [59] "dichlormetane"                                                                                                     </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [60] "dichloromeihane"                                                                                                   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [61] "dichlorometan"                                                                                                     </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [62] "dichlorometane"                                                                                                    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [63] "dichloromethan"                                                                                                    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [64] "dichoromethane"                                                                                                    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [65] "dicloromethane"                                                                                                    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [66] "methylenchoride"                                                                                                   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [67] "metylenchloride"                                                                                                   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [68] "UNII-588X2YUY0A"                                                                                                   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [69] "Methylenchlorid"                                                                                                   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [70] "Aerothene"                                                                                                         </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [71] "Driverit"                                                                                                          </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [72] "Nevolin"                                                                                                           </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [73] "dichlor-methane"                                                                                                   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [74] "dichlorometliane"                                                                                                  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [75] "dichlorornethane"                                                                                                  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [76] "dicliloromethane"                                                                                                  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [77] "methylenchloride"                                                                                                  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [78] "methylenechlorid"                                                                                                  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [79] "methYIenechlorid"                                                                                                  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [80] "di-chloromethane"                                                                                                  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [81] "dichloromethane-"                                                                                                  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [82] "methlyenechloride"                                                                                                 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [83] "methylenechloride"                                                                                                 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [84] "AI3-01773"                                                                                                         </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [85] "Dichloromethane, suitable for 5000 per JIS, for residue analysis"                                                  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [86] "methlene chloride"                                                                                                 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [87] "methyene chloride"                                                                                                 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [88] "methylen chloride"                                                                                                 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [89] "methylene chlorie"                                                                                                 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [90] "methylene cloride"                                                                                                 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [91] "metylene chloride"                                                                                                 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [92] "Methylene choride"                                                                                                 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [93] "mehtylene chloride"                                                                                                </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [94] "methlyene chloride"                                                                                                </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [95] "methylene,chloride"                                                                                                </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [96] "methylene-chloride"                                                                                                </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [97] "dichloro -methane"                                                                                                 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [98] "dichloro- methane"                                                                                                 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [99] "methylenedichloride"                                                                                               </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [100] "Distillex DS3"                                                                                                     </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [101] "Dichloromethane, ACS reagent, &gt;=99.5%, contains 40-150 ppm amylene as stabilizer"                                  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [102] "M-clean D"                                                                                                         </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [103] "methyl ene chloride"                                                                                               </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [104] "Dichloromethane (Methylene Chloride)"                                                                              </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [105] "MeCl2"                                                                                                             </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [106] "DCM,SP Grade"                                                                                                      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [107] "methylene di chloride"                                                                                             </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [108] "N,N-methylenechloride"                                                                                             </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [109] "dichloromethane solution"                                                                                          </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [110] "Methylene chloride ACS"                                                                                            </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [111] "Cl2CH2"                                                                                                            </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [112] "H2CCl2"                                                                                                            </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [113] "DSSTox_CID_868"                                                                                                    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [114] "Dichloromethane, anhydrous"                                                                                        </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [115] "Dichloromethane, for HPLC"                                                                                         </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [116] "EC 200-838-9"                                                                                                      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [117] "NCIMech_000221"                                                                                                    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [118] "WLN: G1G"                                                                                                          </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [119] "DSSTox_RID_75836"                                                                                                  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [120] "DSSTox_GSID_20868"                                                                                                 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [121] "4-01-00-00035 (Beilstein Handbook Reference)"                                                                      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [122] "Dichloromethane, &gt;=99.9%"                                                                                          </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [123] "CHEMBL45967"                                                                                                       </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [124] "DICHLOROMETHANE [IARC]"                                                                                            </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [125] "Methylene Chloride (Recovered)"                                                                                    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [126] "Dichloromethane, AR, &gt;=99%"                                                                                        </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [127] "Dichloromethane (Peptide Grade)"                                                                                   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [128] "DICHLOROMETHANE [MART.]"                                                                                           </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [129] "METHYLENE CHLORIDE [II]"                                                                                           </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [130] "METHYLENE CHLORIDE [MI]"                                                                                           </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [131] "DTXSID0020868"                                                                                                     </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [132] "METHYLENE CHLORIDE [FCC]"                                                                                          </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [133] "DTXSID60166893"                                                                                                    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [134] "METHYLENE CHLORIDE [HSDB]"                                                                                         </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [135] "Dichloromethane Reagent Grade ACS"                                                                                 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [136] "Dichloromethane, LR, &gt;=99.5%"                                                                                      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [137] "Dichloromethane, purification grade"                                                                               </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [138] "METHYLENE CHLORIDE [VANDF]"                                                                                        </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [139] "Dichloromethane, analytical standard"                                                                              </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [140] "Dichloromethane, Environmental Grade"                                                                              </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [141] "METHYLENE CHLORIDE [USP-RS]"                                                                                       </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [142] "Tox21_202526"                                                                                                      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [143] "NSC406122"                                                                                                         </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [144] "STL264204"                                                                                                         </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [145] "AKOS009031498"                                                                                                     </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [146] "Dichloromethane [UN1593]  [Poison]"                                                                                </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [147] "Dichloromethane, ACS reagent, 99.5%"                                                                               </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [148] "CAS-75-09-2"                                                                                                       </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [149] "Dichloromethane, for HPLC, &gt;=99.7%"                                                                                </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [150] "Dichloromethane GC, for residue analysis"                                                                          </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [151] "Dichloromethane, Spectrophotometric Grade"                                                                         </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [152] "METHYLENE CHLORIDE [EP MONOGRAPH]"                                                                                 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [153] "NCGC00091504-01"                                                                                                   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [154] "NCGC00260075-01"                                                                                                   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [155] "Dichloromethane 100 microg/mL in Methanol"                                                                         </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [156] "Dichloromethane, suitable for PCB analysis"                                                                        </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [157] "Dichloromethane 1000 microg/mL in Methanol"                                                                        </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [158] "D0529"                                                                                                             </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [159] "D3478"                                                                                                             </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [160] "FT-0624716"                                                                                                        </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [161] "FT-0624717"                                                                                                        </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [162] "M0629"                                                                                                             </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [163] "Dichloromethane, 99%, stabilized with ethanol"                                                                     </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [164] "Dichloromethane, for HPLC, &gt;=99.8% (GC)"                                                                           </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [165] "Dichloromethane, SAJ first grade, &gt;=99.0%"                                                                         </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [166] "Dichloromethane, Selectophore(TM), &gt;=99.5%"                                                                        </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [167] "C02271"                                                                                                            </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [168] "D02330"                                                                                                            </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [169] "Dichloromethane, analytical standard, stabilized"                                                                  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [170] "Dichloromethane, JIS special grade, &gt;=99.0%"                                                                       </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [171] "L023970"                                                                                                           </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [172] "Q421748"                                                                                                           </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [173] "Q425210"                                                                                                           </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [174] "J-610006"                                                                                                          </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [175] "Dichloromethane, 99%, stab. with ca. 50ppm amylene"                                                                </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [176] "Methylene Chloride HPLC grade Stabilized with Amylene"                                                             </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [177] "Dichloromethane solution, contains 10 % (v/v) methanol"                                                            </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [178] "Dichloromethane, glass distilled HRGC/HPLC trace grade"                                                            </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [179] "Dichloromethane, TLC high-purity grade, &gt;=99.8% (GC)"                                                              </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [180] "Dichloromethane HPLC, UV/IR, min. 99.9%, isocratic grade"                                                          </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [181] "Dichloromethane, special, 99.9%, contains 40-60 ppm Amylene"                                                       </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [182] "Dichloromethane, for HPLC, &gt;=99.8%, contains amylene as stabilizer"                                                </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [183] "Dichloromethane, Selectophore(TM), &gt;=99.5% (GC), inhibitor-free"                                                   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [184] "Dichloromethane, suitable for 300 per JIS, for residue analysis"                                                   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [185] "Dichloromethane, technical grade, 95%, contains 40-60 ppm Amylene"                                                 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [186] "Methylene chloride, European Pharmacopoeia (EP) Reference Standard"                                                </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [187] "Dichloromethane, puriss. p.a., ACS reagent, reag. ISO, &gt;=99.9% (GC)"                                               </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [188] "Dichloromethane, UV HPLC spectroscopic, 99.9%, contains 40-60 ppm Amylene"                                         </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [189] "Dichloromethane solution, 10 % (v/v) in methanol, 1 % (v/v) in ammonium hydroxide"                                 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [190] "Dichloromethane solution, certified reference material, 200 mug/mL in methanol"                                    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [191] "Dichloromethane solution, certified reference material, 5000 mug/mL in methanol"                                   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [192] "Dichloromethane, ACS reagent, &gt;=99.5%, contains 50 ppm amylene as stabilizer"                                      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [193] "Dichloromethane, anhydrous, &gt;=99.8%, contains 40-150 ppm amylene as stabilizer"                                    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [194] "Dichloromethane, anhydrous, contains 40-150 ppm amylene as stabilizer, ZerO2(TM), &gt;=99.8%"                         </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [195] "Dichloromethane, biotech. grade, 99.9%, contains 40-150 ppm amylene as stabilizer"                                 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [196] "Dichloromethane, contains 40-150 ppm amylene as stabilizer, ACS reagent, &gt;=99.5%"                                  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [197] "Dichloromethane, for HPLC, &gt;=99.9%, contains 40-150 ppm amylene as stabilizer"                                     </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [198] "Dichloromethane, puriss., meets analytical specification of Ph.??Eur., NF, &gt;=99% (GC)"                             </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [199] "Dichloromethane, suitable for 1000 per JIS, &gt;=99.5%, for residue analysis"                                         </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [200] "Methylene Chloride, Pharmaceutical Secondary Standard; Certified Reference Material"                               </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [201] "Dichloromethane, &gt;=99.9%, capillary GC grade, suitable for environmental analysis, contains amylene as stabilizer" </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [202] "Dichloromethane, ACS spectrophotometric grade, &gt;=99.5%, contains 50-150 ppm amylene as stabilizer"                 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [203] "Dichloromethane, HPLC Plus, for HPLC, GC, and residue analysis, &gt;=99.9%, contains 50-150 ppm amylene as stabilizer"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [204] "Dichloromethane, Laboratory Reagent, &gt;=99.9% (without stabilizer, GC), contains 0.1-0.4% ethanol as stabilizer"    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [205] "Dichloromethane, p.a., ACS reagent, reag. ISO, reag. Ph. Eur., 99.8%, contains 40-60 ppm Amylene"                  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [206] "Dichloromethane, puriss. p.a., ACS reagent, reag. ISO, dried, &gt;=99.8% (GC), &lt;=0.001% water"                        </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [207] "M.C"                                                                                                               </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [208] "Residual Solvent Class 2 - Methylene chloride, United States Pharmacopeia (USP) Reference Standard"                </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $webInfo$`Methylene chloride`[[2]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "49"    "84"    "51"    "35"    "57.85" "36.56" "47"   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $webInfo$`Methylene chloride`[[3]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 83.95336</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $webInfo$`Methylene chloride`[[4]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 4.139094</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> NULL</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $webInfo$`6-Phenyl-6H-1,2,3,4,5,6,7-[1,2,3]triazolo[4,5-e][1,2,3,4]tetrazine-1,3-dione`</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $webInfo$`6-Phenyl-6H-1,2,3,4,5,6,7-[1,2,3]triazolo[4,5-e][1,2,3,4]tetrazine-1,3-dione`[[1]]</span>
