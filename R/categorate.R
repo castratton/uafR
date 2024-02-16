@@ -120,9 +120,11 @@ categorate = function(compounds, chemical_library, input_format = "wide"){
   colnames(CMP_FDA_SPL) = c("FDA_SPL", "Chemical")
 
   for(w in 1:length(compounds)){
-   CMPs_tmp = compounds[w]
 
-   chem_cid = webchem::get_cid(CMPs_tmp)
+   CMPs_tmp = compounds[w]
+   Sys.sleep(1)
+
+   chem_cid = tryCatch(webchem::get_cid(CMPs_tmp), error = function(error) {return("Limit Met")})
    if(w == 1){cat("Searching query chemicals for structural data, please be patient!\n")}
    cat(paste0('[', w, '/', length(compounds), ']', '-', CMPs_tmp, '\n'))
 
@@ -132,6 +134,7 @@ categorate = function(compounds, chemical_library, input_format = "wide"){
     smiles_url = gsub("\\ ", "%20", smiles_url)
     inchi_url = gsub("\\ ", "%20", inchi_url)
     smile_string = getNCI(smiles_url)
+    Sys.sleep(1)
     inchi_string = getNCI(inchi_url)
 
     if(smile_string != "None"){
@@ -277,6 +280,7 @@ categorate = function(compounds, chemical_library, input_format = "wide"){
   if(length(cids_all_input) > 135){
    compound_cid_list = split(cids_all_input, ceiling(seq_along(cids_all_input)/135))
    for(i in 1:length(compound_cid_list)){
+    Sys.sleep(1)
     compound_cid_set = toString(compound_cid_list[[i]])
     compound_cid_set = gsub("NA", "180", compound_cid_set)
     compound_cid_set = gsub("[c\\\"() ]","",compound_cid_set)
@@ -310,6 +314,7 @@ categorate = function(compounds, chemical_library, input_format = "wide"){
     for(k in 1:length(chemicals_tmp)){
       CMPs_tmp = chemicals_tmp[k]
 
+      Sys.sleep(1)
       chem_cid = webchem::get_cid(CMPs_tmp)
 
       cat(paste0('[', k, '/', length(chemicals_tmp), ']', '-', CMPs_tmp, '\n'))

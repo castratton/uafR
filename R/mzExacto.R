@@ -149,6 +149,7 @@ mzExacto <- function(data_in, chemicals, decontaminate = T){
 
     alt_trigger = F
     current_CMP = chemicals[chem]
+    Sys.sleep(1)
     chem_cid = webchem::get_cid(chemicals[chem])
 
     if(is.na(chem_cid[[1,2]])){

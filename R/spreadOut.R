@@ -96,6 +96,7 @@ spreadOut = function(input){
    searchNames_published = list()
 
    for (chem in 1:num_tentative){
+      Sys.sleep(1)
       alt_trigger = F
       current_CMP = tentative_identities[chem]
       current_RT = tentative_RTs[chem]
