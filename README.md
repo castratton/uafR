@@ -6,7 +6,7 @@
 
 ## Objective
 
-An R package that automates GC/LC-MS processing.
+An R package that automates GC-MS processing.
 
 ## Installation
 
