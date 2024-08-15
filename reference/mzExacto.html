@@ -8,7 +8,7 @@ by molecular masses published on PubChem."><!-- mathjax --><script src="https://
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]--></head><body data-spy="scroll" data-target="#toc">
-    
+
 
     <div class="container template-reference-topic">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -36,20 +36,20 @@ by molecular masses published on PubChem."><!-- mathjax --><script src="https://
       </ul><ul class="nav navbar-nav navbar-right"><li>
   <a href="https://github.com/castratton/uafR/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
-     
+
   </a>
 </li>
       </ul></div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
 
-      
+
 
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>mzExacto</h1>
-    <small class="dont-index">Source: <a href="https://github.com/castratton/uafR/blob/HEAD/R/mzExacto.R" class="external-link"><code>R/mzExacto.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/castratton/uafR/blob/main/R/mzExacto.R" class="external-link"><code>R/mzExacto.R</code></a></small>
     <div class="hidden name"><code>mzExacto.Rd</code></div>
     </div>
 
@@ -68,23 +68,23 @@ by molecular masses published on PubChem.</p>
 
     <div id="arguments">
     <h2>Arguments</h2>
-    <dl><dt>data_in</dt>
+
+
+<dl><dt id="arg-data-in">data_in<a class="anchor" aria-label="anchor" href="#arg-data-in"></a></dt>
 <dd><p>the list output from `spreadOut()`</p></dd>
 
 
-<dt>chemicals</dt>
+<dt id="arg-chemicals">chemicals<a class="anchor" aria-label="anchor" href="#arg-chemicals"></a></dt>
 <dd><p>A vector containing chemical names in IUPAC notation</p></dd>
 
 
-<dt>decontaminate</dt>
+<dt id="arg-decontaminate">decontaminate<a class="anchor" aria-label="anchor" href="#arg-decontaminate"></a></dt>
 <dd><p>A logical set to remove uncertain chemicals or junk from output</p></dd>
 
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    
-
-<p>A data frame containing chemical names(`chemicals`), their
+    <p>A data frame containing chemical names(`chemicals`), their
 optimal retention time, exact mass, best identified match factor, and
 aggregated component area across every sample it was identified in.</p>
     </div>
@@ -101,9 +101,25 @@ raw `spreadOut()` data for samples where a chemical exists.</p>
 <span class="r-in"><span><span class="fu">mzExacto</span><span class="op">(</span><span class="va">standard_spread</span>, <span class="va">query_chemicals</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Preparing the data. Stay tuned. </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Acquiring relevant info from Pubchem [pubchem.ncbi.nlm.nih.gov]. Please be patient!!</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>URL 'https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/compound/31265/JSON?heading=Depositor-Supplied+Synonyms': Timeout of 60 seconds was reached</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>URL 'https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/31265/SDF': Timeout of 60 seconds was reached</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in mass_info@SDF:</span> no applicable method for `@` applied to an object of class "character"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [Current/Total] |--Exact Mass--|--CMP Name 1--|--CMP Name 2--|--Top MZ Peaks--|</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1 / 4]: 144.115029749 | hexanoic acid ethyl ester | Ethyl hexanoate | 88 | 79.07 | 43 | 29 | 99 | 60 | 53.52</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2 / 4]: 152.047344113 | 2-hydroxybenzoic acid methyl ester | Methyl salicylate | 120 | 92 | 64.72 | 152 | 66.62 | 121 | 65 | 30.11 | 30.88</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3 / 4]: 128.120115130 | octanal | Octanal | 43 | 41 | 10.41 | 44 | 98.48 | 66.79 | 79.38 | 56 | 114 | 29 | 57 | 52.64 | 17.62 | 96 | 87 | 100</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [4 / 4]: 156.187800766 | undecane | Undecane | 43 | 11 | 57 | 15 | 71 | 155 | 51 | 45.96 | 94.31 | 29 | 48 | 32.03 | 85 | 99 | 55</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Working on Octanal</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Working on Ethyl hexanoate</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Working on Methyl salicylate</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Working on Undecane</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>            Compound          Mass               RT       Best Match</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1           Octanal 128.120115130  5.4620897525496 99.3245676204613</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2   Ethyl hexanoate 144.115029749 5.37971887422041  99.350118110327</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3 Methyl salicylate 152.047344113 8.29568988791984  98.161520884759</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4          Undecane 156.187800766 6.12919146738922 98.6771852019613</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      Std_soln_00.D    Std_soln_07.D   Std_soln_00a.D</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 379178.886500925 30943.1138493066 125725.898168008</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 263866.042668436 9896.48814871315 294869.135678944</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3 30332.9022085754 6476.47845067295 209705.187766455</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4 86270.0501904642 243.912373077048 238776.228691087</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
@@ -119,15 +135,15 @@ raw `spreadOut()` data for samples where a chemical exists.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.9.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.0.</p>
 </div>
 
       </footer></div>
 
-  
 
 
-  
+
+
 
   </body></html>
 

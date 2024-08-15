@@ -1,60 +1,22 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>/404.html</loc>
-  </url>
-  <url>
-    <loc>/articles/index.html</loc>
-  </url>
-  <url>
-    <loc>/articles/uafR.html</loc>
-  </url>
-  <url>
-    <loc>/authors.html</loc>
-  </url>
-  <url>
-    <loc>/index.html</loc>
-  </url>
-  <url>
-    <loc>/reference/ExternalStandard_data.html</loc>
-  </url>
-  <url>
-    <loc>/reference/categorate.html</loc>
-  </url>
-  <url>
-    <loc>/reference/exactoThese.html</loc>
-  </url>
-  <url>
-    <loc>/reference/index.html</loc>
-  </url>
-  <url>
-    <loc>/reference/library_data.html</loc>
-  </url>
-  <url>
-    <loc>/reference/library_data_long.html</loc>
-  </url>
-  <url>
-    <loc>/reference/mzExacto.html</loc>
-  </url>
-  <url>
-    <loc>/reference/personalLib.html</loc>
-  </url>
-  <url>
-    <loc>/reference/spreadOut.html</loc>
-  </url>
-  <url>
-    <loc>/reference/standard_categorated.html</loc>
-  </url>
-  <url>
-    <loc>/reference/standard_data.html</loc>
-  </url>
-  <url>
-    <loc>/reference/standard_exacto.html</loc>
-  </url>
-  <url>
-    <loc>/reference/standard_spread.html</loc>
-  </url>
-  <url>
-    <loc>/reference/standardifyIt.html</loc>
-  </url>
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>/404.html</loc></url>
+<url><loc>/articles/index.html</loc></url>
+<url><loc>/articles/uafR.html</loc></url>
+<url><loc>/authors.html</loc></url>
+<url><loc>/index.html</loc></url>
+<url><loc>/reference/ExternalStandard_data.html</loc></url>
+<url><loc>/reference/categorate.html</loc></url>
+<url><loc>/reference/exactoThese.html</loc></url>
+<url><loc>/reference/index.html</loc></url>
+<url><loc>/reference/library_data.html</loc></url>
+<url><loc>/reference/library_data_long.html</loc></url>
+<url><loc>/reference/mzExacto.html</loc></url>
+<url><loc>/reference/personalLib.html</loc></url>
+<url><loc>/reference/spreadOut.html</loc></url>
+<url><loc>/reference/standard_categorated.html</loc></url>
+<url><loc>/reference/standard_data.html</loc></url>
+<url><loc>/reference/standard_exacto.html</loc></url>
+<url><loc>/reference/standard_spread.html</loc></url>
+<url><loc>/reference/standardifyIt.html</loc></url>
 </urlset>
+
