@@ -52,418 +52,421 @@
 #'@export
 
 categorate = function(compounds, chemical_library, input_format = "wide"){
- # librarylist = NULL
- # getNCI = function(url_path){
- #  con = url(url_path)
- #  on.exit(close(con))
- #  string_holder = tryCatch(readLines(con, warn = F),
- #                           error = function(error) {return("None")})
- #  string_holder
- # }
- #
- # getPubChem = function(url_path){
- #  con = url(url_path)
- #  on.exit(close(con))
- #  string_holder = tryCatch(ChemmineR::read.SDFset(con, warn = F),
- #                           error = function(error) {return(T)})
- #  string_holder
- # }
- #
- # if(hasArg(chemical_library) & hasArg(compounds)){
- #
- #  personalLib=function(data, input_Format, output_Format){
- #   if(input_Format == "long" && output_Format =="list"){
- #    df.2=stats::na.omit(data)
- #    m=df.2[,c("compound","type")]
- #    dfwide=utils::unstack(m)
- #    assign("librarylist",dfwide, envir = parent.frame())
- #   }
- #
- #   if(input_Format == "wide" && output_Format =="list"){
- #    librarylist = list()
- #    for (i in 1:ncol(data)) {
- #     modify=data[[i]]
- #     librarylist[[i]]=stats::na.omit(modify)
- #    }
- #    name_lib=colnames(data)
- #    names(librarylist) <- name_lib
- #    assign("librarylist",librarylist, envir = parent.frame())
- #   }
- #
- #   if(input_Format == "long" && output_Format =="vectors"){
- #    df.2=stats::na.omit(data)
- #    m=df.2[,c("compound","type")]
- #    dfwide=utils::unstack(m)
- #    for (i in 1:length(dfwide)){
- #     assign(names(dfwide[i]), dfwide[[i]], envir = parent.frame())
- #    }}
- #
- #   if(input_Format == "wide" && output_Format =="vectors"){
- #    for (i in 1:ncol(data)){
- #     assign(colnames(data[i]), stats::na.omit(data[[i]]), envir = parent.frame())
- #    }
- #   }
- #  }
- #
- #  cids_all_input = c()
- #
- #  CMP_reactives = data.frame(matrix(ncol = 2, nrow = 0))
- #  CMP_LOTUS = data.frame(matrix(ncol = 2, nrow = 0))
- #  CMP_KEGG = data.frame(matrix(ncol = 2, nrow = 0))
- #  CMP_FEMA = data.frame(matrix(ncol = 2, nrow = 0))
- #  CMP_FDA_SPL = data.frame(matrix(ncol = 2, nrow = 0))
- #
- #  colnames(CMP_reactives) = c("reactives", "Chemical")
- #  colnames(CMP_LOTUS) = c("LOTUS", "Chemical")
- #  colnames(CMP_KEGG) = c("KEGG", "Chemical")
- #  colnames(CMP_FEMA) = c("FEMA", "Chemical")
- #  colnames(CMP_FDA_SPL) = c("FDA_SPL", "Chemical")
- #
- #  for(w in 1:length(compounds)){
- #
- #   CMPs_tmp = compounds[w]
- #   Sys.sleep(1)
- #
- #   chem_cid = tryCatch(webchem::get_cid(CMPs_tmp), error = function(error) {return("Limit Met")})
- #   if(w == 1){cat("Searching query chemicals for structural data, please be patient!\n")}
- #   cat(paste0('[', w, '/', length(compounds), ']', '-', CMPs_tmp, '\n'))
- #
- #   if(is.na(chem_cid[[1,2]])){
- #    smiles_url = paste0("https://cactus.nci.nih.gov/chemical/structure/",CMPs_tmp,"/smiles")
- #    inchi_url = paste0("https://cactus.nci.nih.gov/chemical/structure/",CMPs_tmp,"/stdinchikey")
- #    smiles_url = gsub("\\ ", "%20", smiles_url)
- #    inchi_url = gsub("\\ ", "%20", inchi_url)
- #    smile_string = getNCI(smiles_url)
- #    Sys.sleep(1)
- #    inchi_string = getNCI(inchi_url)
- #
- #    if(smile_string != "None"){
- #     InChiKey = substr(inchi_string, 10, nchar(inchi_string))
- #     smile_cid = webchem::get_cid(paste0(smile_string), from = "smiles")
- #
- #     chem_cid = smile_cid
- #    }else{}
- #   }
- #   chem_cid = paste0(chem_cid[[1,2]])
- #
- #   if(chem_cid == "0"){chem_cid = "180"}
- #
- #   chem_cid = gsub("NA",
- #                   "180",
- #                   chem_cid)
- #   if(chem_cid == "180"){alt_trigger = T}
- #
- #   reactives_url = paste0('https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/compound/',chem_cid,'/JSON?heading=Reactive+Group')
- #   LOTUS_url = paste0('https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/compound/',chem_cid,'/JSON?source=LOTUS+-+the+natural+products+occurrence+database')
- #   KEGG_url = paste0('https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/compound/',chem_cid,'/JSON?source=KEGG')
- #   FEMA_url = paste0('https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/compound/',chem_cid,'/JSON?source=Flavor+and+Extract+Manufacturers+Association+(FEMA)')
- #   MeSH_url = paste0('https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/compound/',chem_cid,'/JSON?source=Medical+Subject+Headings+(MeSH)')
- #   FDA_SPL_url = paste0('https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/compound/',chem_cid,'/JSON?source=FDA/SPL+Indexing+Data')
- #
- #   reactives_info = tryCatch(jsonlite::fromJSON(reactives_url), error = function(error) {return("None")})
- #   LOTUS_info = tryCatch(jsonlite::fromJSON(LOTUS_url), error = function(error) {return("None")})
- #   KEGG_info = tryCatch(jsonlite::fromJSON(KEGG_url), error = function(error) {return("None")})
- #   FEMA_info = tryCatch(jsonlite::fromJSON(FEMA_url), error = function(error) {return("None")})
- #   MeSH_info = tryCatch(jsonlite::fromJSON(MeSH_url), error = function(error) {return("None")})
- #   FDA_SPL_info = tryCatch(jsonlite::fromJSON(FDA_SPL_url), error = function(error) {return("None")})
- #
- #   if (reactives_info != "None"){
- #    reactives_value = as.matrix(unlist(reactives_info))
- #   } else {reactives_value = "None"}
- #   if (!is.na(reactives_value[2])){
- #    chem_name1 = paste0('"',CMPs_tmp,'"')
- #    chem_name1 = gsub("[c\\\"() ]", "", chem_name1)
- #    chem_name2 = paste0('"', toupper(CMPs_tmp), '"')
- #    chem_name2 = gsub("[c\\\"() ]", "", chem_name2)
- #    exclude_these = c("CAMEO Chemicals","Safety and Hazards",
- #                      "Stability and Reactivity","Reactive Group",
- #                      "CID", chem_name1, chem_name2)
- #    exclude_that = c("https:")
- #
- #    reactives_0 = matrix(reactives_value[nchar(reactives_value[,1]) < 100])
- #    reactives_1 = matrix(reactives_0[!reactives_0[,1] %in% exclude_these])
- #    reactives_2 = matrix(reactives_1[!substr(reactives_1[,1],1,6) %in% exclude_that])
- #    reactives_final = c(reactives_2[!grepl("\\d",reactives_2[,1])])
- #   } else {reactives_final = "None"}
- #   if (length(reactives_final) < 1){
- #    reactives_final = "None"
- #   } else {}
- #   reactives_df = reactives_final
- #
- #   if (LOTUS_info != "None"){
- #    LOTUS_value = as.matrix(unlist(LOTUS_info))
- #   } else {LOTUS_value = "None"}
- #   if (!is.na(LOTUS_value[2])){
- #    LOTUS_keeps = c("Record.Reference.SourceID",
- #                    "Record.Reference.SourceID1",
- #                    "Record.Reference.SourceID2")
- #    LOTUS_final = LOTUS_value[row.names(LOTUS_value) %in% LOTUS_keeps]
- #   } else {LOTUS_final = "None"}
- #   if (length(LOTUS_final) < 1){
- #    LOTUS_final = "None"
- #   } else {}
- #   LOTUS_df = LOTUS_final
- #
- #   if (KEGG_info != "None"){
- #    KEGG_value = as.matrix(unlist(KEGG_info))
- #   } else {KEGG_value = "None"}
- #   if (!is.na(KEGG_value[2])){
- #    KEGG_final = KEGG_value[substr(KEGG_value,1,5)=="KEGG:"]
- #   } else {KEGG_final = "None"}
- #   if (length(KEGG_final) < 1){
- #    KEGG_final = "None"
- #   } else {}
- #   KEGG_df = KEGG_final
- #
- #   if (FEMA_info != "None"){
- #    FEMA_value = as.matrix(unlist(FEMA_info))
- #   } else {FEMA_value = "None"}
- #   if (!is.na(FEMA_value[2])){
- #    FEMA_final = FEMA_value[row.names(FEMA_value)=="Record.Section.Section.Information.Value.StringWithMarkup.String"]
- #   } else {FEMA_final = "None"}
- #   if (length(FEMA_final) < 1){
- #    FEMA_final = "None"
- #   } else {}
- #   FEMA_df = unlist(strsplit(FEMA_final,","))
- #
- #   if (MeSH_info != "None"){
- #    MeSH_value = as.matrix(unlist(MeSH_info))
- #   } else {MeSH_value = "None"}
- #   if (!is.na(MeSH_value[2])){
- #    MeSH_final = MeSH_value[row.names(MeSH_value)=="Record.Section.Section.Information.Value.StringWithMarkup.String"]
- #   } else {MeSH_final = "None"}
- #   if (length(MeSH_final) < 1){
- #    MeSH_final = "None"
- #   } else {}
- #   MeSH_df = MeSH_final
- #
- #   if (FDA_SPL_info != "None"){
- #    FDA_SPL_value = as.matrix(unlist(FDA_SPL_info))
- #   } else {FDA_SPL_value = "None"}
- #   if (!is.na(FDA_SPL_value[2])){
- #    FDA_SPL_final = FDA_SPL_value[row.names(FDA_SPL_value)=="Record.Reference.Name"]
- #   } else {FDA_SPL_final = "None"}
- #   if (length(FDA_SPL_final) < 1){
- #    FDA_SPL_final = "None"
- #   } else {}
- #   FDA_SPL_df = FDA_SPL_final
- #
- #
- #   cids_all_input = c(cids_all_input, chem_cid)
- #
- #   reactives_row = as.data.frame(cbind(reactives_df, CMPs_tmp))
- #   LOTUS_row = as.data.frame(cbind(LOTUS_df, CMPs_tmp))
- #   KEGG_row = as.data.frame(cbind(KEGG_df, CMPs_tmp))
- #   FEMA_row = as.data.frame(cbind(FEMA_df, CMPs_tmp))
- #   FDA_SPL_row = as.data.frame(cbind(FDA_SPL_df, CMPs_tmp))
- #
- #   colnames(reactives_row) = c("reactives", "Chemical")
- #   colnames(LOTUS_row) = c("LOTUS", "Chemical")
- #   colnames(KEGG_row) = c("KEGG", "Chemical")
- #   colnames(FEMA_row) = c("FEMA", "Chemical")
- #   colnames(FDA_SPL_row) = c("FDA_SPL", "Chemical")
- #
- #   CMP_reactives = rbind(CMP_reactives, reactives_row)
- #   CMP_LOTUS = rbind(CMP_LOTUS, LOTUS_row)
- #   CMP_KEGG = rbind(CMP_KEGG, KEGG_row)
- #   CMP_FEMA = rbind(CMP_FEMA, FEMA_row)
- #   CMP_FDA_SPL = rbind(CMP_FDA_SPL, FDA_SPL_row)
- #
- #   row.names(CMP_reactives) = NULL
- #   row.names(CMP_LOTUS) = NULL
- #   row.names(CMP_KEGG) = NULL
- #   row.names(CMP_FEMA) = NULL
- #   row.names(CMP_FDA_SPL) = NULL
- #  }
- #
- #  SDF_input_set = ChemmineR::SDFset()
- #  if(length(cids_all_input) > 135){
- #   compound_cid_list = split(cids_all_input, ceiling(seq_along(cids_all_input)/135))
- #   for(i in 1:length(compound_cid_list)){
- #    Sys.sleep(1)
- #    compound_cid_set = toString(compound_cid_list[[i]])
- #    compound_cid_set = gsub("NA", "180", compound_cid_set)
- #    compound_cid_set = gsub("[c\\\"() ]","",compound_cid_set)
- #    compound_cid_set = gsub("\n", "", compound_cid_set)
- #    url_compounds = paste0('https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/',compound_cid_set,'/SDF')
- #    compounds_SDF_tmp = ChemmineR::read.SDFset(url_compounds)
- #    SDF_input_set = append(SDF_input_set, compounds_SDF_tmp)
- #   }
- #  } else {
- #   compound_cid_set = toString(cids_all_input)
- #   compound_cid_set = gsub("NA", "180", compound_cid_set)
- #   compound_cid_set = gsub("[c\\\"() ]","",compound_cid_set)
- #   compound_cid_set = gsub("\n", "", compound_cid_set)
- #   url_compounds = paste0('https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/',compound_cid_set,'/SDF')
- #   SDF_input_set = ChemmineR::read.SDFset(url_compounds)
- #  }
- #
- #  personalLib(chemical_library, input_format, output_Format = "list")
- #  categories = names(chemical_library)
- #
- #  cid_dict = list()
- #  cat("Setting up your input library for Tanimoto matching...\n")
- #
- #  for(i in 1:length(categories)){
- #    cids_current = c()
- #    chemicals_tmp = paste0(chemical_library[[i]])
- #    chemicals_tmp = chemicals_tmp[!(chemicals_tmp=="")]
- #
- #    cat(paste0('[', i, '/', length(categories), ']', '-', categories[i], '\n'))
- #
- #    for(k in 1:length(chemicals_tmp)){
- #      CMPs_tmp = chemicals_tmp[k]
- #
- #      Sys.sleep(1)
- #      chem_cid = webchem::get_cid(CMPs_tmp)
- #
- #      cat(paste0('[', k, '/', length(chemicals_tmp), ']', '-', CMPs_tmp, '\n'))
- #      if(is.na(chem_cid[[1,2]])){
- #        smiles_url = paste0("https://cactus.nci.nih.gov/chemical/structure/",CMPs_tmp,"/smiles")
- #        inchi_url = paste0("https://cactus.nci.nih.gov/chemical/structure/",CMPs_tmp,"/stdinchikey")
- #        smile_string = suppressWarnings(getNCI(smiles_url))
- #        inchi_string = suppressWarnings(getNCI(inchi_url))
- #
- #        if(smile_string != "None"){
- #          InChiKey = substr(inchi_string, 10, nchar(inchi_string))
- #          smile_cid = webchem::get_cid(paste0(smile_string), from = "smiles")
- #
- #          chem_cid = smile_cid
- #        }else{}
- #      }
- #      chem_cid = paste0(chem_cid[[1,2]])
- #
- #      if(chem_cid == "0"){chem_cid = "180"}
- #
- #      chem_cid = gsub("NA",
- #                      "180",
- #                      chem_cid)
- #
- #      cids_current = c(cids_current, chem_cid)
- #    }
- #    cid_dict[[i]] = cids_current
- #  }
- #  SDF_library_list = list()
- #
- #  for(t in 1:length(cid_dict)){
- #   current_set = ChemmineR::SDFset()
- #   if(length(cid_dict[[t]]) > 135){
- #    compound_cid_list = split(cid_dict[[t]], ceiling(seq_along(cid_dict[[t]])/135))
- #    for(i in 1:length(compound_cid_list)){
- #     compound_cid_set = toString(compound_cid_list[[i]])
- #     compound_cid_set = gsub("NA", "180", compound_cid_set)
- #     compound_cid_set = gsub("[c\\\"() ]","",compound_cid_set)
- #     compound_cid_set = gsub("\n", "", compound_cid_set)
- #     url_compounds = paste0('https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/',compound_cid_set,'/SDF')
- #     compounds_SDF_tmp = ChemmineR::read.SDFset(url_compounds)
- #     current_set = append(current_set, compounds_SDF_tmp)
- #    }
- #   } else {
- #    compound_cid_set = toString(cid_dict[[t]])
- #    compound_cid_set = gsub("NA", "180", compound_cid_set)
- #    compound_cid_set = gsub("[c\\\"() ]","",compound_cid_set)
- #    compound_cid_set = gsub("\n", "", compound_cid_set)
- #    url_compounds = paste0('https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/',compound_cid_set,'/SDF')
- #    current_set = ChemmineR::read.SDFset(url_compounds)
- #   }
- #
- #   SDF_library_list[[t]] = current_set
- #  }
- #
- #  functional_df = data.frame(matrix(ncol = length(SDF_library_list)+1, nrow = 0))
- #  functional_columns = names(librarylist)
- #
- #  colnames(functional_df) = c(functional_columns, "Chemical")
- #
- #  matchems_df = data.frame(matrix(ncol = length(SDF_library_list)+1, nrow = 0))
- #  matchems_columns = names(librarylist)
- #
- #  colnames(matchems_df) = c(matchems_columns, "Chemical")
- #
- #  SDF_info_df = data.frame(matrix(ncol = 9, nrow = 0))
- #  SDF_columns = c("Chemical", "MW", "MF", "Rings",
- #                  "Groups", "GroupCounts", "Atom",
- #                  "AtomCounts", "NCharges")
- #
- #  colnames(SDF_info_df) = SDF_columns
- #  ChemmineR::cid(SDF_input_set) = ChemmineR::makeUnique(ChemmineR::cid(SDF_input_set))
- #
- #  for(SDF in 1:length(SDF_input_set)){
- #
- #   Ncharges = tryCatch(sapply(ChemmineR::bonds(SDF_input_set[SDF], type="charge"),length), error = function(error) {return("None")})
- #   atom_counts = tryCatch(ChemmineR::atomcountMA(SDF_input_set[SDF], addH = FALSE), error = function(error) {return("None")})
- #   group_counts = tryCatch(ChemmineR::groups(SDF_input_set[SDF], type = "countMA"), error = function(error) {return("None")})
- #   ring_counts = tryCatch(ChemmineR::rings(SDF_input_set[SDF], upper = 6, type = "count", arom = TRUE, type = "countMA"), error = function(error) {return("None")})
- #   Chemical = tryCatch(SDF_input_set[[SDF]][[4]][[9]], error = function(error) {return("None")})
- #   MF = tryCatch(ChemmineR::MF(SDF_input_set[SDF], addH=FALSE), error = function(error) {return("None")})
- #   MW = tryCatch(ChemmineR::MW(SDF_input_set[SDF], addH=FALSE), error = function(error) {return("None")})
- #
- #   atom_count_atoms = tryCatch(colnames(atom_counts), error = function(error) {return("None")})
- #   group_count_groups = tryCatch(rownames(as.matrix(unlist(group_counts))), error = function(error) {return("None")})
- #   if(is.null(group_count_groups)){
- #    group_count_groups = "None"
- #   } else {}
- #   SDF_info_row = as.data.frame(t(rbind.data.frame(as.vector(Chemical),
- #                                                   as.vector(MW), as.vector(MF),
- #                                                   as.vector(ring_counts),
- #                                                   group_count_groups,
- #                                                   as.vector(group_counts),
- #                                                   atom_count_atoms,
- #                                                   as.vector(atom_counts),
- #                                                   as.vector(Ncharges))))
- #   row.names(SDF_info_row) = NULL
- #   colnames(SDF_info_row) = SDF_columns
- #   SDF_info_df = rbind(SDF_info_df, SDF_info_row)
- #
- #   functional_row = data.frame(t(rep("No", ncol(functional_df))))
- #   matchems_row = data.frame(t(rep("No", ncol(matchems_df))))
- #
- #   for(v in 1:length(SDF_library_list)){
- #    batch_test_set = tryCatch(fmcsR::fmcsBatch(SDF_input_set[SDF],
- #                                        SDF_library_list[[v]],
- #                                        au = 0,
- #                                        bu = 0),
- #                              error = function(error) {return(batch_test_set = rbind(rep(0, 5), rep(0, 5)))})
- #
- #    colnames(functional_row) = c(names(librarylist), "Chemical")
- #    row.names(functional_row) = NULL
- #    row.names(functional_df) = NULL
- #
- #    colnames(matchems_row) = c(names(librarylist), "Chemical")
- #    row.names(matchems_row) = NULL
- #    row.names(matchems_df) = NULL
- #
- #    if (max(as.numeric(paste0(batch_test_set[,5]))) > 0.75)
- #    {
- #     functional_match = names(batch_test_set[,5][batch_test_set[,5] > 0.95])
- #     functional_match_ish = names(batch_test_set[,5][0.85 < batch_test_set[,5] & batch_test_set[,5] < 0.95])
- #     match_spots = SDF_library_list[[v]]@ID %in% functional_match
- #     match_ish_spots = SDF_library_list[[v]]@ID %in% functional_match_ish
- #
- #     if(any(match_spots, na.rm = F)){
- #       functional_row[v] = "Yes"
- #       matchems_row[v] = names(batch_test_set[,5][batch_test_set[,5] == max(batch_test_set[,5])])[1]
- #     }else{
- #       if(any(match_ish_spots, na.rm = F)){
- #         functional_row[v] = "~"
- #       }else{next}
- #
- #     }
- #
- #    } else {}
- #
- #   }
- #
- #   functional_row$Chemical = Chemical
- #   matchems_row$Chemical = Chemical
- #
- #   functional_df = rbind(functional_df, functional_row)
- #   matchems_df = rbind(matchems_df, matchems_row)
- #  }
- #  data_list = list(CMP_reactives, CMP_LOTUS, CMP_KEGG, CMP_FEMA, CMP_FDA_SPL, SDF_info_df, functional_df, matchems_df)
- #  names(data_list) = c("reactives", "LOTUS", "KEGG", "FEMA", "FDA_SPL", "FMCS", "FunctionalGroups", "BestChemMatch")
- #  return(data_list)
- # }
- # else{cat("No library detected! Please Try Again.")}
-  cat("categorate() is under maintenance. Please reinstall and try again soon!")
+  librarylist = NULL
+  getNCI = function(url_path){
+    con = url(url_path)
+    on.exit(close(con))
+    string_holder = tryCatch(readLines(con, warn = F),
+                             error = function(error) {return("None")})
+    string_holder
+  }
+
+  getPubChem = function(url_path){
+    con = url(url_path)
+    on.exit(close(con))
+    string_holder = tryCatch(ChemmineR::read.SDFset(con, warn = F),
+                             error = function(error) {return(T)})
+    string_holder
+  }
+
+  if(hasArg(chemical_library) & hasArg(compounds)){
+
+    personalLib=function(data, input_Format, output_Format){
+      if(input_Format == "long" && output_Format =="list"){
+        df.2=stats::na.omit(data)
+        m=df.2[,c("compound","type")]
+        dfwide=utils::unstack(m)
+        assign("librarylist",dfwide, envir = parent.frame())
+      }
+
+      if(input_Format == "wide" && output_Format =="list"){
+        librarylist = list()
+        for (i in 1:ncol(data)) {
+          modify=data[[i]]
+          librarylist[[i]]=stats::na.omit(modify)
+        }
+        name_lib=colnames(data)
+        names(librarylist) <- name_lib
+        assign("librarylist",librarylist, envir = parent.frame())
+      }
+
+      if(input_Format == "long" && output_Format =="vectors"){
+        df.2=stats::na.omit(data)
+        m=df.2[,c("compound","type")]
+        dfwide=utils::unstack(m)
+        for (i in 1:length(dfwide)){
+          assign(names(dfwide[i]), dfwide[[i]], envir = parent.frame())
+        }}
+
+      if(input_Format == "wide" && output_Format =="vectors"){
+        for (i in 1:ncol(data)){
+          assign(colnames(data[i]), stats::na.omit(data[[i]]), envir = parent.frame())
+        }
+      }
+    }
+
+    cids_all_input = c()
+
+    CMP_reactives = data.frame(matrix(ncol = 2, nrow = 0))
+    CMP_LOTUS = data.frame(matrix(ncol = 2, nrow = 0))
+    CMP_KEGG = data.frame(matrix(ncol = 2, nrow = 0))
+    CMP_FEMA = data.frame(matrix(ncol = 2, nrow = 0))
+    CMP_FDA_SPL = data.frame(matrix(ncol = 2, nrow = 0))
+
+    colnames(CMP_reactives) = c("reactives", "Chemical")
+    colnames(CMP_LOTUS) = c("LOTUS", "Chemical")
+    colnames(CMP_KEGG) = c("KEGG", "Chemical")
+    colnames(CMP_FEMA) = c("FEMA", "Chemical")
+    colnames(CMP_FDA_SPL) = c("FDA_SPL", "Chemical")
+
+    for(w in 1:length(compounds)){
+
+      CMPs_tmp = compounds[w]
+      Sys.sleep(1)
+
+      chem_cid = tryCatch(webchem::get_cid(CMPs_tmp), error = function(error) {return("Limit Met")})
+      if(w == 1){cat("Searching query chemicals for structural data, please be patient!\n")}
+      cat(paste0('[', w, '/', length(compounds), ']', '-', CMPs_tmp, '\n'))
+
+      if(is.na(chem_cid[[1,2]])){
+        smiles_url = paste0("https://cactus.nci.nih.gov/chemical/structure/",CMPs_tmp,"/smiles")
+        inchi_url = paste0("https://cactus.nci.nih.gov/chemical/structure/",CMPs_tmp,"/stdinchikey")
+        smiles_url = gsub("\\ ", "%20", smiles_url)
+        inchi_url = gsub("\\ ", "%20", inchi_url)
+        smile_string = getNCI(smiles_url)
+        Sys.sleep(1)
+        inchi_string = getNCI(inchi_url)
+
+        if(smile_string != "None"){
+          InChiKey = substr(inchi_string, 10, nchar(inchi_string))
+          smile_cid = webchem::get_cid(paste0(smile_string), from = "smiles")
+
+          chem_cid = smile_cid
+        }else{}
+      }
+      chem_cid = paste0(chem_cid[[1,2]])
+
+      if(chem_cid == "0"){chem_cid = ""}
+
+      chem_cid = gsub("NA",
+                      "",
+                      chem_cid)
+      if(chem_cid != ""){
+        reactives_url = paste0('https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/compound/',chem_cid,'/JSON?heading=Reactive+Group')
+        LOTUS_url = paste0('https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/compound/',chem_cid,'/JSON?source=LOTUS+-+the+natural+products+occurrence+database')
+        KEGG_url = paste0('https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/compound/',chem_cid,'/JSON?source=KEGG')
+        FEMA_url = paste0('https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/compound/',chem_cid,'/JSON?source=Flavor+and+Extract+Manufacturers+Association+(FEMA)')
+        MeSH_url = paste0('https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/compound/',chem_cid,'/JSON?source=Medical+Subject+Headings+(MeSH)')
+        FDA_SPL_url = paste0('https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/compound/',chem_cid,'/JSON?source=FDA/SPL+Indexing+Data')
+      }else{
+        reactives_url = paste0('https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/compound/NA/JSON?heading=Reactive+Group')
+        LOTUS_url = paste0('https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/compound/NA/JSON?source=LOTUS+-+the+natural+products+occurrence+database')
+        KEGG_url = paste0('https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/compound/NA/JSON?source=KEGG')
+        FEMA_url = paste0('https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/compound/NA/JSON?source=Flavor+and+Extract+Manufacturers+Association+(FEMA)')
+        MeSH_url = paste0('https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/compound/NA/JSON?source=Medical+Subject+Headings+(MeSH)')
+        FDA_SPL_url = paste0('https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/compound/NA/JSON?source=FDA/SPL+Indexing+Data')
+      }
+
+      reactives_info = tryCatch(jsonlite::fromJSON(reactives_url), error = function(error) {return("None")})
+      LOTUS_info = tryCatch(jsonlite::fromJSON(LOTUS_url), error = function(error) {return("None")})
+      KEGG_info = tryCatch(jsonlite::fromJSON(KEGG_url), error = function(error) {return("None")})
+      FEMA_info = tryCatch(jsonlite::fromJSON(FEMA_url), error = function(error) {return("None")})
+      MeSH_info = tryCatch(jsonlite::fromJSON(MeSH_url), error = function(error) {return("None")})
+      FDA_SPL_info = tryCatch(jsonlite::fromJSON(FDA_SPL_url), error = function(error) {return("None")})
+
+      if (reactives_info != "None"){
+        reactives_value = as.matrix(unlist(reactives_info))
+      } else {reactives_value = "None"}
+      if (!is.na(reactives_value[2])){
+        chem_name1 = paste0('"',CMPs_tmp,'"')
+        chem_name1 = gsub("[c\\\"() ]", "", chem_name1)
+        chem_name2 = paste0('"', toupper(CMPs_tmp), '"')
+        chem_name2 = gsub("[c\\\"() ]", "", chem_name2)
+        exclude_these = c("CAMEO Chemicals","Safety and Hazards",
+                          "Stability and Reactivity","Reactive Group",
+                          "CID", chem_name1, chem_name2)
+        exclude_that = c("https:")
+
+        reactives_0 = matrix(reactives_value[nchar(reactives_value[,1]) < 100])
+        reactives_1 = matrix(reactives_0[!reactives_0[,1] %in% exclude_these])
+        reactives_2 = matrix(reactives_1[!substr(reactives_1[,1],1,6) %in% exclude_that])
+        reactives_final = c(reactives_2[!grepl("\\d",reactives_2[,1])])
+      } else {reactives_final = "None"}
+      if (length(reactives_final) < 1){
+        reactives_final = "None"
+      } else {}
+      reactives_df = reactives_final
+
+      if (LOTUS_info != "None"){
+        LOTUS_value = as.matrix(unlist(LOTUS_info))
+      } else {LOTUS_value = "None"}
+      if (!is.na(LOTUS_value[2])){
+        LOTUS_keeps = c("Record.Reference.SourceID",
+                        "Record.Reference.SourceID1",
+                        "Record.Reference.SourceID2")
+        LOTUS_final = LOTUS_value[row.names(LOTUS_value) %in% LOTUS_keeps]
+      } else {LOTUS_final = "None"}
+      if (length(LOTUS_final) < 1){
+        LOTUS_final = "None"
+      } else {}
+      LOTUS_df = LOTUS_final
+
+      if (KEGG_info != "None"){
+        KEGG_value = as.matrix(unlist(KEGG_info))
+      } else {KEGG_value = "None"}
+      if (!is.na(KEGG_value[2])){
+        KEGG_final = KEGG_value[substr(KEGG_value,1,5)=="KEGG:"]
+      } else {KEGG_final = "None"}
+      if (length(KEGG_final) < 1){
+        KEGG_final = "None"
+      } else {}
+      KEGG_df = KEGG_final
+
+      if (FEMA_info != "None"){
+        FEMA_value = as.matrix(unlist(FEMA_info))
+      } else {FEMA_value = "None"}
+      if (!is.na(FEMA_value[2])){
+        FEMA_final = FEMA_value[row.names(FEMA_value)=="Record.Section.Section.Information.Value.StringWithMarkup.String"]
+      } else {FEMA_final = "None"}
+      if (length(FEMA_final) < 1){
+        FEMA_final = "None"
+      } else {}
+      FEMA_df = unlist(strsplit(FEMA_final,","))
+
+      if (MeSH_info != "None"){
+        MeSH_value = as.matrix(unlist(MeSH_info))
+      } else {MeSH_value = "None"}
+      if (!is.na(MeSH_value[2])){
+        MeSH_final = MeSH_value[row.names(MeSH_value)=="Record.Section.Section.Information.Value.StringWithMarkup.String"]
+      } else {MeSH_final = "None"}
+      if (length(MeSH_final) < 1){
+        MeSH_final = "None"
+      } else {}
+      MeSH_df = MeSH_final
+
+      if (FDA_SPL_info != "None"){
+        FDA_SPL_value = as.matrix(unlist(FDA_SPL_info))
+      } else {FDA_SPL_value = "None"}
+      if (!is.na(FDA_SPL_value[2])){
+        FDA_SPL_final = FDA_SPL_value[row.names(FDA_SPL_value)=="Record.Reference.Name"]
+      } else {FDA_SPL_final = "None"}
+      if (length(FDA_SPL_final) < 1){
+        FDA_SPL_final = "None"
+      } else {}
+      FDA_SPL_df = FDA_SPL_final
+
+
+      cids_all_input = c(cids_all_input, chem_cid)
+
+      reactives_row = as.data.frame(cbind(reactives_df, CMPs_tmp))
+      LOTUS_row = as.data.frame(cbind(LOTUS_df, CMPs_tmp))
+      KEGG_row = as.data.frame(cbind(KEGG_df, CMPs_tmp))
+      FEMA_row = as.data.frame(cbind(FEMA_df, CMPs_tmp))
+      FDA_SPL_row = as.data.frame(cbind(FDA_SPL_df, CMPs_tmp))
+
+      colnames(reactives_row) = c("reactives", "Chemical")
+      colnames(LOTUS_row) = c("LOTUS", "Chemical")
+      colnames(KEGG_row) = c("KEGG", "Chemical")
+      colnames(FEMA_row) = c("FEMA", "Chemical")
+      colnames(FDA_SPL_row) = c("FDA_SPL", "Chemical")
+
+      CMP_reactives = rbind(CMP_reactives, reactives_row)
+      CMP_LOTUS = rbind(CMP_LOTUS, LOTUS_row)
+      CMP_KEGG = rbind(CMP_KEGG, KEGG_row)
+      CMP_FEMA = rbind(CMP_FEMA, FEMA_row)
+      CMP_FDA_SPL = rbind(CMP_FDA_SPL, FDA_SPL_row)
+
+      row.names(CMP_reactives) = NULL
+      row.names(CMP_LOTUS) = NULL
+      row.names(CMP_KEGG) = NULL
+      row.names(CMP_FEMA) = NULL
+      row.names(CMP_FDA_SPL) = NULL
+    }
+
+    SDF_input_set = ChemmineR::SDFset()
+    if(length(cids_all_input) > 135){
+      compound_cid_list = split(cids_all_input, ceiling(seq_along(cids_all_input)/135))
+      for(i in 1:length(compound_cid_list)){
+        Sys.sleep(1)
+        compound_cid_set = toString(compound_cid_list[[i]])
+        compound_cid_set = gsub("[c\\\"() ]","",compound_cid_set)
+        compound_cid_set = gsub("\n", "", compound_cid_set)
+        url_compounds = paste0('https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/',compound_cid_set,'/SDF')
+        compounds_SDF_tmp = ChemmineR::read.SDFset(url_compounds)
+        SDF_input_set = append(SDF_input_set, compounds_SDF_tmp)
+      }
+    } else {
+      compound_cid_set = toString(cids_all_input)
+      compound_cid_set = gsub("[c\\\"() ]","",compound_cid_set)
+      compound_cid_set = gsub("\n", "", compound_cid_set)
+      url_compounds = paste0('https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/',compound_cid_set,'/SDF')
+      SDF_input_set = ChemmineR::read.SDFset(url_compounds)
+    }
+
+    personalLib(chemical_library, input_format, output_Format = "list")
+    categories = names(chemical_library)
+
+    cid_dict = list()
+    cat("Setting up your input library for Tanimoto matching...\n")
+
+    for(i in 1:length(categories)){
+      cids_current = c()
+      chemicals_tmp = paste0(chemical_library[[i]])
+      chemicals_tmp = chemicals_tmp[!(chemicals_tmp=="")]
+
+      cat(paste0('[', i, '/', length(categories), ']', '-', categories[i], '\n'))
+
+      for(k in 1:length(chemicals_tmp)){
+        CMPs_tmp = chemicals_tmp[k]
+
+        Sys.sleep(1)
+        chem_cid = webchem::get_cid(CMPs_tmp)
+
+        cat(paste0('[', k, '/', length(chemicals_tmp), ']', '-', CMPs_tmp, '\n'))
+        if(is.na(chem_cid[[1,2]])){
+          smiles_url = paste0("https://cactus.nci.nih.gov/chemical/structure/",CMPs_tmp,"/smiles")
+          inchi_url = paste0("https://cactus.nci.nih.gov/chemical/structure/",CMPs_tmp,"/stdinchikey")
+          smile_string = suppressWarnings(getNCI(smiles_url))
+          inchi_string = suppressWarnings(getNCI(inchi_url))
+
+          if(smile_string != "None"){
+            InChiKey = substr(inchi_string, 10, nchar(inchi_string))
+            smile_cid = webchem::get_cid(paste0(smile_string), from = "smiles")
+
+            chem_cid = smile_cid
+          }else{}
+        }
+        chem_cid = paste0(chem_cid[[1,2]])
+
+        if(chem_cid == "0") next
+        if(chem_cid == "NA") next
+
+        cids_current = c(cids_current, chem_cid)
+      }
+      cid_dict[[i]] = cids_current[cids_current != ""]
+    }
+    SDF_library_list = list()
+
+    for(t in 1:length(cid_dict)){
+      current_set = ChemmineR::SDFset()
+      if(length(cid_dict[[t]]) > 135){
+        compound_cid_list = split(cid_dict[[t]], ceiling(seq_along(cid_dict[[t]])/135))
+        for(i in 1:length(compound_cid_list)){
+          compound_cid_set = toString(compound_cid_list[[i]])
+          compound_cid_set = gsub("[c\\\"() ]","",compound_cid_set)
+          compound_cid_set = gsub("\n", "", compound_cid_set)
+          url_compounds = paste0('https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/',compound_cid_set,'/SDF')
+          compounds_SDF_tmp = ChemmineR::read.SDFset(url_compounds)
+          current_set = append(current_set, compounds_SDF_tmp)
+        }
+      } else {
+        compound_cid_set = toString(cid_dict[[t]])
+        compound_cid_set = gsub("[c\\\"() ]","",compound_cid_set)
+        compound_cid_set = gsub("\n", "", compound_cid_set)
+        if(compound_cid_set != ""){
+          url_compounds = paste0('https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/',compound_cid_set,'/SDF')
+          current_set = ChemmineR::read.SDFset(url_compounds)
+        }else{
+          current_set = {}
+        }
+      }
+
+      SDF_library_list[[t]] = current_set
+    }
+
+    functional_df = data.frame(matrix(ncol = length(SDF_library_list)+1, nrow = 0))
+    functional_columns = names(librarylist)
+
+    colnames(functional_df) = c(functional_columns, "Chemical")
+
+    matchems_df = data.frame(matrix(ncol = length(SDF_library_list)+1, nrow = 0))
+    matchems_columns = names(librarylist)
+
+    colnames(matchems_df) = c(matchems_columns, "Chemical")
+
+    SDF_info_df = data.frame(matrix(ncol = 9, nrow = 0))
+    SDF_columns = c("Chemical", "MW", "MF", "Rings",
+                    "Groups", "GroupCounts", "Atom",
+                    "AtomCounts", "NCharges")
+
+    colnames(SDF_info_df) = SDF_columns
+    ChemmineR::cid(SDF_input_set) = ChemmineR::makeUnique(ChemmineR::cid(SDF_input_set))
+
+    for(SDF in 1:length(SDF_input_set)){
+
+      Ncharges = tryCatch(sapply(ChemmineR::bonds(SDF_input_set[SDF], type="charge"),length), error = function(error) {return("None")})
+      atom_counts = tryCatch(ChemmineR::atomcountMA(SDF_input_set[SDF], addH = FALSE), error = function(error) {return("None")})
+      group_counts = tryCatch(ChemmineR::groups(SDF_input_set[SDF], type = "countMA"), error = function(error) {return("None")})
+      ring_counts = tryCatch(ChemmineR::rings(SDF_input_set[SDF], upper = 6, type = "count", arom = TRUE, type = "countMA"), error = function(error) {return("None")})
+      Chemical = tryCatch(SDF_input_set[[SDF]][[4]][[9]], error = function(error) {return("None")})
+      MF = tryCatch(ChemmineR::MF(SDF_input_set[SDF], addH=FALSE), error = function(error) {return("None")})
+      MW = tryCatch(ChemmineR::MW(SDF_input_set[SDF], addH=FALSE), error = function(error) {return("None")})
+
+      atom_count_atoms = tryCatch(colnames(atom_counts), error = function(error) {return("None")})
+      group_count_groups = tryCatch(rownames(as.matrix(unlist(group_counts))), error = function(error) {return("None")})
+      if(is.null(group_count_groups)){
+        group_count_groups = "None"
+      } else {}
+      SDF_info_row = as.data.frame(t(rbind.data.frame(as.vector(Chemical),
+                                                      as.vector(MW), as.vector(MF),
+                                                      as.vector(ring_counts),
+                                                      group_count_groups,
+                                                      as.vector(group_counts),
+                                                      atom_count_atoms,
+                                                      as.vector(atom_counts),
+                                                      as.vector(Ncharges))))
+      row.names(SDF_info_row) = NULL
+      colnames(SDF_info_row) = SDF_columns
+      SDF_info_df = rbind(SDF_info_df, SDF_info_row)
+
+      functional_row = data.frame(t(rep("No", ncol(functional_df))))
+      matchems_row = data.frame(t(rep("No", ncol(matchems_df))))
+
+      for(v in 1:length(SDF_library_list)){
+        batch_test_set = tryCatch(fmcsR::fmcsBatch(SDF_input_set[SDF],
+                                                   SDF_library_list[[v]],
+                                                   au = 0,
+                                                   bu = 0),
+                                  error = function(error) {return(batch_test_set = rbind(rep(0, 5), rep(0, 5)))})
+
+        colnames(functional_row) = c(names(librarylist), "Chemical")
+        row.names(functional_row) = NULL
+        row.names(functional_df) = NULL
+
+        colnames(matchems_row) = c(names(librarylist), "Chemical")
+        row.names(matchems_row) = NULL
+        row.names(matchems_df) = NULL
+
+        if (max(as.numeric(paste0(batch_test_set[,5]))) > 0.75)
+        {
+          functional_match = names(batch_test_set[,5][batch_test_set[,5] > 0.95])
+          functional_match_ish = names(batch_test_set[,5][0.85 < batch_test_set[,5] & batch_test_set[,5] < 0.95])
+          match_spots = SDF_library_list[[v]]@ID %in% functional_match
+          match_ish_spots = SDF_library_list[[v]]@ID %in% functional_match_ish
+
+          if(any(match_spots, na.rm = F)){
+            functional_row[v] = "Yes"
+            matchems_row[v] = names(batch_test_set[,5][batch_test_set[,5] == max(batch_test_set[,5])])[1]
+          }else{
+            if(any(match_ish_spots, na.rm = F)){
+              functional_row[v] = "~"
+            }else{next}
+
+          }
+
+        } else {}
+
+      }
+
+      functional_row$Chemical = Chemical
+      matchems_row$Chemical = Chemical
+
+      functional_df = rbind(functional_df, functional_row)
+      matchems_df = rbind(matchems_df, matchems_row)
+    }
+    data_list = list(CMP_reactives, CMP_LOTUS, CMP_KEGG, CMP_FEMA, CMP_FDA_SPL, SDF_info_df, functional_df, matchems_df)
+    names(data_list) = c("reactives", "LOTUS", "KEGG", "FEMA", "FDA_SPL", "FMCS", "FunctionalGroups", "BestChemMatch")
+    return(data_list)
+  }
+  else{cat("No library detected! Please Try Again.")}
 }
